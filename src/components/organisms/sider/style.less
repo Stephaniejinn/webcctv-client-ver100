@@ -1,0 +1,36 @@
+@import "../../../Style.less";
+
+.logo {
+	height: 40px;
+	margin: 9px;
+}
+.ant-menu-light.ant-menu-light:not(.ant-menu-horizontal)
+	.ant-menu-item-selected {
+	background-color: @highlight-blue;
+	color: #fff;
+	border-radius: 3px;
+}
+
+.ant-menu-submenu > .ant-menu {
+	background-color: @background-gray;
+	color: @major-text;
+}
+.ant-menu-submenu.ant-menu-submenu-inline.ant-menu-submenu-open {
+	background-color: @background-gray;
+	border-radius: 5px;
+}
+.ant-menu.ant-menu-light.ant-menu-root.ant-menu-inline {
+	color: @major-text;
+	border-right: 0px;
+}
+.ant-menu.ant-menu-sub.ant-menu-inline {
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+.ant-layout.ant-layout-has-sider {
+	.ant-layout-sider-light {
+		.ant-layout-sider-trigger {
+			background: #f2f4f8;
+		}
+	}
+}
