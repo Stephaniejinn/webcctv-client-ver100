@@ -8,7 +8,7 @@ import GeneralVisualization from "../../organisms/generalVisualization/GeneralVi
 import TimeVisualization from "../../organisms/timeVisualization/TimeVisualization";
 import "./style.less";
 
-const Day = () => {
+const DayStatPage = () => {
 	const [classification, setClassification] = useState(true);
 
 	const { Content } = Layout;
@@ -76,4 +76,4 @@ const Day = () => {
 	);
 };
 
-export default Day;
+export default DayStatPage;
