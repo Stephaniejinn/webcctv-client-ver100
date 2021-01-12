@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Switch, Space, Button } from "antd";
 import Cascader from "../../atoms/cascader/Cascader";
 import DatePicker from "../../atoms/datePicker/DatePicker";
+import MultiRadio from "../../molecules/multiRadio/MultiRadio";
 // import Switch from "../../atoms/switch/Switch";
 
 import "./style.less";
@@ -9,13 +10,17 @@ import "./style.less";
 const { Title } = Typography;
 const { Text } = Typography;
 
-const SeachArea = ({ classification, setClassification }) => {
+const SeachArea = ({ classification, setClassification, period }) => {
 	console.log("search area", classification);
+	const day = "일간 누적 통계";
+	const week = "주간 누적 통계";
+	const month = "월간 누적 통계";
+
 	return (
 		<div className="search-area">
 			<div className="search-area-body">
 				<Title level={4} style={{ marginBottom: 25 }}>
-					일간 누적 통계
+					{period === "DAY" ? day : period === "WEEK" ? week : month}
 				</Title>
 				<div className="search-area-input">
 					<Cascader />
@@ -40,20 +45,14 @@ const SeachArea = ({ classification, setClassification }) => {
 								checked={!classification}
 								onChange={(checked) => setClassification(!checked)}
 							/>
+							+
 						</Space>
-						{/* <Switch
-						label="시간별 기준"
-						checkState={classification}
-						setClassification={setClassification}
-						classification={classification}
-					/>
-					<Switch
-						label="차설별 기준"
-						checkState={!classification}
-						setClassification={setClassification}
-						classification={!classification}
-					/> */}
 					</div>
+					{period === "WEEK" ? (
+						<MultiRadio page={period} />
+					) : period === "MONTH" ? (
+						<MultiRadio page={period} />
+					) : null}
 				</div>
 			</div>
 			<div className="search-area-input-button">

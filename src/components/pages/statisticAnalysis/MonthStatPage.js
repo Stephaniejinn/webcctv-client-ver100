@@ -8,7 +8,7 @@ import GeneralVisualization from "../../organisms/generalVisualization/GeneralVi
 import TimeVisualization from "../../organisms/timeVisualization/TimeVisualization";
 import "./style.less";
 
-const DayStatPage = () => {
+const MonthStatPage = () => {
 	const [classification, setClassification] = useState(true);
 
 	const { Content } = Layout;
@@ -68,7 +68,7 @@ const DayStatPage = () => {
 						<SearchArea
 							classification={classification}
 							setClassification={setClassification}
-							period="DAY"
+							period="MONTH"
 						/>
 						<div className="statistic-general-visualization">
 							<GeneralVisualization />
@@ -81,4 +81,4 @@ const DayStatPage = () => {
 	);
 };
 
-export default DayStatPage;
+export default MonthStatPage;

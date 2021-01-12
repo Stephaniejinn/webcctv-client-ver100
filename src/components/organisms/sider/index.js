@@ -26,27 +26,6 @@ const MySider = () => {
 		// console.log("state", siderCollapsed);
 	};
 
-	var siderLogo;
-	if (siderCollapsed) {
-		siderLogo = (
-			<div className="logo-position">
-				<img
-					src={logoCollapsed}
-					className="logo-collapsed"
-					alt="logo collapsed"
-				/>
-			</div>
-		);
-	} else {
-		siderLogo = (
-			<div className="logo-position">
-				<img src={logo} className="logo" alt="logo" />
-				<Divider type="vertical" />
-				<div style={{ color: "#595c97" }}>대시보드</div>
-			</div>
-		);
-	}
-
 	return (
 		<Sider
 			collapsible
@@ -54,13 +33,32 @@ const MySider = () => {
 			onCollapse={onCollapse}
 			theme="light"
 		>
-			{siderLogo}
-			<Menu theme="light" defaultSelectedKeys={["1"]} mode="inline">
+			<div className="logo-position">
+				{siderCollapsed ? (
+					<img
+						src={logoCollapsed}
+						className="logo-collapsed"
+						alt="logo collapsed"
+					/>
+				) : (
+					<>
+						<img src={logo} className="logo" alt="logo" />
+						<Divider type="vertical" />
+						<div style={{ color: "#595c97" }}>대시보드</div>
+					</>
+				)}
+			</div>
+			<Menu
+				theme="light"
+				defaultSelectedKeys={["1"]}
+				mode="inline"
+				// selectedKeys={key}
+			>
 				<Menu.Item key="1" icon={<VideoCameraOutlined />}>
 					<Link to="/realtime/streaming">실시간 영상</Link>
 				</Menu.Item>
 				<Menu.Item key="2" icon={<FundProjectionScreenOutlined />}>
-					<Link to="/">실시간 데이터</Link>
+					<Link to="/realtime/statistic">실시간 데이터</Link>
 				</Menu.Item>
 				<SubMenu
 					key="sub1"
@@ -71,10 +69,10 @@ const MySider = () => {
 						<Link to="/statistic/day">일간 별</Link>
 					</Menu.Item>
 					<Menu.Item key="4" icon={<PicRightOutlined />}>
-						<Link to="/">주간 별</Link>
+						<Link to="/statistic/week">주간 별</Link>
 					</Menu.Item>
 					<Menu.Item key="5" icon={<PicRightOutlined />}>
-						<Link to="/">월간 별</Link>
+						<Link to="/statistic/month">월간 별</Link>
 					</Menu.Item>
 				</SubMenu>
 				<Menu.Item key="6" icon={<FileTextOutlined />}>

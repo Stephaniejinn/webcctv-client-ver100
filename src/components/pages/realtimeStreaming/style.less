@@ -1,18 +1,36 @@
 @import "../../../Style.less";
+@import "../style.less";
 
-// .site-layout .site-layout-background {
-// 	background: #fff;
-// }
-// .ant-layout.ant-layout-has-sider {
-// 	.ant-layout {
-// 		background: #fff;
-// 	}
-// }
-
-// .ant-layout-content {
-// 	.site-layout-background {
-// 		box-shadow: 0 4px 10px 0 rgba(20, 19, 34, 0.03),
-// 			0 0 10px 0 rgba(20, 19, 34, 0.02);
-// 		border-color: @background-gray;
-// 	}
-// }
+.realtime-streaming-page {
+	.search-input {
+		display: flex;
+		justify-content: center;
+		margin-top: 5%;
+		margin-bottom: 8%;
+		.cascader-with-button {
+			width: 40%;
+			.ant-cascader-picker.ant-cascader-picker-large.ant-cascader-picker-show-search {
+				// min-width: 400px;
+				width: 80%;
+				border-radius: 5px 0 0 5px;
+			}
+			.ant-btn.ant-btn-primary.ant-btn-lg {
+				// min-width: 100px;
+				width: 20%;
+				border-radius: 0 5px 5px 0;
+			}
+		}
+	}
+	.video-container-4 {
+		width: 100%;
+		// height: 40%;
+		// min-height: 500px;
+		// height: 400px;
+		// max-height: 30%;
+		display: flex;
+		flex-flow: row wrap;
+		align-items: center;
+		justify-content: space-between;
+		// margin: 2% 0 1% 0;
+	}
+}
