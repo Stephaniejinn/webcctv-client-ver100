@@ -6,6 +6,8 @@ import RealtimeStatisticPage from "./components/pages/realtimeStatistic/Realtime
 import DayStatPage from "./components/pages/statisticAnalysis/DayStatPage";
 import WeekStatPage from "./components/pages/statisticAnalysis/WeekStatPage";
 import MonthStatPage from "./components/pages/statisticAnalysis/MonthStatPage";
+import SearchDownloadPage from "./components/pages/searchDownload/SearchDownloadPage";
+import DataComparisonPage from "./components/pages/dataComparison/DataComparisonPage";
 // import "./App.less";
 
 const App = () => {
@@ -24,6 +26,8 @@ const App = () => {
 				<Route path="/statistic/day" render={() => <DayStatPage />} />
 				<Route path="/statistic/week" render={() => <WeekStatPage />} />
 				<Route path="/statistic/month" render={() => <MonthStatPage />} />
+				<Route path="/search" render={() => <SearchDownloadPage />} />
+				<Route path="/comparison" render={() => <DataComparisonPage />} />
 			</Switch>
 		</BrowserRouter>
 	);

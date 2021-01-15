@@ -76,10 +76,10 @@ const MySider = () => {
 					</Menu.Item>
 				</SubMenu>
 				<Menu.Item key="6" icon={<FileTextOutlined />}>
-					<Link to="/">데이터 조회 및 다운로드</Link>
+					<Link to="/search">데이터 조회 및 다운로드</Link>
 				</Menu.Item>
 				<Menu.Item key="7" icon={<PieChartOutlined />}>
-					<Link to="/">통계 비교</Link>
+					<Link to="/comparison">통계 비교</Link>
 				</Menu.Item>
 			</Menu>
 		</Sider>

@@ -1,5 +1,21 @@
 @import "../../../Style.less";
 
-.multi-radio {
-	width: 100%;
+.multi-radio-body {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	width: 120%;
+	.single-radio-group {
+		margin-left: 2%;
+		display: flex;
+		flex-direction: column;
+	}
+	.multi-radio {
+		display: flex;
+		flex-direction: row;
+		margin-bottom: 2%;
+		.ant-radio-wrapper {
+			margin-right: 2%;
+		}
+	}
 }

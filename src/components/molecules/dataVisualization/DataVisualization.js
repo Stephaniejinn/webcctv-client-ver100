@@ -6,6 +6,7 @@ import AreaChart from "../../atoms/areaChart/AreaChart";
 import LiquidChart from "../../atoms/liquidChart/LiquidChart";
 import BidirectionalBar from "../../atoms/bidirectionalBar/BidirectionalBar";
 import DashLineChart from "../../atoms/dashLineChart/DashLineChart";
+
 import "./style.less";
 
 const { TabPane } = Tabs;
