@@ -1,5 +1,6 @@
 import React from "react";
 import { Cascader } from "antd";
+
 import locationOptions from "./location.json";
 
 const MyCascader = ({ size }) => {

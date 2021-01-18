@@ -2,6 +2,7 @@
 import React, { useRef, useEffect } from "react";
 import Hls from "hls.js";
 import { isMobile } from "react-device-detect";
+
 import "./style.less";
 
 const Video = ({ source }) => {

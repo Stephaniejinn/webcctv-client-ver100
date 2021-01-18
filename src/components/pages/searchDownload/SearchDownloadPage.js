@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
-import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
+
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
-import SearchArea from "../../organisms/searchArea/SearchArea";
+import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
+import SearchData from "../../organisms/searchArea/SearchData";
 import SearchResultTab from "../../organisms/searchResultTab/SearchResultTab";
 // import "./style.less";
 
@@ -21,7 +22,7 @@ const SearchDownloadPage = () => {
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb />
-						<SearchArea
+						<SearchData
 							classification={classification}
 							setClassification={setClassification}
 							searchUnit={searchUnit}

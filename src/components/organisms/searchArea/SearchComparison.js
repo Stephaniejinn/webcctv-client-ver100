@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography, Switch, Space, Button, Select } from "antd";
+
 import Cascader from "../../atoms/cascader/Cascader";
 import DatePicker from "../../atoms/datePicker/DatePicker";
 import MultiRadio from "../../molecules/multiRadio/MultiRadio";
@@ -11,7 +12,7 @@ const { Title } = Typography;
 const { Text } = Typography;
 const { Option } = Select;
 
-const SeachArea = ({
+const SeachComparison = ({
 	classification,
 	setClassification,
 	searchUnit,
@@ -93,4 +94,4 @@ const SeachArea = ({
 	);
 };
 
-export default SeachArea;
+export default SeachComparison;

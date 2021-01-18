@@ -1,15 +1,13 @@
-import React from 'react';
-import { Breadcrumb } from 'antd';
+import React from "react";
+import { Breadcrumb } from "antd";
 
-
-const myBreadcrumb =() => {
-    return (
-      <Breadcrumb style={{ margin: '16px 0' }}>
-        <Breadcrumb.Item>User</Breadcrumb.Item>
-        <Breadcrumb.Item>Bill</Breadcrumb.Item>
-      </Breadcrumb>
-    );
-  
+const myBreadcrumb = () => {
+	return (
+		<Breadcrumb style={{ margin: "16px 0" }}>
+			<Breadcrumb.Item>User</Breadcrumb.Item>
+			<Breadcrumb.Item>Bill</Breadcrumb.Item>
+		</Breadcrumb>
+	);
 };
 
 export default myBreadcrumb;

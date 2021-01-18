@@ -1,5 +1,6 @@
 import React from "react";
 import { Tabs } from "antd";
+
 import LineChart from "../../atoms/lineChart/LineChart";
 import SliderBarChart from "../../atoms/slideBarChart/SliderBarChart";
 import AreaChart from "../../atoms/areaChart/AreaChart";
@@ -9,13 +10,12 @@ import DashLineChart from "../../atoms/dashLineChart/DashLineChart";
 
 import "./style.less";
 
-const { TabPane } = Tabs;
-
-function callback(key) {
-	console.log(key);
-}
-
 const DataVisualization = ({ period }) => {
+	const { TabPane } = Tabs;
+
+	const callback = (key) => {
+		console.log(key);
+	};
 	console.log(period);
 	return (
 		<Tabs defaultActiveKey="1" onChange={callback} tabPosition="right">
