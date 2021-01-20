@@ -1,12 +1,12 @@
 import React from "react";
 import { Tabs } from "antd";
 
-import LineChart from "../../atoms/lineChart/LineChart";
-import SliderBarChart from "../../atoms/slideBarChart/SliderBarChart";
-import AreaChart from "../../atoms/areaChart/AreaChart";
-import LiquidChart from "../../atoms/liquidChart/LiquidChart";
-import BidirectionalBar from "../../atoms/bidirectionalBar/BidirectionalBar";
-import DashLineChart from "../../atoms/dashLineChart/DashLineChart";
+import LineChart from "../../charts/lineChart";
+import SliderBarChart from "../../charts/slideBarChart";
+import AreaChart from "../../charts/areaChart";
+import LiquidChart from "../../charts/liquidChart";
+import BidirectionalBar from "../../charts/bidirectionalBar";
+import DashLineChart from "../../charts/dashLineChart";
 
 import "./style.less";
 

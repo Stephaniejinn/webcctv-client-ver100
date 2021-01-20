@@ -4,9 +4,10 @@ import { Layout } from "antd";
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import SearchData from "../../organisms/searchArea/SearchData";
+import SearchData from "../../organisms/searchData/SearchData";
 import SearchResultTab from "../../organisms/searchResultTab/SearchResultTab";
-// import "./style.less";
+
+import "../style.less";
 
 const SearchDownloadPage = () => {
 	const [classification, setClassification] = useState(true);

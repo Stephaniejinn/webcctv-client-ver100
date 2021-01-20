@@ -1,0 +1,61 @@
+@import "../../../Style.less";
+@test: 100px;
+
+.search-comparison-area {
+	min-height: 180px;
+	display: flex;
+	flex-direction: column;
+	margin-right: 10%;
+	margin-left: 103px;
+	justify-content: center;
+
+	.search-comparison-area-title {
+		margin-top: 20px;
+	}
+	.search-comparison-body {
+		min-height: 180px;
+		min-width: 900px;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-evenly;
+		margin-bottom: 1%;
+
+		.search-area-input {
+			min-width: 450px;
+			display: flex;
+			flex-direction: column;
+
+			.ant-cascader-picker {
+				min-width: 450px;
+				margin-bottom: 2%;
+			}
+			.search-comparison-date-picker {
+				display: flex;
+				flex-direction: row;
+				min-width: 450px;
+
+				justify-content: space-between;
+				margin-bottom: 2%;
+				.ant-select.ant-select-single.ant-select-show-arrow {
+					width: 26%;
+				}
+				.ant-picker {
+					width: 73%;
+				}
+			}
+		}
+
+		.search-area-cascader {
+			min-width: 450px;
+			display: flex;
+			justify-content: center;
+
+			.ant-cascader-picker {
+				min-width: 450px;
+				margin-top: 49px;
+				margin-bottom: 2%;
+			}
+		}
+	}
+}

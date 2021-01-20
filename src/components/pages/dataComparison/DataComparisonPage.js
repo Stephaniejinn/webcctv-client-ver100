@@ -4,13 +4,13 @@ import { Layout } from "antd";
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import SearchData from "../../organisms/searchArea/SearchData";
+import SearchComparison from "../../organisms/searchComparison/SearchComparison";
+import ComVisualization from "../../organisms/comVisualization/ComVisualization";
 
-// import "./style.less";
+// import "../style.less";
 
 const DataComparisonPage = () => {
-	const [classification, setClassification] = useState(true);
-	const [searchUnit, setSearchUnit] = useState(15);
+	const [period, setPeriod] = useState("");
 
 	const { Content } = Layout;
 
@@ -22,13 +22,8 @@ const DataComparisonPage = () => {
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb />
-						<SearchData
-							classification={classification}
-							setClassification={setClassification}
-							searchUnit={searchUnit}
-							setSearchUnit={setSearchUnit}
-							period="SEARCH"
-						/>
+						<SearchComparison period={period} setPeriod={setPeriod} />
+						<ComVisualization period={period} />
 					</Content>
 				</Layout>
 			</Layout>
