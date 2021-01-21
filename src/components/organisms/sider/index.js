@@ -20,10 +20,8 @@ const { SubMenu } = Menu;
 
 const MySider = () => {
 	const [siderCollapsed, setSiderCollapsed] = useState(false);
-	// console.log("first state", siderCollapsed);
 	const onCollapse = (collapsed) => {
 		setSiderCollapsed(collapsed);
-		// console.log("state", siderCollapsed);
 	};
 
 	return (

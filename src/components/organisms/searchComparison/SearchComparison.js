@@ -18,9 +18,7 @@ const SearchComparison = ({ period, setPeriod }) => {
 	return (
 		<div className="search-comparison-area">
 			<div className="search-comparison-area-title">
-				<Title level={2} style={{ textAlign: "center" }}>
-					구간 통계 데이터 비교
-				</Title>
+				<Title style={{ textAlign: "center" }}>구간 통계 데이터 비교</Title>
 				<Title level={5} style={{ textAlign: "center" }}>
 					특정 기간 내 통계 데이터 시각화 비교
 				</Title>
