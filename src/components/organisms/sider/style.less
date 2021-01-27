@@ -1,21 +1,31 @@
 @import "../../../Style.less";
 
 .logo-position {
-	width: 110%;
+	width: 100%;
 	display: flex;
-	justify-content: center;
+	// justify-content: center;
 	align-items: center;
 
 	.logo {
 		height: 40px;
-		margin: 9px 0px 9px 9px;
+		margin: 9px 0px 9px 14px;
 	}
 	.logo-collapsed {
 		height: 30px;
-		margin: 9px 0px 9px -9px;
+		margin: 15px 0px 12px 22px;
 	}
 	.ant-divider.ant-divider-vertical {
 		height: 40px;
+	}
+}
+.sider-divider {
+	.ant-divider.ant-divider-horizontal {
+		min-width: 70%;
+		width: 70%;
+		margin-left: 14px;
+		margin-top: 6px;
+		margin-bottom: 0px;
+		border-top: 1px solid @background-gray;
 	}
 }
 
@@ -42,11 +52,20 @@
 		border-radius: 3px;
 		.ant-menu-item-icon {
 			color: #fff;
+			margin-left: -10px;
 		}
 	}
 	.ant-menu-item {
 		.ant-menu-item-icon {
 			color: @major-text;
+			margin-left: -10px;
+		}
+	}
+	.ant-menu-submenu.ant-menu-submenu-inline {
+		.ant-menu-submenu-title {
+			.anticon {
+				margin-left: -10px;
+			}
 		}
 	}
 }
@@ -56,14 +75,10 @@
 	background-color: @background-gray;
 }
 .ant-layout.ant-layout-has-sider {
-	min-width: 230px;
 	.ant-layout-sider-light {
-		// .ant-layout-sider-children {
-		// 	min-width: 230px;
-		// }
 		.ant-layout-sider-trigger {
 			background: #f2f4f8;
-			// min-width: 230px;
+			margin-left: -15px;
 		}
 	}
 }

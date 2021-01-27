@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { HashLink as Link } from "react-router-hash-link";
-import { Layout, Menu, Divider } from "antd";
+import { Layout, Menu, Divider, Typography } from "antd";
 import {
 	FundProjectionScreenOutlined,
 	PieChartOutlined,
@@ -10,14 +10,16 @@ import {
 	PicRightOutlined,
 } from "@ant-design/icons";
 
-import logo from "../../../assets/logo/logoBlueWN.png";
-import logoCollapsed from "../../../assets/logo/logoBlue.png";
+// import logo from "../../../assets/logo/logoBlueWN.png";
+// import logoCollapsed from "../../../assets/logo/logoBlue.png";
+import logo from "../../../assets/logo/logoBlackWN.png";
+import logoCollapsed from "../../../assets/logo/logoBlack.png";
 
 import "./style.less";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
-
+const { Text } = Typography;
 const MySider = () => {
 	const [siderCollapsed, setSiderCollapsed] = useState(false);
 	const onCollapse = (collapsed) => {
@@ -30,6 +32,8 @@ const MySider = () => {
 			collapsed={siderCollapsed}
 			onCollapse={onCollapse}
 			theme="light"
+			width="240"
+			style={{ paddingLeft: 15, paddingRight: 7 }}
 		>
 			<div className="logo-position">
 				{siderCollapsed ? (
@@ -42,9 +46,14 @@ const MySider = () => {
 					<>
 						<img src={logo} className="logo" alt="logo" />
 						<Divider type="vertical" />
-						<div style={{ color: "#595c97" }}>대시보드</div>
+						<Text strong type="secondary">
+							대시보드
+						</Text>
 					</>
 				)}
+			</div>
+			<div className="sider-divider">
+				<Divider />
 			</div>
 			<Menu
 				theme="light"

@@ -8,13 +8,16 @@ import WeekStatPage from "./components/pages/statisticAnalysis/WeekStatPage";
 import MonthStatPage from "./components/pages/statisticAnalysis/MonthStatPage";
 import SearchDownloadPage from "./components/pages/searchDownload/SearchDownloadPage";
 import DataComparisonPage from "./components/pages/dataComparison/DataComparisonPage";
+import PasswordPage from "./components/pages/account/PasswordPage";
+import SignupPage from "./components/pages/account/SignupPage";
+import LoginPage from "./components/pages/login/LoginPage";
 // import "./App.less";
 
 const App = () => {
 	return (
 		<BrowserRouter>
 			<Switch>
-				<Route exact path="/" render={() => <DayStatPage />} />
+				<Route exact path="/" render={() => <LoginPage />} />
 				<Route
 					path="/realtime/streaming"
 					render={() => <RealtimeStreamingPage />}
@@ -28,6 +31,8 @@ const App = () => {
 				<Route path="/statistic/month" render={() => <MonthStatPage />} />
 				<Route path="/search" render={() => <SearchDownloadPage />} />
 				<Route path="/comparison" render={() => <DataComparisonPage />} />
+				<Route path="/password" render={() => <PasswordPage />} />
+				<Route path="/signup" render={() => <SignupPage />} />
 			</Switch>
 		</BrowserRouter>
 	);
