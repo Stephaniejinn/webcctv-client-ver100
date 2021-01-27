@@ -25,7 +25,7 @@ const SearchComparison = ({ period, setPeriod }) => {
 			</div>
 
 			<div className="search-comparison-body">
-				<div className="search-area-input">
+				<div className="search-comparison-date-picker-body">
 					<div className="search-comparison-date-picker">
 						<Select
 							placeholder="기간"
@@ -38,9 +38,11 @@ const SearchComparison = ({ period, setPeriod }) => {
 						</Select>
 						<DatePicker period={period} />
 					</div>
-					<Cascader size="large" />
+					<div style={{ width: 450, height: 0 }} />
 				</div>
+
 				<div className="search-area-cascader">
+					<Cascader size="large" />
 					<Cascader size="large" />
 				</div>
 			</div>

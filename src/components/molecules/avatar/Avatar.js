@@ -57,7 +57,6 @@ const MyAvatar = () => {
 				style={{
 					backgroundColor: "#e4e9f0",
 					verticalAlign: "middle",
-					marginRight: 10,
 				}}
 				size="large"
 			>

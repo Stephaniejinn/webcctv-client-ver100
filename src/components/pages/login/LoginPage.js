@@ -8,7 +8,7 @@ import "./style.less";
 
 const LoginPage = () => {
 	const { Content } = Layout;
-	const { Title } = Typography;
+	const { Title, Text } = Typography;
 	return (
 		<div className="login-page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -17,6 +17,9 @@ const LoginPage = () => {
 					<Content style={{ margin: "0" }}>
 						<div className="site-layout-background" style={{ minHeight: 720 }}>
 							<Title>AI 도로교통현황 대시보드</Title>
+							<Text type="secondary">
+								주식회사 글로벌브릿지 인공지능 대시보드
+							</Text>
 							<LoginCard />
 						</div>
 					</Content>

@@ -1,42 +1,33 @@
 @import "../../../Style.less";
-@test: 100px;
 
 .search-comparison-area {
 	min-height: 180px;
+	min-width: 450px;
 	display: flex;
 	flex-direction: column;
 	margin-right: 10%;
 	margin-left: 103px;
 	justify-content: center;
-
 	.search-comparison-area-title {
 		margin-top: 20px;
 	}
 	.search-comparison-body {
 		min-height: 180px;
-		min-width: 900px;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		align-items: center;
 		justify-content: space-evenly;
 		margin-bottom: 1%;
-
-		.search-area-input {
-			min-width: 450px;
+		.search-comparison-date-picker-body {
+			width: 90%;
 			display: flex;
-			flex-direction: column;
-
-			.ant-cascader-picker {
-				min-width: 450px;
-				margin-bottom: 2%;
-			}
+			justify-content: space-evenly;
+			flex-flow: row wrap;
 			.search-comparison-date-picker {
 				display: flex;
 				flex-direction: row;
 				min-width: 450px;
-
 				justify-content: space-between;
-				margin-bottom: 2%;
 				.ant-select.ant-select-single.ant-select-show-arrow {
 					width: 26%;
 				}
@@ -47,13 +38,14 @@
 		}
 
 		.search-area-cascader {
-			min-width: 450px;
+			width: 90%;
 			display: flex;
-			justify-content: center;
+			flex-direction: row;
+			justify-content: space-evenly;
+			flex-flow: row wrap;
 
 			.ant-cascader-picker {
 				min-width: 450px;
-				margin-top: 49px;
 				margin-bottom: 2%;
 			}
 		}

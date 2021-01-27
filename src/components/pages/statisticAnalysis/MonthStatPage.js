@@ -15,50 +15,6 @@ const MonthStatPage = () => {
 
 	const { Content } = Layout;
 
-	var VisualNTable;
-	if (classification) {
-		VisualNTable = (
-			<div>
-				<TimeVisualization period="DAY" />
-				<div
-					className="site-layout-background"
-					style={{ padding: 24, minHeight: 360 }}
-				>
-					1차 데이터 테이블
-				</div>
-				<div
-					className="site-layout-background"
-					style={{ padding: 24, minHeight: 360 }}
-				>
-					2차 데이터 테이블
-				</div>
-			</div>
-		);
-	} else {
-		VisualNTable = (
-			<div>
-				<div
-					className="site-layout-background"
-					style={{ padding: 24, minHeight: 360 }}
-				>
-					1차 데이터 테이블
-				</div>
-				<div
-					className="site-layout-background"
-					style={{ padding: 24, minHeight: 360 }}
-				>
-					1차 데이터 테이블
-				</div>
-				<div
-					className="site-layout-background"
-					style={{ padding: 24, minHeight: 360 }}
-				>
-					2차 데이터 테이블
-				</div>
-			</div>
-		);
-	}
-
 	return (
 		<div className="statistic-page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -75,7 +31,44 @@ const MonthStatPage = () => {
 						<div className="statistic-general-visualization">
 							<GeneralVisualization />
 						</div>
-						{VisualNTable}
+						{classification ? (
+							<>
+								<TimeVisualization period="DAY" />
+								<div
+									className="site-layout-background"
+									style={{ padding: 24, minHeight: 360 }}
+								>
+									1차 데이터 테이블
+								</div>
+								<div
+									className="site-layout-background"
+									style={{ padding: 24, minHeight: 360 }}
+								>
+									2차 데이터 테이블
+								</div>
+							</>
+						) : (
+							<div>
+								<div
+									className="site-layout-background"
+									style={{ padding: 24, minHeight: 360 }}
+								>
+									1차 데이터 테이블
+								</div>
+								<div
+									className="site-layout-background"
+									style={{ padding: 24, minHeight: 360 }}
+								>
+									1차 데이터 테이블
+								</div>
+								<div
+									className="site-layout-background"
+									style={{ padding: 24, minHeight: 360 }}
+								>
+									2차 데이터 테이블
+								</div>
+							</div>
+						)}
 					</Content>
 				</Layout>
 			</Layout>

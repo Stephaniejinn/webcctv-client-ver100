@@ -39,12 +39,12 @@ const MyHeader = ({ page }) => {
 					</Text>
 				</div>
 			) : (
-				<>
+				<div className="header-text-avatar">
 					<Text type="secondary" style={{ marginRight: 10 }}>
 						{currentTime}
 					</Text>
 					<Avatar />
-				</>
+				</div>
 			)}
 		</Header>
 	);

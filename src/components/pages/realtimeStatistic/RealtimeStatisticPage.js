@@ -23,7 +23,9 @@ const RealtimeStatisticPage = () => {
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb />
 						<div className="page-title-and-search-input">
-							<Title level={3}>실시간 통게 | 수인사거리1</Title>
+							<Title level={3} style={{ minWidth: 285 }}>
+								실시간 통게 | 수인사거리1
+							</Title>
 							<div className="search-input-drawer">
 								<SearchDrawer />
 							</div>
