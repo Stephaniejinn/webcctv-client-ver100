@@ -19,7 +19,9 @@ const SignupPage = () => {
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb />
-						<Title level={3}>계정 발급</Title>
+						<Title level={3} style={{ minWidth: 120 }}>
+							계정 발급
+						</Title>
 						<Divider />
 						<SignupForm />
 					</Content>

@@ -11,7 +11,6 @@ import SearchDrawer from "../../molecules/searchDrawer/SearchDrawer";
 import "./style.less";
 
 const RealtimeStatisticPage = () => {
-	// const [drawerVisible, setDrawerVisible] = useState(false);
 	const { Content } = Layout;
 	const { Title } = Typography;
 	return (
@@ -21,7 +20,10 @@ const RealtimeStatisticPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb />
+						<Breadcrumb
+							pageHierarchy={["데시보드", "실시간 데이터"]}
+							locationHierarchy={["인천광역시", "중구", "수인사거리1[하행]"]}
+						/>
 						<div className="page-title-and-search-input">
 							<Title level={3} style={{ minWidth: 285 }}>
 								실시간 통게 | 수인사거리1

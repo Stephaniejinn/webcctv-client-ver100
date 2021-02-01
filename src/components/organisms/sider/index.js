@@ -17,13 +17,38 @@ import logoCollapsed from "../../../assets/logo/logoBlack.png";
 
 import "./style.less";
 
-const { Sider } = Layout;
-const { SubMenu } = Menu;
-const { Text } = Typography;
 const MySider = () => {
+	const { Sider } = Layout;
+	const { SubMenu } = Menu;
+	const { Text } = Typography;
+
+	const { pathname: path } = window.location;
+
 	const [siderCollapsed, setSiderCollapsed] = useState(false);
+	const [openKeys, setOpenKeys] = useState(() => {
+		if (
+			path === "/statistic/day" ||
+			path === "/statistic/week" ||
+			path === "/statistic/month"
+		) {
+			return ["statistic"];
+		} else {
+			return [];
+		}
+	});
+
 	const onCollapse = (collapsed) => {
 		setSiderCollapsed(collapsed);
+	};
+
+	const handleClick = (e) => {
+		console.log("click", e);
+	};
+
+	const onOpenChange = (keys) => {
+		setOpenKeys(keys);
+		console.log("check keys", keys);
+		console.log("check open", openKeys);
 	};
 
 	return (
@@ -57,35 +82,41 @@ const MySider = () => {
 			</div>
 			<Menu
 				theme="light"
-				defaultSelectedKeys={["1"]}
 				mode="inline"
-				// selectedKeys={key}
+				onClick={handleClick}
+				defaultSelectedKeys={["/realtime/streaming"]}
+				selectedKeys={path}
+				openKeys={openKeys}
+				onOpenChange={onOpenChange}
 			>
-				<Menu.Item key="1" icon={<VideoCameraOutlined />}>
+				<Menu.Item key="/realtime/streaming" icon={<VideoCameraOutlined />}>
 					<Link to="/realtime/streaming">실시간 영상</Link>
 				</Menu.Item>
-				<Menu.Item key="2" icon={<FundProjectionScreenOutlined />}>
+				<Menu.Item
+					key="/realtime/statistic"
+					icon={<FundProjectionScreenOutlined />}
+				>
 					<Link to="/realtime/statistic">실시간 데이터</Link>
 				</Menu.Item>
 				<SubMenu
-					key="sub1"
+					key="statistic"
 					icon={<BarChartOutlined />}
 					title="누적 통계 데이터 분석"
 				>
-					<Menu.Item key="3" icon={<PicRightOutlined />}>
+					<Menu.Item key="/statistic/day" icon={<PicRightOutlined />}>
 						<Link to="/statistic/day">일간 별</Link>
 					</Menu.Item>
-					<Menu.Item key="4" icon={<PicRightOutlined />}>
+					<Menu.Item key="/statistic/week" icon={<PicRightOutlined />}>
 						<Link to="/statistic/week">주간 별</Link>
 					</Menu.Item>
-					<Menu.Item key="5" icon={<PicRightOutlined />}>
+					<Menu.Item key="/statistic/month" icon={<PicRightOutlined />}>
 						<Link to="/statistic/month">월간 별</Link>
 					</Menu.Item>
 				</SubMenu>
-				<Menu.Item key="6" icon={<FileTextOutlined />}>
+				<Menu.Item key="/search" icon={<FileTextOutlined />}>
 					<Link to="/search">데이터 조회 및 다운로드</Link>
 				</Menu.Item>
-				<Menu.Item key="7" icon={<PieChartOutlined />}>
+				<Menu.Item key="/comparison" icon={<PieChartOutlined />}>
 					<Link to="/comparison">통계 비교</Link>
 				</Menu.Item>
 			</Menu>

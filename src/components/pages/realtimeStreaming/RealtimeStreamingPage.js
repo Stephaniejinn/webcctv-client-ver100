@@ -11,6 +11,7 @@ import "./style.less";
 
 const RealtimeStreamingPage = () => {
 	const { Content } = Layout;
+
 	return (
 		<div className="realtime-streaming-page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -18,7 +19,10 @@ const RealtimeStreamingPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb />
+						<Breadcrumb
+							pageHierarchy={["데시보드", "실시간 영상"]}
+							locationHierarchy={[""]}
+						/>
 						<div className="search-input">
 							<SearchInput />
 						</div>

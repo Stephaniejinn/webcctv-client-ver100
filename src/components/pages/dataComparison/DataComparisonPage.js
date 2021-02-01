@@ -7,11 +7,8 @@ import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchComparison from "../../organisms/searchComparison/SearchComparison";
 import ComVisualization from "../../organisms/comVisualization/ComVisualization";
 
-// import "../style.less";
-
 const DataComparisonPage = () => {
 	const [period, setPeriod] = useState("");
-
 	const { Content } = Layout;
 
 	return (
@@ -21,7 +18,7 @@ const DataComparisonPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb />
+						<Breadcrumb pageHierarchy={["데시보드", "데이터 비교"]} />
 						<SearchComparison period={period} setPeriod={setPeriod} />
 						<ComVisualization period={period} />
 					</Content>

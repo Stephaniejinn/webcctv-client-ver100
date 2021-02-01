@@ -22,7 +22,7 @@ const DayStatPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb />
+						<Breadcrumb pageHierarchy={["데시보드", "통계 분석", "일간 별"]} />
 						<SearchData
 							classification={classification}
 							setClassification={setClassification}
@@ -68,7 +68,7 @@ const DayStatPage = () => {
 									2차 데이터 테이블
 								</div>
 							</div>
-						)}{" "}
+						)}
 					</Content>
 				</Layout>
 			</Layout>

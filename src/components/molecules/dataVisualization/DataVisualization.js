@@ -14,9 +14,9 @@ const DataVisualization = ({ period }) => {
 	const { TabPane } = Tabs;
 
 	const callback = (key) => {
-		console.log(key);
+		// console.log(key);
 	};
-	console.log(period);
+	// console.log(period);
 	return (
 		<Tabs defaultActiveKey="1" onChange={callback} tabPosition="right">
 			<TabPane tab="교통량" key="1">

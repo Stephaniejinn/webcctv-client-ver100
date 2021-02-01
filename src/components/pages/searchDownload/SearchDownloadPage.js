@@ -22,7 +22,7 @@ const SearchDownloadPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb />
+						<Breadcrumb pageHierarchy={["데시보드", "기간 별 데이터 조회"]} />
 						<SearchData
 							classification={classification}
 							setClassification={setClassification}

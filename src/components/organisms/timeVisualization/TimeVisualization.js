@@ -7,12 +7,12 @@ import "./style.less";
 const { TabPane } = Tabs;
 
 function callback(key) {
-	console.log(key);
+	// console.log(key);
 }
 
 const TimeVisualization = ({ period }) => {
-	console.log(period);
-	console.log(typeof period);
+	// console.log(period);
+	// console.log(typeof period);
 
 	return (
 		<Tabs defaultActiveKey="1" onChange={callback}>
