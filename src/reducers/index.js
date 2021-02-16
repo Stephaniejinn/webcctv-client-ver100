@@ -1,12 +1,8 @@
-// import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
+import location from "./location";
+import userInfo from "./userInfo";
 
-// const selectedClassificationReducer = (selectdClassification ='TIME', action ) =>{
-//   if (action.type === 'CLASSIFICATION_SELECTED'){
-//     return action.payload;
-//   }
-//   return selectdClassification;
-// } 
-
-// export default combineReducers({
-//   selectdClassification: selectedClassificationReducer
-// });
+export default combineReducers({
+	location,
+	userInfo,
+});

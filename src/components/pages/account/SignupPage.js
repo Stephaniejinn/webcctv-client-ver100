@@ -18,7 +18,7 @@ const SignupPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb />
+						<Breadcrumb pageHierarchy={["데시보드", "개인정보", "계정 발급"]} />
 						<Title level={3} style={{ minWidth: 120 }}>
 							계정 발급
 						</Title>

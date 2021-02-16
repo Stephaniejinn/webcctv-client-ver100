@@ -1,7 +1,5 @@
 import React from "react";
-// import axios from "axios";
-// import { useSetRecoilState } from "recoil";
-
+import axios from "axios";
 import { Form, Input, Button, message, Card, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -17,6 +15,19 @@ const LoginCard = () => {
 	// const apiURL = LOGIN_API_URL;
 
 	const login = (values) => {
+		// axios
+		// 	.get("http://119.197.240.186:3002/api/v1/locations/cities", {
+		// 		headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+		// 	})
+		// 	.then((res) => {
+		// 		res.data.map((cityInfo) => {
+		// 			const { cityCode, cityName } = cityInfo;
+		// 			console.log(cityCode, cityName);
+		// 		});
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 	});
 		// const { username, password } = values;
 		// axios
 		// 	.post(

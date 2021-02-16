@@ -11,9 +11,13 @@ import DataComparisonPage from "./components/pages/dataComparison/DataComparison
 import PasswordPage from "./components/pages/account/PasswordPage";
 import SignupPage from "./components/pages/account/SignupPage";
 import LoginPage from "./components/pages/login/LoginPage";
-// import "./App.less";
 
 const App = () => {
+	window.localStorage.setItem(
+		"token",
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkdCMTAwMSIsImlhdCI6MTYxMzQ1MjU5NSwiZXhwIjoxNjE0MDU3Mzk1LCJpc3MiOiJnbG9iYWxicmlkZ2UuY29tIiwianRpIjoiMTFkZDliMzItNjMzMi00M2ZkLTk1YTAtMTY1ZTJjNmUzZmJmIn0.o0HxiI1g4srAhrt5Q_3Kf_tO6Wdi1UBjIYgm2woX6IE"
+	);
+
 	return (
 		<BrowserRouter>
 			<Switch>

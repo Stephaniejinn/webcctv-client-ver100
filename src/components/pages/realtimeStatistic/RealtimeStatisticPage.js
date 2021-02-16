@@ -1,18 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Layout, Typography } from "antd";
 
-import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
+import RealtimeStatUpper from "../../organisms/realtimeStatUpper/RealtimeStatUpper";
 import VideoContainer from "../../organisms/videoStreaming/VideoContainer";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-import SearchDrawer from "../../molecules/searchDrawer/SearchDrawer";
+// import SearchDrawer from "../../molecules/searchDrawer/SearchDrawer";
+// import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 
 import "./style.less";
 
 const RealtimeStatisticPage = () => {
 	const { Content } = Layout;
-	const { Title } = Typography;
+	// const { Title } = Typography;
 	return (
 		<div className="realtime-statistic-page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -20,7 +21,7 @@ const RealtimeStatisticPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb
+						{/* <Breadcrumb
 							pageHierarchy={["데시보드", "실시간 데이터"]}
 							locationHierarchy={["인천광역시", "중구", "수인사거리1[하행]"]}
 						/>
@@ -31,7 +32,8 @@ const RealtimeStatisticPage = () => {
 							<div className="search-input-drawer">
 								<SearchDrawer />
 							</div>
-						</div>
+						</div> */}
+						<RealtimeStatUpper />
 						<div className="realtime-statistic-video-and-graph">
 							<VideoContainer camName="camName" httpAddress="address" />
 							<div className="realtime-statistic-graph">

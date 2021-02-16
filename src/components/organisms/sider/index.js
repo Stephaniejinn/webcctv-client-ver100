@@ -41,14 +41,14 @@ const MySider = () => {
 		setSiderCollapsed(collapsed);
 	};
 
-	const handleClick = (e) => {
-		console.log("click", e);
-	};
+	// const handleClick = (e) => {
+	// 	console.log("click", e);
+	// };
 
 	const onOpenChange = (keys) => {
 		setOpenKeys(keys);
-		console.log("check keys", keys);
-		console.log("check open", openKeys);
+		// console.log("check keys", keys);
+		// console.log("check open", openKeys);
 	};
 
 	return (
@@ -83,7 +83,7 @@ const MySider = () => {
 			<Menu
 				theme="light"
 				mode="inline"
-				onClick={handleClick}
+				// onClick={handleClick}
 				defaultSelectedKeys={["/realtime/streaming"]}
 				selectedKeys={path}
 				openKeys={openKeys}

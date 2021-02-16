@@ -1,21 +1,27 @@
 import React from "react";
 import ReactDOM from "react-dom";
-// import { Provider } from 'react-redux';
-// import { createStore } from 'redux';
-
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-// import reducers from './reducers';
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import reducers from "./reducers";
+import * as actions from "./actions";
+import App from "./App";
 
 import "./index.less";
 
+const store = createStore(reducers);
+console.log(store.getState());
+store.subscribe(() => console.log(store.getState()));
+// store.dispatch(actions.setLocation({ city: "city", district: "district" }));
+
 ReactDOM.render(
-	// <Provider store = {createStore(reducers)}>
-	//   <App />
-	// </Provider>,
-	<React.StrictMode>
+	// <Provider store={createStore(reducers)}>
+	<Provider store={store}>
 		<App />
-	</React.StrictMode>,
+	</Provider>,
+	// <React.StrictMode>
+	// 	<App />
+	// </React.StrictMode>,
 
 	document.getElementById("root")
 );

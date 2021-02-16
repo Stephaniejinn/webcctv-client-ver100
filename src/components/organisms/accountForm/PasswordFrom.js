@@ -1,7 +1,7 @@
 import React from "react";
 // import axios from "axios";
 import { Form, Input, message, Button } from "antd";
-import { BankOutlined } from "@ant-design/icons";
+import { BankOutlined, UserOutlined } from "@ant-design/icons";
 
 import Cascader from "../../atoms/cascader/Cascader";
 
@@ -90,6 +90,12 @@ const PasswordForm = () => {
 			scrollToFirstError
 			size="large"
 		>
+			<Form.Item name="username" label="계정" initialValue="username">
+				<Input
+					disabled
+					prefix={<UserOutlined className="site-form-item-icon" />}
+				/>
+			</Form.Item>
 			<Form.Item name="affiliation" label="소속" initialValue="affiliation">
 				<Input
 					disabled

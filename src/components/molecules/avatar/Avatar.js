@@ -1,26 +1,29 @@
 import React from "react";
-// import axios from "axios";
 import { HashLink as Link } from "react-router-hash-link";
-
-import { Avatar, Menu, Dropdown, Typography, Divider } from "antd";
+import { Menu, Dropdown, Typography, Divider, Avatar } from "antd";
 import {
 	IdcardOutlined,
 	UserOutlined,
 	ExportOutlined,
 } from "@ant-design/icons";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
 
 import "./style.less";
 
-const { Text } = Typography;
+var userInfo = { userName: "", userAffiliation: "", userAvatarAbbr: "" };
+
 const MyAvatar = () => {
+	const { Text } = Typography;
+
 	const dropdownContent = (
 		<Menu style={{ width: 190 }}>
 			<Menu.Item>
 				<Text type="secondary" strong style={{ marginBottom: 6 }}>
-					접속 계정:username
+					접속 계정:{userInfo.userName}
 				</Text>
 				<Text type="secondary" strong>
-					소속: "affiliation"
+					소속: {userInfo.userAffiliation}
 				</Text>
 			</Menu.Item>
 			<Divider />
@@ -60,9 +63,26 @@ const MyAvatar = () => {
 				}}
 				size="large"
 			>
-				A
+				{userInfo.userAvatarAbbr}
 			</Avatar>
 		</Dropdown>
 	);
 };
-export default MyAvatar;
+const mapStateToProps = (state) => {
+	userInfo.userName = state.userInfo.username;
+	userInfo.userAffiliation = state.userInfo.affiliation;
+	userInfo.userAvatarAbbr = userInfo.userName.slice(0, 1);
+	return {
+		username: userInfo.userName,
+		affiliation: userInfo.userAffiliation,
+		// avatarAbbr: userInfo.userAvatarAbbr,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getUserInfo: () => {
+			dispatch(actions.userInfo());
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(MyAvatar);
