@@ -11,7 +11,10 @@ import TimeVisualization from "../../organisms/timeVisualization/TimeVisualizati
 import "./style.less";
 
 const MonthStatPage = () => {
-	const [classification, setClassification] = useState(true);
+	const [timeClassification, setTimeClassification] = useState(true);
+	const [firstFilter, setFirstFilter] = useState(false);
+	const [startDate, setStartDate] = useState("");
+	const [endTime, setEndTime] = useState("");
 
 	const { Content } = Layout;
 
@@ -24,51 +27,63 @@ const MonthStatPage = () => {
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["데시보드", "통계 분석", "월간 별"]} />
 						<SearchData
-							classification={classification}
-							setClassification={setClassification}
 							period="MONTH"
+							classification={timeClassification}
+							setClassification={setTimeClassification}
+							setStartDate={setStartDate}
+							setEndTime={setEndTime}
+							setFirstFilter={setFirstFilter}
 						/>
-						<div className="statistic-general-visualization">
-							<GeneralVisualization />
-						</div>
-						{classification ? (
+						{firstFilter ? (
 							<>
-								<TimeVisualization period="DAY" />
-								<div
-									className="site-layout-background"
-									style={{ padding: 24, minHeight: 360 }}
-								>
-									1차 데이터 테이블
+								<div className="statistic-general-visualization">
+									<GeneralVisualization
+										startDate={startDate}
+										endTime={endTime}
+										timeClassification={timeClassification}
+										interval="15M"
+									/>
 								</div>
-								<div
-									className="site-layout-background"
-									style={{ padding: 24, minHeight: 360 }}
-								>
-									2차 데이터 테이블
-								</div>
+								{timeClassification ? (
+									<>
+										<TimeVisualization period="DAY" />
+										<div
+											className="site-layout-background"
+											style={{ padding: 24, minHeight: 360 }}
+										>
+											1차 데이터 테이블
+										</div>
+										<div
+											className="site-layout-background"
+											style={{ padding: 24, minHeight: 360 }}
+										>
+											2차 데이터 테이블
+										</div>
+									</>
+								) : (
+									<div>
+										<div
+											className="site-layout-background"
+											style={{ padding: 24, minHeight: 360 }}
+										>
+											1차 데이터 테이블
+										</div>
+										<div
+											className="site-layout-background"
+											style={{ padding: 24, minHeight: 360 }}
+										>
+											1차 데이터 테이블
+										</div>
+										<div
+											className="site-layout-background"
+											style={{ padding: 24, minHeight: 360 }}
+										>
+											2차 데이터 테이블
+										</div>
+									</div>
+								)}
 							</>
-						) : (
-							<div>
-								<div
-									className="site-layout-background"
-									style={{ padding: 24, minHeight: 360 }}
-								>
-									1차 데이터 테이블
-								</div>
-								<div
-									className="site-layout-background"
-									style={{ padding: 24, minHeight: 360 }}
-								>
-									1차 데이터 테이블
-								</div>
-								<div
-									className="site-layout-background"
-									style={{ padding: 24, minHeight: 360 }}
-								>
-									2차 데이터 테이블
-								</div>
-							</div>
-						)}
+						) : null}
 					</Content>
 				</Layout>
 			</Layout>

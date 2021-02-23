@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // import { Card } from 'antd';
+import axios from "axios";
+
 import Liquid from "../../charts/liquidChart";
 import DoughnutPie from "../../charts/doughnutChart";
 import Gauge from "../../charts/gaugeChart";
@@ -8,11 +10,70 @@ import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualiza
 
 import "./style.less";
 
-const GeneralGraph = ({ page = "DEFAULT" }) => {
+const GeneralVisualization = (props) => {
+	const {
+		startDate,
+		endTime,
+		timeClassification,
+		interval,
+		page = "DEFAULT",
+	} = props;
+
+	// const baseURL = "http://119.197.240.186:3002/api/v1";
+	// const currentURL = "/statistics/traffic?";
+	// const group = timeClassification ? "time" : "lane";
+	// const [resData, setResData] = useState([]);
+
+	// useEffect(() => {
+	// 	axios
+	// 		.get(
+	// 			// `${baseURL}${currentURL}groupBy=${group}&camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime}&interval=${interval}`,
+	// 			`${baseURL}${currentURL}groupBy=${group}&camCode=0004&startDate=2020-09-28&endTime=2020-09-28 23:59:59&interval=15M&limit=0&offset=0`,
+	// 			{
+	// 				headers: {
+	// 					Authorization: `Bearer ${localStorage.getItem("token")}`,
+	// 					Cache: "No-cache",
+	// 				},
+	// 			}
+	// 		)
+	// 		.then((res) => {
+	// 			console.log(res.data);
+	// 			setResData(res.data);
+	// 			// res.data.forEach((TrafficData) => {});
+	// 			// console.log(vehicleRatioData);
+	// 		})
+	// 		.catch((err) => {
+	// 			console.log(err);
+	// 		});
+	// }, []);
+
 	const LiquidChart = <Liquid />;
-	const PieChart = <DoughnutPie />;
-	const GaugeChart = <Gauge />;
-	const TinyBarChart = <TinyBar />;
+	const PieChart = (
+		<DoughnutPie
+			startDate={startDate}
+			endTime={endTime}
+			timeClassification={timeClassification}
+			interval={interval}
+			// resData={resData}
+		/>
+	);
+	const GaugeChart = (
+		<Gauge
+			startDate={startDate}
+			endTime={endTime}
+			timeClassification={timeClassification}
+			interval={interval}
+			// resData={resData}
+		/>
+	);
+	var TinyBarChart = (
+		<TinyBar
+			startDate={startDate}
+			endTime={endTime}
+			timeClassification={timeClassification}
+			interval={interval}
+		/>
+	);
 	return (
 		<div className="general-graph-layout">
 			{page === "STREAMING" ? (
@@ -38,4 +99,4 @@ const GeneralGraph = ({ page = "DEFAULT" }) => {
 		</div>
 	);
 };
-export default GeneralGraph;
+export default GeneralVisualization;

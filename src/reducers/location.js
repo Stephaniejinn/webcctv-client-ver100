@@ -4,11 +4,6 @@ const initialState = {
 	road: "",
 	spot: "",
 	camera: "",
-	// city: "인천광역시",
-	// district: "중구",
-	// road: "서해대로",
-	// spot: "수인사거리",
-	// camera: "수인사거리-1[하행]",
 };
 export default function location(state = initialState, action) {
 	switch (action.type) {

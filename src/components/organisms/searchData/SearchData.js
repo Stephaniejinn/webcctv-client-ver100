@@ -1,32 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Switch, Space, Button, Select } from "antd";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
 
 import Cascader from "../../atoms/cascader/Cascader";
 import DatePicker from "../../atoms/datePicker/DatePicker";
 import MultiRadio from "../../molecules/multiRadio/MultiRadio";
-// import Switch from "../../atoms/switch/Switch";
 
 import "./style.less";
 
-const { Title } = Typography;
-const { Text } = Typography;
-const { Option } = Select;
+const SeachData = (props) => {
+	const {
+		period,
+		classification,
+		setClassification,
+		setSearchUnit,
+		setStartDate,
+		setEndTime,
+		setFirstFilter,
+		setLocationInfo,
+		setLocationCodeInfo,
+		camera,
+	} = props;
 
-const SeachData = ({
-	classification,
-	setClassification,
-	searchUnit,
-	setSearchUnit,
-	period,
-}) => {
+	const { Title } = Typography;
+	const { Text } = Typography;
+	const { Option } = Select;
+
+	const [locationChange, setLocationChange] = useState(false);
+	const [tempStartTime, setTempStartTime] = useState("");
+	const [tempEndTime, setTempEndTime] = useState("");
+	const [selectedLocation, setSelectedLocation] = useState([]);
+	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
+	const [unit, setUnit] = useState("15M");
+
 	const day = "일간 누적 통계";
 	const week = "주간 누적 통계";
 	const month = "월간 누적 통계";
 	const search = "기간 별 데이터 조회";
 
-	const handleSelectChange = (value) => {
-		console.log(`selected ${value}`);
-		setSearchUnit(value);
+	const handleUnitSelectChange = (value) => {
+		setUnit(value);
+	};
+
+	const handleSearch = () => {
+		if (
+			tempStartTime !== "" &&
+			tempEndTime !== "" &&
+			selectedLocation.length !== 0
+		) {
+			setFirstFilter(true);
+			setStartDate(tempStartTime);
+			setEndTime(tempEndTime);
+			setLocationInfo(selectedLocation);
+			setLocationCodeInfo(selectedLocationCode);
+			if (period === "SERACH") {
+				setSearchUnit(unit);
+			}
+		} else if (tempStartTime !== "" && tempEndTime !== "" && camera !== "") {
+			setFirstFilter(true);
+			setStartDate(tempStartTime);
+			setEndTime(tempEndTime);
+			if (period === "SERACH") {
+				setSearchUnit(unit);
+			}
+		} else {
+			console.log("need to select start time, end time, location");
+		}
 	};
 
 	return (
@@ -42,8 +82,16 @@ const SeachData = ({
 			</Title>
 			<div className="search-area-body">
 				<div className="search-area-input">
-					<Cascader />
-					<DatePicker period={period} />
+					<Cascader
+						setSelectedLocation={setSelectedLocation}
+						setSelectedLocationCode={setSelectedLocationCode}
+						setLocationChange={setLocationChange}
+					/>
+					<DatePicker
+						period={period}
+						setTempStartTime={setTempStartTime}
+						setTempEndTime={setTempEndTime}
+					/>
 					<div className="search-area-switch">
 						<Space>
 							<Text strong style={{ marginRight: 1 }}>
@@ -67,12 +115,9 @@ const SeachData = ({
 						</Space>
 					</div>
 					{period === "SEARCH" ? (
-						<Select
-							placeholder="조회 단위 시간 선택"
-							onChange={handleSelectChange}
-						>
-							<Option value="15">15분 단위</Option>
-							<Option value="60">1시간 단위</Option>
+						<Select onChange={handleUnitSelectChange} defaultValue="15M">
+							<Option value="15M">15분 단위</Option>
+							<Option value="1H">1시간 단위</Option>
 						</Select>
 					) : (
 						classification === false &&
@@ -84,7 +129,11 @@ const SeachData = ({
 					)}
 				</div>
 				<div className="search-area-input-button">
-					<Button type="primary" style={{ marginBottom: 10 }}>
+					<Button
+						type="primary"
+						style={{ marginBottom: 10 }}
+						onClick={handleSearch}
+					>
 						조회
 					</Button>
 					<Button>전체 다운로드</Button>
@@ -93,5 +142,22 @@ const SeachData = ({
 		</div>
 	);
 };
-
-export default SeachData;
+const mapStateToProps = (state) => {
+	return {
+		camera: state.location.camera,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getLocationInfo: () => {
+			dispatch(actions.getLocation());
+		},
+		setLocationInfo: (selectedOption) => {
+			dispatch(actions.setLocation(selectedOption));
+		},
+		setLocationCodeInfo: (selectedOptionCode) => {
+			dispatch(actions.setLocationCode(selectedOptionCode));
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(SeachData);

@@ -19,10 +19,7 @@ const RealtimeStreamingPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb
-							pageHierarchy={["데시보드", "실시간 영상"]}
-							locationHierarchy={[""]}
-						/>
+						<Breadcrumb pageHierarchy={["데시보드", "실시간 영상"]} />
 						<div className="search-input">
 							<SearchInput />
 						</div>

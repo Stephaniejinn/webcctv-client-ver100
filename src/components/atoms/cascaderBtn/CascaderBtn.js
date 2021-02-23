@@ -1,35 +1,58 @@
-import React from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { Button } from "antd";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
 
 import MyCascader from "../cascader/Cascader";
 
 import "./style.less";
 
-const CascaderWButton = () => {
-	// const onSubmit = (values) => {
-	// 	axios
-	// 		.get("http://119.197.240.186:3002/api/v1/locations/cities", {
-	// 			headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-	// 		})
-	// 		.then((res) => {
-	// 			res.data.map((cityInfo) => {
-	// 				const { cityCode, cityName } = cityInfo;
-	// 				console.log(cityCode);
-	// 			});
-	// 		})
-	// 		.catch((err) => {
-	// 			console.log(err);
-	// 		});
-	// };
+const CascaderWButton = (props) => {
+	const { setLocationInfo, setLocationCodeInfo } = props;
+	const [selectedLocation, setSelectedLocation] = useState([]);
+	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
+	const [locationChange, setLocationChange] = useState(false);
+
+	const handleSearch = () => {
+		console.log(selectedLocation);
+		if (locationChange) {
+			setLocationInfo(selectedLocation);
+			setLocationCodeInfo(selectedLocationCode);
+		}
+	};
 
 	return (
 		<div className="cascader-with-button">
-			<MyCascader size="large" />
-			<Button size="large" type="primary">
+			<MyCascader
+				size="large"
+				displayLocation={false}
+				setSelectedLocation={setSelectedLocation}
+				setSelectedLocationCode={setSelectedLocationCode}
+				setLocationChange={setLocationChange}
+			/>
+			<Button size="large" type="primary" onClick={handleSearch}>
 				검색
 			</Button>
 		</div>
 	);
 };
-export default CascaderWButton;
+const mapStateToProps = (state) => {
+	return {
+		city: state.location.city,
+		district: state.location.district,
+		road: state.location.road,
+		spot: state.location.spot,
+		camera: state.location.camera,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setLocationInfo: (selectedOption) => {
+			dispatch(actions.setLocation(selectedOption));
+		},
+		setLocationCodeInfo: (selectedOptionCode) => {
+			dispatch(actions.setLocationCode(selectedOptionCode));
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CascaderWButton);

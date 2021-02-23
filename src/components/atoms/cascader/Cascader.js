@@ -3,26 +3,24 @@ import axios from "axios";
 import { Cascader } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
-// import { convertLegacyProps } from "antd/lib/button/button";
 
-// var selectedOption = { city: "", district: "", road: "", spot: "", camera: "" };
 const MyCascader = (props) => {
-	const { size, setLocationInfo } = props;
-	console.log(props);
+	const {
+		size,
+		setSelectedLocation,
+		setSelectedLocationCode,
+		displayLocation = true,
+		setLocationChange,
+	} = props;
+
 	const [visible, setVisible] = useState(true);
 	const [parsedOptions, setParsedOptions] = useState([]);
-	// const [defaultOption, setDefaultOption] = useState(() => {});
 
 	const baseURL = "http://119.197.240.186:3002/api/v1";
 	const currentURL = "/locations";
-	var selectedOption = {
-		city: "",
-		district: "",
-		road: "",
-		spot: "",
-		camera: "",
-	};
-	if (props.city === "") {
+	var locationOptionsParse = [];
+
+	if (props.city === "" || displayLocation === false) {
 		var defaultOption = [];
 	} else {
 		defaultOption = [
@@ -33,8 +31,6 @@ const MyCascader = (props) => {
 			props.camera,
 		];
 	}
-
-	var locationOptionsParse = [];
 
 	const getOptions = () => {
 		setVisible(!visible);
@@ -223,14 +219,28 @@ const MyCascader = (props) => {
 	};
 
 	const onChange = (value, selectedOptions) => {
-		const vals = selectedOptions.map((item) => item.label);
-		const keys = ["city", "district", "road", "spot", "cameras"];
-		selectedOption = vals.reduce((obj, item, idx) => {
-			obj[keys[idx]] = item;
+		const optionVals = selectedOptions.map((item) => item.label);
+		const optionKeys = ["city", "district", "road", "spot", "camera"];
+		const selectedLocation = optionVals.reduce((obj, item, idx) => {
+			obj[optionKeys[idx]] = item;
 			return obj;
 		}, {});
-		console.log(selectedOptions);
-		setLocationInfo(selectedOption);
+
+		const codeKeys = [
+			"cityCode",
+			"districtCode",
+			"roadCode",
+			"spotCode",
+			"cameraCode",
+		];
+		const selectedLocationCode = value.reduce((obj, item, idx) => {
+			obj[codeKeys[idx]] = item;
+			return obj;
+		}, {});
+
+		setSelectedLocation(selectedLocation);
+		setSelectedLocationCode(selectedLocationCode);
+		setLocationChange(true);
 	};
 
 	const filter = (inputValue, path) => {
@@ -257,7 +267,6 @@ const MyCascader = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	// defaultOption = Object.values(state.location);
 	return {
 		city: state.location.city,
 		district: state.location.district,
@@ -270,9 +279,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		getLocationInfo: () => {
 			dispatch(actions.getLocation());
-		},
-		setLocationInfo: (selectedOption) => {
-			dispatch(actions.setLocation(selectedOption));
 		},
 	};
 };

@@ -1,7 +1,16 @@
 import React from "react";
 import { Gauge } from "@ant-design/charts";
 
-const MyGauge = () => {
+const MyGauge = (props) => {
+	const {
+		startDate,
+		endTime,
+		timeClassification,
+		interval,
+		cameraCode,
+		resData,
+	} = props;
+
 	var config = {
 		percent: 0.75,
 		range: {

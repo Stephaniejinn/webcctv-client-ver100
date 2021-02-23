@@ -10,8 +10,11 @@ import SearchResultTab from "../../organisms/searchResultTab/SearchResultTab";
 import "../style.less";
 
 const SearchDownloadPage = () => {
-	const [classification, setClassification] = useState(true);
-	const [searchUnit, setSearchUnit] = useState(15);
+	const [timeClassification, setTimeClassification] = useState(true);
+	const [searchUnit, setSearchUnit] = useState("15M");
+	const [finishFilter, setFinishFilter] = useState(false);
+	const [startTime, setStartTime] = useState("");
+	const [endTime, setEndTime] = useState("");
 
 	const { Content } = Layout;
 
@@ -24,16 +27,23 @@ const SearchDownloadPage = () => {
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["데시보드", "기간 별 데이터 조회"]} />
 						<SearchData
-							classification={classification}
-							setClassification={setClassification}
+							period="SEARCH"
+							classification={timeClassification}
+							setClassification={setTimeClassification}
 							searchUnit={searchUnit}
 							setSearchUnit={setSearchUnit}
-							period="SEARCH"
+							startTime={startTime}
+							setStartTime={setStartTime}
+							endTime={endTime}
+							setEndTime={setEndTime}
+							setFinishFilter={setFinishFilter}
 						/>
-						<SearchResultTab
-							classification={classification}
-							searchUnit={searchUnit}
-						/>
+						{finishFilter ? (
+							<SearchResultTab
+								classification={timeClassification}
+								searchUnit={searchUnit}
+							/>
+						) : null}
 					</Content>
 				</Layout>
 			</Layout>

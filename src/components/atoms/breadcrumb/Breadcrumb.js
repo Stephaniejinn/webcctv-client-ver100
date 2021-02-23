@@ -1,7 +1,7 @@
 import React from "react";
 import { Breadcrumb } from "antd";
 
-const myBreadcrumb = ({ pageHierarchy, locationHierarchy = [] }) => {
+const myBreadcrumb = ({ pageHierarchy, locationHierarchy = [""] }) => {
 	return (
 		<Breadcrumb style={{ margin: "16px 0", minWidth: 445 }} separator="·">
 			{pageHierarchy.concat(locationHierarchy).map((item) => (

@@ -43,7 +43,7 @@ const SearchComparison = ({ period, setPeriod }) => {
 
 				<div className="search-area-cascader">
 					<Cascader size="large" />
-					<Cascader size="large" />
+					<Cascader size="large" comm={false} />
 				</div>
 			</div>
 		</div>
