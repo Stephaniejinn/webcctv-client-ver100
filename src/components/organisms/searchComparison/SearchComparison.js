@@ -9,7 +9,16 @@ import "./style.less";
 const { Title } = Typography;
 const { Option } = Select;
 
-const SearchComparison = ({ period, setPeriod }) => {
+const SearchComparison = ({
+	period,
+	setPeriod,
+	setStartDate,
+	setEndTime,
+	setSelectedLocation1,
+	setSelectedLocationCode1,
+	setSelectedLocation2,
+	setSelectedLocationCode2,
+}) => {
 	const handlePeriodChange = (value) => {
 		console.log(`selected ${value}`);
 		setPeriod(value);
@@ -36,14 +45,27 @@ const SearchComparison = ({ period, setPeriod }) => {
 							<Option value="WEEK">주간 별</Option>
 							<Option value="MONTH">월간 별</Option>
 						</Select>
-						<DatePicker period={period} />
+						<DatePicker
+							period={period}
+							setTempStartDate={setStartDate}
+							setTempEndTime={setEndTime}
+						/>
 					</div>
 					<div style={{ width: 450, height: 0 }} />
 				</div>
 
 				<div className="search-area-cascader">
-					<Cascader size="large" />
-					<Cascader size="large" comm={false} />
+					<Cascader
+						size="large"
+						setSelectedLocation={setSelectedLocation1}
+						setSelectedLocationCode={setSelectedLocationCode1}
+					/>
+					<Cascader
+						size="large"
+						setSelectedLocation={setSelectedLocation2}
+						setSelectedLocationCode={setSelectedLocationCode2}
+						displayLocation={false}
+					/>
 				</div>
 			</div>
 		</div>

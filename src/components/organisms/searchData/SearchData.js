@@ -27,8 +27,8 @@ const SeachData = (props) => {
 	const { Text } = Typography;
 	const { Option } = Select;
 
-	const [locationChange, setLocationChange] = useState(false);
-	const [tempStartTime, setTempStartTime] = useState("");
+	// const [locationChange, setLocationChange] = useState(false);
+	const [tempStartDate, setTempStartDate] = useState("");
 	const [tempEndTime, setTempEndTime] = useState("");
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
@@ -45,21 +45,21 @@ const SeachData = (props) => {
 
 	const handleSearch = () => {
 		if (
-			tempStartTime !== "" &&
+			tempStartDate !== "" &&
 			tempEndTime !== "" &&
 			selectedLocation.length !== 0
 		) {
 			setFirstFilter(true);
-			setStartDate(tempStartTime);
+			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);
 			if (period === "SERACH") {
 				setSearchUnit(unit);
 			}
-		} else if (tempStartTime !== "" && tempEndTime !== "" && camera !== "") {
+		} else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
 			setFirstFilter(true);
-			setStartDate(tempStartTime);
+			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
 			if (period === "SERACH") {
 				setSearchUnit(unit);
@@ -85,11 +85,11 @@ const SeachData = (props) => {
 					<Cascader
 						setSelectedLocation={setSelectedLocation}
 						setSelectedLocationCode={setSelectedLocationCode}
-						setLocationChange={setLocationChange}
+						// setLocationChange={setLocationChange}
 					/>
 					<DatePicker
 						period={period}
-						setTempStartTime={setTempStartTime}
+						setTempStartDate={setTempStartDate}
 						setTempEndTime={setTempEndTime}
 					/>
 					<div className="search-area-switch">

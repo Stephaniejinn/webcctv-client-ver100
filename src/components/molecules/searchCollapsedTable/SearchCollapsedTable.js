@@ -4,7 +4,7 @@ import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
 
 import "./style.less";
 
-const TableCollapse = ({ classification, searchUnit }) => {
+const SearchCollapsedTable = ({ classification, searchUnit }) => {
 	const { Panel } = Collapse;
 	const { Title } = Typography;
 
@@ -82,4 +82,4 @@ const TableCollapse = ({ classification, searchUnit }) => {
 	);
 };
 
-export default TableCollapse;
+export default SearchCollapsedTable;

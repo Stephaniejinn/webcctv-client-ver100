@@ -5,31 +5,25 @@ import { Pie } from "@ant-design/charts";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 
-const MyDoughnutPie = (props) => {
-	const {
-		startDate,
-		endTime,
-		timeClassification,
-		interval,
-		cameraCode,
-	} = props;
+const TrafficPie = (props) => {
+	const { startDate, endTime, interval, cameraCode } = props;
 
 	const baseURL = "http://119.197.240.186:3002/api/v1";
-	const currentURL = "/statistics/traffic?";
-	const group = timeClassification ? "time" : "lane";
+	const currentURL = "/statistics/traffic?groupBy=time";
+	// const group = timeClassification ? "time" : "lane";
 
 	const [vehicleRatio, setVehicleRatio] = useState([]);
 
 	useEffect(() => {
-		getData();
+		asyncAxios();
 	}, []);
 
-	const getData = () => {
-		console.log("group", group);
-		console.log("startDate", startDate);
-		console.log("endTime", endTime);
-		console.log("interval", interval);
-		console.log("cameraCode", cameraCode);
+	const asyncAxios = () => {
+		// console.log("group", group);
+		// console.log("startDate", startDate);
+		// console.log("endTime", endTime);
+		// console.log("interval", interval);
+		// console.log("cameraCode", cameraCode);
 		var vehicleRatioData = [
 			{
 				type: "승용차",
@@ -50,8 +44,8 @@ const MyDoughnutPie = (props) => {
 		];
 		axios
 			.get(
-				// `${baseURL}${currentURL}groupBy=${group}&camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime}&interval=${interval}`,
-				`${baseURL}${currentURL}groupBy=${group}&camCode=0004&startDate=2020-09-28&endTime=2020-09-28 23:59:59&interval=15M&limit=0&offset=0`,
+				// `${baseURL}${currentURL}&camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime}&interval=${interval}`,
+				`${baseURL}${currentURL}&camCode=0004&startDate=2020-09-28&endTime=2020-09-28 23:59:59&interval=15M&limit=0&offset=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -67,7 +61,7 @@ const MyDoughnutPie = (props) => {
 					vehicleRatioData[2].value += mTruckCnt;
 					vehicleRatioData[3].value += motorCnt;
 				});
-				console.log(vehicleRatioData);
+				// console.log(vehicleRatioData);
 				setVehicleRatio(vehicleRatioData);
 			})
 			.catch((err) => {
@@ -126,4 +120,4 @@ const mapDispatchToProps = (dispatch) => {
 		},
 	};
 };
-export default connect(mapStateToProps, mapDispatchToProps)(MyDoughnutPie);
+export default connect(mapStateToProps, mapDispatchToProps)(TrafficPie);

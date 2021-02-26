@@ -1,7 +1,7 @@
 import React from "react";
 import { Tabs } from "antd";
 
-import TableCollapse from "../../molecules/tableCollapse/TableCollapse";
+import SearchCollapsedTable from "../../molecules/searchCollapsedTable/SearchCollapsedTable";
 
 import "./style.less";
 
@@ -20,7 +20,7 @@ const SearchResultTab = ({ classification, searchUnit }) => {
 			{classification ? (
 				<Tabs defaultActiveKey="1" onChange={callback}>
 					<TabPane tab="구간 전체" key="1">
-						<TableCollapse
+						<SearchCollapsedTable
 							classification={classification}
 							searchUnit={searchUnit}
 						/>
@@ -32,7 +32,7 @@ const SearchResultTab = ({ classification, searchUnit }) => {
 			) : (
 				<Tabs defaultActiveKey="1" onChange={callback}>
 					<TabPane tab="2020-01-01" key="1">
-						<TableCollapse />
+						<SearchCollapsedTable />
 					</TabPane>
 					<TabPane tab="2020-01-01" key="2">
 						result

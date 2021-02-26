@@ -6,13 +6,13 @@ import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-import TimeVisualization from "../../organisms/timeVisualization/TimeVisualization";
+import TimeStatistic from "../../organisms/visualStatistic/timeStat/timeStat";
 
 import "./style.less";
 
 const DayStatPage = () => {
 	const [timeClassification, setTimeClassification] = useState(true);
-	const [firstFilter, setFirstFilter] = useState(false);
+	const [firstFilter, setFirstFilter] = useState(true);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 
@@ -41,26 +41,17 @@ const DayStatPage = () => {
 									<GeneralVisualization
 										startDate={startDate}
 										endTime={endTime}
-										timeClassification={timeClassification}
 										interval="15M"
 									/>
 								</div>
 								{timeClassification ? (
-									<>
-										<TimeVisualization period="DAY" />
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											1차 데이터 테이블
-										</div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											2차 데이터 테이블
-										</div>
-									</>
+									<TimeStatistic
+										period="DAY"
+										startDate={startDate}
+										endTime={endTime}
+										timeClassification={timeClassification}
+										interval="15M"
+									/>
 								) : (
 									<div>
 										<div

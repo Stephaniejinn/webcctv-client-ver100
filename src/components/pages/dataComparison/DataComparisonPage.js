@@ -9,6 +9,13 @@ import ComVisualization from "../../organisms/comVisualization/ComVisualization"
 
 const DataComparisonPage = () => {
 	const [period, setPeriod] = useState("");
+	const [startDate, setStartDate] = useState("");
+	const [endTime, setEndTime] = useState("");
+	const [selectedLocation1, setSelectedLocation1] = useState([]);
+	const [selectedLocationCode1, setSelectedLocationCode1] = useState([]);
+	const [selectedLocation2, setSelectedLocation2] = useState([]);
+	const [selectedLocationCode2, setSelectedLocationCode2] = useState([]);
+
 	const { Content } = Layout;
 
 	return (
@@ -19,8 +26,23 @@ const DataComparisonPage = () => {
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["데시보드", "데이터 비교"]} />
-						<SearchComparison period={period} setPeriod={setPeriod} />
-						<ComVisualization period={period} />
+						<SearchComparison
+							period={period}
+							setPeriod={setPeriod}
+							setStartDate={setStartDate}
+							setEndTime={setEndTime}
+							setSelectedLocation1={setSelectedLocation1}
+							setSelectedLocationCode1={setSelectedLocationCode1}
+							setSelectedLocation2={setSelectedLocation2}
+							setSelectedLocationCode2={setSelectedLocationCode2}
+						/>
+						<ComVisualization
+							period={period}
+							selectedLocation1={selectedLocation1}
+							selectedLocationCode1={selectedLocationCode1}
+							selectedLocation2={selectedLocation2}
+							selectedLocationCode2={selectedLocationCode2}
+						/>
 					</Content>
 				</Layout>
 			</Layout>

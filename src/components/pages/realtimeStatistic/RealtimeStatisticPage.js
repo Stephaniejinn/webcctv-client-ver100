@@ -37,7 +37,7 @@ const RealtimeStatisticPage = () => {
 						<div className="realtime-statistic-video-and-graph">
 							<VideoContainer camName="camName" httpAddress="address" />
 							<div className="realtime-statistic-graph">
-								<GeneralVisualization />
+								<GeneralVisualization timeClassification={true} />
 							</div>
 						</div>
 					</Content>

@@ -10,7 +10,8 @@ import DashLineChart from "../../charts/dashLineChart";
 
 import "./style.less";
 
-const DataVisualization = ({ period }) => {
+const DataVisualization = (props) => {
+	const { period, startDate, endTime, timeClassification, interval } = props;
 	const { TabPane } = Tabs;
 
 	const callback = (key) => {
@@ -20,7 +21,16 @@ const DataVisualization = ({ period }) => {
 	return (
 		<Tabs defaultActiveKey="1" onChange={callback} tabPosition="right">
 			<TabPane tab="교통량" key="1">
-				{period === "DAY" ? <LineChart /> : <button />}
+				{period === "DAY" ? (
+					<LineChart
+						startDate={startDate}
+						endTime={endTime}
+						timeClassification={timeClassification}
+						interval={interval}
+					/>
+				) : (
+					<button />
+				)}
 			</TabPane>
 			<TabPane tab="PCU" key="2">
 				<LineChart />
@@ -40,7 +50,7 @@ const DataVisualization = ({ period }) => {
 			<TabPane tab="주야율" key="7">
 				<BidirectionalBar />
 			</TabPane>
-			<TabPane tab="집중율" key="8">
+			<TabPane tab="집중률" key="8">
 				Content of Tab Pane 3
 			</TabPane>
 			<TabPane tab="첨두시간" key="9">

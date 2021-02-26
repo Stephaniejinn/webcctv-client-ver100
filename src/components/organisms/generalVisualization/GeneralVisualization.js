@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 // import { Card } from 'antd';
-import axios from "axios";
 
 import Liquid from "../../charts/liquidChart";
-import DoughnutPie from "../../charts/doughnutChart";
+import TrafficPie from "../../charts/doughnutChart/traffic";
+import PedestriansPie from "../../charts/doughnutChart/pedestrians";
+
 import Gauge from "../../charts/gaugeChart";
 import TinyBar from "../../charts/tinyBarChart";
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
@@ -11,13 +12,7 @@ import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualiza
 import "./style.less";
 
 const GeneralVisualization = (props) => {
-	const {
-		startDate,
-		endTime,
-		timeClassification,
-		interval,
-		page = "DEFAULT",
-	} = props;
+	const { startDate, endTime, interval, page = "DEFAULT" } = props;
 
 	// const baseURL = "http://119.197.240.186:3002/api/v1";
 	// const currentURL = "/statistics/traffic?";
@@ -48,11 +43,18 @@ const GeneralVisualization = (props) => {
 	// }, []);
 
 	const LiquidChart = <Liquid />;
-	const PieChart = (
-		<DoughnutPie
+	const TrafficPieChart = (
+		<TrafficPie
 			startDate={startDate}
 			endTime={endTime}
-			timeClassification={timeClassification}
+			interval={interval}
+			// resData={resData}
+		/>
+	);
+	const PedestriansPieChart = (
+		<PedestriansPie
+			startDate={startDate}
+			endTime={endTime}
 			interval={interval}
 			// resData={resData}
 		/>
@@ -61,37 +63,31 @@ const GeneralVisualization = (props) => {
 		<Gauge
 			startDate={startDate}
 			endTime={endTime}
-			timeClassification={timeClassification}
 			interval={interval}
 			// resData={resData}
 		/>
 	);
 	var TinyBarChart = (
-		<TinyBar
-			startDate={startDate}
-			endTime={endTime}
-			timeClassification={timeClassification}
-			interval={interval}
-		/>
+		<TinyBar startDate={startDate} endTime={endTime} interval={interval} />
 	);
 	return (
 		<div className="general-graph-layout">
 			{page === "STREAMING" ? (
 				<div className="general-graph-card">
 					<VisualizationCard title="혼잡도" chart={LiquidChart} />
-					<VisualizationCard title="차종별 통행량" chart={PieChart} />
+					<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
 					<VisualizationCard title="평균속도" chart={GaugeChart} />
 				</div>
 			) : (
 				<>
 					<div className="general-graph-card">
 						<VisualizationCard title="혼잡도" chart={LiquidChart} />
-						<VisualizationCard title="차종별 통행량" chart={PieChart} />
+						<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
 						<VisualizationCard title="평균속도" chart={GaugeChart} />
 					</div>
 					<div className="general-graph-card">
 						<VisualizationCard title="차종별 평균속도" chart={TinyBarChart} />
-						<VisualizationCard title="무단횡단" chart={PieChart} />
+						<VisualizationCard title="무단횡단" chart={PedestriansPieChart} />
 						<VisualizationCard title="차종별 과속차량" chart={TinyBarChart} />
 					</div>
 				</>

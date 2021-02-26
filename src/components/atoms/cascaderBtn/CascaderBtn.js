@@ -14,7 +14,6 @@ const CascaderWButton = (props) => {
 	const [locationChange, setLocationChange] = useState(false);
 
 	const handleSearch = () => {
-		console.log(selectedLocation);
 		if (locationChange) {
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Cascader } from "antd";
 import { connect } from "react-redux";
@@ -13,7 +13,7 @@ const MyCascader = (props) => {
 		setLocationChange,
 	} = props;
 
-	const [visible, setVisible] = useState(true);
+	// const [visible, setVisible] = useState(true);
 	const [parsedOptions, setParsedOptions] = useState([]);
 
 	const baseURL = "http://119.197.240.186:3002/api/v1";
@@ -31,34 +31,37 @@ const MyCascader = (props) => {
 			props.camera,
 		];
 	}
+	useEffect(() => {
+		getOptions();
+	}, []);
 
 	const getOptions = () => {
-		setVisible(!visible);
-		if (visible) {
-			axios
-				.get(`${baseURL}${currentURL}/cities`, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				})
-				.then((res) => {
-					res.data.forEach((cityInfo) => {
-						const { cityCode, cityName } = cityInfo;
-						const cityTemp = {};
-						cityTemp["value"] = cityCode;
-						cityTemp["label"] = cityName;
-						cityTemp["children"] = [];
-						locationOptionsParse.push(cityTemp);
-						getDisricts(cityCode);
-						// console.log("options test: ", locationOptionsParse);
-						setParsedOptions(locationOptionsParse);
-					});
-				})
-				.catch((err) => {
-					console.log(err);
+		// setVisible(!visible);
+		// if (visible) {
+		axios
+			.get(`${baseURL}${currentURL}/cities`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
+			.then((res) => {
+				res.data.forEach((cityInfo) => {
+					const { cityCode, cityName } = cityInfo;
+					const cityTemp = {};
+					cityTemp["value"] = cityCode;
+					cityTemp["label"] = cityName;
+					cityTemp["children"] = [];
+					locationOptionsParse.push(cityTemp);
+					getDisricts(cityCode);
+					// console.log("options test: ", locationOptionsParse);
+					setParsedOptions(locationOptionsParse);
 				});
-		}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		// }
 	};
 	const getDisricts = (cityCode) => {
 		axios
@@ -193,7 +196,9 @@ const MyCascader = (props) => {
 	) => {
 		axios
 			.get(
-				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
+				// `${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
+
+				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/002/cameras`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -240,7 +245,9 @@ const MyCascader = (props) => {
 
 		setSelectedLocation(selectedLocation);
 		setSelectedLocationCode(selectedLocationCode);
-		setLocationChange(true);
+		if (setLocationChange) {
+			setLocationChange(true);
+		}
 	};
 
 	const filter = (inputValue, path) => {
@@ -258,7 +265,7 @@ const MyCascader = (props) => {
 				onChange={onChange}
 				placeholder="위치 선택"
 				showSearch={{ filter }}
-				onPopupVisibleChange={getOptions}
+				// onPopupVisibleChange={getOptions}
 				options={parsedOptions}
 				defaultValue={defaultOption}
 			/>

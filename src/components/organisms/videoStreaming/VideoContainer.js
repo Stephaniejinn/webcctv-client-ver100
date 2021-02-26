@@ -18,7 +18,7 @@ const VideoContainer = ({ camName, httpAddress, page }) => {
 			</div>
 			{page === "STREAMING" ? (
 				<div className="video-container-graph">
-					<GeneralVisualization page={page} />
+					<GeneralVisualization timeClassification={true} page={page} />
 				</div>
 			) : null}
 		</div>

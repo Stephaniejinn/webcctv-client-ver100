@@ -12,8 +12,8 @@ import "../style.less";
 const SearchDownloadPage = () => {
 	const [timeClassification, setTimeClassification] = useState(true);
 	const [searchUnit, setSearchUnit] = useState("15M");
-	const [finishFilter, setFinishFilter] = useState(false);
-	const [startTime, setStartTime] = useState("");
+	const [firstFilter, setFirstFilter] = useState(false);
+	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 
 	const { Content } = Layout;
@@ -32,13 +32,13 @@ const SearchDownloadPage = () => {
 							setClassification={setTimeClassification}
 							searchUnit={searchUnit}
 							setSearchUnit={setSearchUnit}
-							startTime={startTime}
-							setStartTime={setStartTime}
+							startDate={startDate}
+							setStartDate={setStartDate}
 							endTime={endTime}
 							setEndTime={setEndTime}
-							setFinishFilter={setFinishFilter}
+							setFirstFilter={setFirstFilter}
 						/>
-						{finishFilter ? (
+						{firstFilter ? (
 							<SearchResultTab
 								classification={timeClassification}
 								searchUnit={searchUnit}

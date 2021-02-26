@@ -6,7 +6,7 @@ import "moment/locale/ko";
 
 import moment from "moment";
 
-const MyDatePicker = ({ period, setTempStartTime, setTempEndTime }) => {
+const MyDatePicker = ({ period, setTempStartDate, setTempEndTime }) => {
 	const { RangePicker } = DatePicker;
 
 	moment.locale("ko", {
@@ -29,7 +29,7 @@ const MyDatePicker = ({ period, setTempStartTime, setTempEndTime }) => {
 		} else {
 			startDate = endDate = dateString;
 		}
-		setTempStartTime(startDate);
+		setTempStartDate(startDate);
 		setTempEndTime(endDate);
 	};
 
