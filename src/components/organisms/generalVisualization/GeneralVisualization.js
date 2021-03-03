@@ -6,7 +6,7 @@ import TrafficPie from "../../charts/doughnutChart/traffic";
 import PedestriansPie from "../../charts/doughnutChart/pedestrians";
 
 import Gauge from "../../charts/gaugeChart";
-import TinyBar from "../../charts/tinyBarChart";
+import AvgSpeedTinyBar from "../../charts/tinyBarChart/AvgSpeed";
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
 
 import "./style.less";
@@ -42,7 +42,6 @@ const GeneralVisualization = (props) => {
 	// 		});
 	// }, []);
 
-	const LiquidChart = <Liquid />;
 	const TrafficPieChart = (
 		<TrafficPie
 			startDate={startDate}
@@ -67,28 +66,32 @@ const GeneralVisualization = (props) => {
 			// resData={resData}
 		/>
 	);
-	var TinyBarChart = (
-		<TinyBar startDate={startDate} endTime={endTime} interval={interval} />
+	var AvgSpeedTinyBarChart = (
+		<AvgSpeedTinyBar
+			startDate={startDate}
+			endTime={endTime}
+			interval={interval}
+		/>
 	);
 	return (
 		<div className="general-graph-layout">
 			{page === "STREAMING" ? (
 				<div className="general-graph-card">
-					<VisualizationCard title="혼잡도" chart={LiquidChart} />
 					<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-					<VisualizationCard title="평균속도" chart={GaugeChart} />
+					<VisualizationCard title="차종별 과속차량" />
 				</div>
 			) : (
 				<>
 					<div className="general-graph-card">
-						<VisualizationCard title="혼잡도" chart={LiquidChart} />
 						<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-						<VisualizationCard title="평균속도" chart={GaugeChart} />
+						<VisualizationCard title="차종별 과속차량" />
 					</div>
 					<div className="general-graph-card">
-						<VisualizationCard title="차종별 평균속도" chart={TinyBarChart} />
-						<VisualizationCard title="무단횡단" chart={PedestriansPieChart} />
-						<VisualizationCard title="차종별 과속차량" chart={TinyBarChart} />
+						<VisualizationCard title="평균속도" chart={GaugeChart} />
+						<VisualizationCard
+							title="차종별 평균속도"
+							chart={AvgSpeedTinyBarChart}
+						/>
 					</div>
 				</>
 			)}

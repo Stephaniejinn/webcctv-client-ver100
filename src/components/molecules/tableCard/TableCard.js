@@ -25,6 +25,7 @@ const TableCard = (props) => {
 	const {
 		period,
 		tableKey,
+		lane,
 		startDate,
 		endTime,
 		timeClassification,

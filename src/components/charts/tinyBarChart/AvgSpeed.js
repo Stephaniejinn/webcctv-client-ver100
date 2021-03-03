@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 
-const MyTinyColumn = (props) => {
+const AvgSpeedTinyColumn = (props) => {
 	const { startDate, endTime, interval, cameraCode } = props;
 
 	const baseURL = "http://119.197.240.186:3002/api/v1";
@@ -70,13 +70,14 @@ const MyTinyColumn = (props) => {
 					label = customlabel[x];
 				}
 				return label
-					.concat(x, ": ")
+					.concat(": ")
 					.concat(
 						(_data$ = data[0]) === null || _data$ === void 0
 							? void 0
 							: (_data$$data = _data$.data) === null || _data$$data === void 0
 							? void 0
-							: _data$$data.y.toFixed(2)
+							: _data$$data.y.toFixed(2),
+						"km/h"
 					);
 			},
 		},
@@ -96,4 +97,4 @@ const mapDispatchToProps = (dispatch) => {
 		},
 	};
 };
-export default connect(mapStateToProps, mapDispatchToProps)(MyTinyColumn);
+export default connect(mapStateToProps, mapDispatchToProps)(AvgSpeedTinyColumn);

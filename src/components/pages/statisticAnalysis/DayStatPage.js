@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Layout } from "antd";
+import axios from "axios";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
@@ -83,4 +86,20 @@ const DayStatPage = () => {
 	);
 };
 
-export default DayStatPage;
+const mapStateToProps = (state) => {
+	return {
+		city: state.location.city,
+		district: state.location.district,
+		road: state.location.road,
+		spot: state.location.spot,
+		camera: state.location.camera,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getLocationInfo: () => {
+			dispatch(actions.getLocation());
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DayStatPage);
