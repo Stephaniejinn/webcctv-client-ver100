@@ -25,16 +25,23 @@ const TableCard = (props) => {
 	const {
 		period,
 		tableKey,
-		lane,
+		currentLaneNum,
+		timeClassification,
+
+		isLoadingTrafficTotal,
+		isLoadingTrafficLane,
+		isLoadingPedestrians,
+		trafficTotalData,
+		trafficLaneData,
+		pedestriansData,
+
 		startDate,
 		endTime,
-		timeClassification,
 		interval,
 		camera,
 	} = props;
 
 	const group = timeClassification ? "시간별" : "차선별";
-	var tableInfo;
 
 	return (
 		<div className="table-card">
@@ -43,26 +50,33 @@ const TableCard = (props) => {
 				{period === "DAY" ? (
 					tableKey === "first" ? (
 						<DTFisrtTable
+							lane={currentLaneNum}
+							isLoadingTrafficTotal={isLoadingTrafficTotal}
+							isLoadingTrafficLane={isLoadingTrafficLane}
+							isLoadingPedestrians={isLoadingPedestrians}
+							trafficTotalData={trafficTotalData}
+							trafficLaneData={trafficLaneData}
+							pedestriansData={pedestriansData}
 							startDate={startDate}
 							endTime={endTime}
 							timeClassification={timeClassification}
 							interval={interval}
 						/>
 					) : tableKey === "second" ? (
-						<DTSecondTable
-							startDate={startDate}
-							endTime={endTime}
-							timeClassification={timeClassification}
-							interval={interval}
-						/>
-					) : (
 						<h1>과속 데이터 테이블</h1>
+					) : (
 						// <DTOverSpeedTable
 						// 	startDate={startDate}
 						// 	endTime={endTime}
 						// 	timeClassification={timeClassification}
 						// 	interval={interval}
 						// />
+						<DTSecondTable
+							startDate={startDate}
+							endTime={endTime}
+							timeClassification={timeClassification}
+							interval={interval}
+						/>
 					)
 				) : period === "WEEK" ? (
 					tableKey === "first" ? (
@@ -73,20 +87,21 @@ const TableCard = (props) => {
 							interval={interval}
 						/>
 					) : tableKey === "second" ? (
-						<WTSecondTable
-							startDate={startDate}
-							endTime={endTime}
-							timeClassification={timeClassification}
-							interval={interval}
-						/>
-					) : (
 						<h1>과속 데이터 테이블</h1>
+					) : (
 						// <DTOverSpeedTable
 						// 	startDate={startDate}
 						// 	endTime={endTime}
 						// 	timeClassification={timeClassification}
 						// 	interval={interval}
 						// />
+
+						<WTSecondTable
+							startDate={startDate}
+							endTime={endTime}
+							timeClassification={timeClassification}
+							interval={interval}
+						/>
 					)
 				) : tableKey === "first" ? (
 					<MTFirstTable
@@ -96,20 +111,20 @@ const TableCard = (props) => {
 						interval={interval}
 					/>
 				) : tableKey === "second" ? (
-					<MTSecondTable
-						startDate={startDate}
-						endTime={endTime}
-						timeClassification={timeClassification}
-						interval={interval}
-					/>
-				) : (
 					<h1>과속 데이터 테이블</h1>
+				) : (
 					// <DTOverSpeedTable
 					// 	startDate={startDate}
 					// 	endTime={endTime}
 					// 	timeClassification={timeClassification}
 					// 	interval={interval}
 					// />
+					<MTSecondTable
+						startDate={startDate}
+						endTime={endTime}
+						timeClassification={timeClassification}
+						interval={interval}
+					/>
 				)}
 			</BrowserView>
 			<MobileView>

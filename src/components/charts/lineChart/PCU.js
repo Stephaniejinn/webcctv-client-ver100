@@ -5,7 +5,7 @@ import { Line } from "@ant-design/charts";
 // import { connect } from "react-redux";
 // import * as actions from "../../../actions";
 
-const CntLine = (props) => {
+const PCULine = (props) => {
 	const {
 		currentLaneNumber,
 		totalLaneNumber,
@@ -25,14 +25,14 @@ const CntLine = (props) => {
 
 	const [Data, setData] = useState([]);
 
-	var cntTotalData = [];
-	var cntLaneData = {};
+	var PCUTotalData = [];
+	var PCULaneData = {};
 	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		cntLaneData[idx.toString()] = [];
+		PCULaneData[idx.toString()] = [];
 	}
 
 	useEffect(() => {
-		if (activeVisualKey === "1") {
+		if (activeVisualKey === "2") {
 			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
 				console.log("activeVisualKey", activeVisualKey);
 				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
@@ -63,28 +63,30 @@ const CntLine = (props) => {
 				const tempBus = {};
 				const tempTruck = {};
 				const tempMotor = {};
+				// const busPCU = mBusCnt * 1.8;
+				// const truckPCU = mTruckCnt * 1.8;
 				tempCar["time"] = recordTime.substring(11, 16);
 				tempCar["value"] = carCnt;
 				tempCar["category"] = "승용차";
 
 				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = mBusCnt;
+				tempBus["value"] = (mBusCnt * 1.8).toFixed(1);
 				tempBus["category"] = "버스";
 
 				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = mTruckCnt;
+				tempTruck["value"] = (mTruckCnt * 1.8).toFixed(1);
 				tempTruck["category"] = "화물차";
 
 				tempMotor["time"] = recordTime.substring(11, 16);
 				tempMotor["value"] = motorCnt;
 				tempMotor["category"] = "오토바이";
-				cntTotalData.push(tempCar);
-				cntTotalData.push(tempBus);
-				cntTotalData.push(tempTruck);
-				cntTotalData.push(tempMotor);
+				PCUTotalData.push(tempCar);
+				PCUTotalData.push(tempBus);
+				PCUTotalData.push(tempTruck);
+				PCUTotalData.push(tempMotor);
 			});
-			setTotalData(cntTotalData);
-			setData(cntTotalData);
+			setTotalData(PCUTotalData);
+			setData(PCUTotalData);
 		}
 	};
 
@@ -112,24 +114,24 @@ const CntLine = (props) => {
 				tempCar["category"] = "승용차";
 
 				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = mBusCnt;
+				tempBus["value"] = (mBusCnt * 1.8).toFixed(1);
 				tempBus["category"] = "버스";
 
 				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = mTruckCnt;
+				tempTruck["value"] = (mTruckCnt * 1.8).toFixed(1);
 				tempTruck["category"] = "화물차";
 
 				tempMotor["time"] = recordTime.substring(11, 16);
 				tempMotor["value"] = motorCnt;
 				tempMotor["category"] = "오토바이";
 
-				cntLaneData[laneNumber.toString()].push(tempCar);
-				cntLaneData[laneNumber.toString()].push(tempBus);
-				cntLaneData[laneNumber.toString()].push(tempTruck);
-				cntLaneData[laneNumber.toString()].push(tempMotor);
+				PCULaneData[laneNumber.toString()].push(tempCar);
+				PCULaneData[laneNumber.toString()].push(tempBus);
+				PCULaneData[laneNumber.toString()].push(tempTruck);
+				PCULaneData[laneNumber.toString()].push(tempMotor);
 			});
-			setLaneData(cntLaneData);
-			setData(cntLaneData[currentLaneNumber.toString()]);
+			setLaneData(PCULaneData);
+			setData(PCULaneData[currentLaneNumber.toString()]);
 		}
 	};
 
@@ -152,4 +154,4 @@ const CntLine = (props) => {
 	return <Line {...config} />;
 };
 
-export default CntLine;
+export default PCULine;

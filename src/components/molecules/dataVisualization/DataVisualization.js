@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { Tabs, Statistic } from "antd";
 
 import CntLineChart from "../../charts/lineChart/Cnt";
-import OverSpeedLine from "../../charts/lineChart/OverSpeed";
+import PCULineChart from "../../charts/lineChart/PCU";
+import AvgSpeedLine from "../../charts/lineChart/AvgSpeed";
+import Peak15 from "../../charts/statisticText/Peak15";
+import PeakHour from "../../charts/statisticText/PeakHour";
+import PHF from "../../charts/statisticText/PHF";
 import SliderBarChart from "../../charts/slideBarChart";
 import AreaChart from "../../charts/areaChart";
-import LiquidChart from "../../charts/liquidChart";
-import BidirectionalBar from "../../charts/bidirectionalBar";
-import DashLineChart from "../../charts/dashLineChart";
+import PeakRatio from "../../charts/liquidChart/PeakRatio";
+import BidirectionalBar from "../../charts/bidirectionalBar/DayNight";
+import DashLineChart from "../../charts/dashLineChart/pedestrians";
 
 import "./style.less";
 
@@ -16,37 +20,57 @@ const DataVisualization = (props) => {
 		period,
 		currentLaneNum,
 		totalLaneNumber,
-		setCurrentLaneNum,
 		startDate,
 		endTime,
 		timeClassification,
 		interval,
 		activeVisualKey,
 		setActiveVisualKey,
-		isLoadingCntData,
-		setLoadingCntData,
+
+		isLoadingTrafficTotal,
+		isLoadingTrafficLane,
+		isLoadingPedestrians,
+		isLoadingPeak,
+
+		trafficTotalData,
+		trafficLaneData,
+		trafficHData,
+		overSpeedData,
+		peakData,
+		pedestriansData,
+
 		cntTotalData,
 		setCntTotalData,
 		cntLaneData,
 		setCntLaneData,
-		isLoadingOverSpeedData,
-		setLoadingOverSpeedData,
-		overSpeedTotalData,
-		setOverSpeedTotalData,
-		overSpeedLaneData,
-		setOverSpeedLaneData,
+
+		PCUTotalData,
+		setPCUTotalData,
+		PCULaneData,
+		setPCULaneData,
+
+		avgSpeedTotalData,
+		setAvgSpeedTotalData,
+		avgSpeedLaneData,
+		setAvgSpeedLaneData,
+
+		dayNightTotalData,
+		setDayNightTotalData,
+		dayNightLaneData,
+		setDayNightLaneData,
+
+		// overSpeedTotalData,
+		// setOverSpeedTotalData,
+		// overSpeedLaneData,
+		// setOverSpeedLaneData,
 	} = props;
+
 	const { TabPane } = Tabs;
 
 	const callback = (key) => {
 		setActiveVisualKey(key);
-		if (key !== "1") {
-			setCurrentLaneNum("0");
-		}
-		console.log(key);
 	};
-	// console.log(period);
-	// if ()
+
 	return (
 		<Tabs
 			defaultActiveKey="1"
@@ -59,54 +83,54 @@ const DataVisualization = (props) => {
 					<CntLineChart
 						currentLaneNumber={parseInt(currentLaneNum)}
 						totalLaneNumber={totalLaneNumber}
-						isLoadingData={isLoadingCntData}
-						setLoadingData={setLoadingCntData}
+						activeVisualKey={activeVisualKey}
+						isLoadingTrafficTotal={isLoadingTrafficTotal}
+						isLoadingTrafficLane={isLoadingTrafficLane}
+						trafficTotalData={trafficTotalData}
+						trafficLaneData={trafficLaneData}
 						totalData={cntTotalData}
 						setTotalData={setCntTotalData}
 						laneData={cntLaneData}
 						setLaneData={setCntLaneData}
-						startDate={startDate}
-						endTime={endTime}
 						timeClassification={timeClassification}
-						interval={interval}
 					/>
 				) : (
 					<button />
 				)}
 			</TabPane>
 			<TabPane tab="PCU" key="2">
-				{/* <OverSpeedLine
-					currentLaneNum={parseInt(currentLaneNum)}
+				<PCULineChart
+					currentLaneNumber={parseInt(currentLaneNum)}
 					totalLaneNumber={totalLaneNumber}
-					isLoadingData={isLoadingOverSpeedData}
-					setLoadingData={setLoadingOverSpeedData}
-					totalData={overSpeedTotalData}
-					setTotalData={setOverSpeedTotalData}
-					laneData={overSpeedLaneData}
-					setLaneData={setOverSpeedLaneData}
-					startDate={startDate}
-					endTime={endTime}
+					activeVisualKey={activeVisualKey}
+					isLoadingTrafficTotal={isLoadingTrafficTotal}
+					isLoadingTrafficLane={isLoadingTrafficLane}
+					trafficTotalData={trafficTotalData}
+					trafficLaneData={trafficLaneData}
+					totalData={PCUTotalData}
+					setTotalData={setPCUTotalData}
+					laneData={PCULaneData}
+					setLaneData={setPCULaneData}
 					timeClassification={timeClassification}
-					interval={interval}
-				/> */}
+				/>
 			</TabPane>
 			<TabPane tab="차종비율" key="3">
 				<SliderBarChart />
 			</TabPane>
 			<TabPane tab="평균속도" key="4">
-				<OverSpeedLine
+				<AvgSpeedLine
 					currentLaneNumber={parseInt(currentLaneNum)}
 					totalLaneNumber={totalLaneNumber}
-					isLoadingData={isLoadingOverSpeedData}
-					setLoadingData={setLoadingOverSpeedData}
-					totalData={overSpeedTotalData}
-					setTotalData={setOverSpeedTotalData}
-					laneData={overSpeedLaneData}
-					setLaneData={setOverSpeedLaneData}
-					startDate={startDate}
-					endTime={endTime}
+					activeVisualKey={activeVisualKey}
+					isLoadingTrafficTotal={isLoadingTrafficTotal}
+					isLoadingTrafficLane={isLoadingTrafficLane}
+					trafficTotalData={trafficTotalData}
+					trafficLaneData={trafficLaneData}
+					totalData={avgSpeedTotalData}
+					setTotalData={setAvgSpeedTotalData}
+					laneData={avgSpeedLaneData}
+					setLaneData={setAvgSpeedLaneData}
 					timeClassification={timeClassification}
-					interval={interval}
 				/>
 			</TabPane>
 			<TabPane tab="과속차량" key="5">
@@ -114,27 +138,65 @@ const DataVisualization = (props) => {
 			</TabPane>
 
 			<TabPane tab="주야율" key="6">
-				<BidirectionalBar />
+				<BidirectionalBar
+					currentLaneNumber={parseInt(currentLaneNum)}
+					totalLaneNumber={totalLaneNumber}
+					activeVisualKey={activeVisualKey}
+					isLoadingTrafficTotal={isLoadingTrafficTotal}
+					isLoadingTrafficLane={isLoadingTrafficLane}
+					trafficTotalData={trafficTotalData}
+					trafficLaneData={trafficLaneData}
+					totalData={dayNightTotalData}
+					setTotalData={setDayNightTotalData}
+					laneData={dayNightLaneData}
+					setLaneData={setDayNightLaneData}
+					timeClassification={timeClassification}
+				/>
 			</TabPane>
 			<TabPane tab="첨두시간" key="7">
-				<AreaChart />
+				<Peak15
+					currentLaneNumber={parseInt(currentLaneNum)}
+					activeVisualKey={activeVisualKey}
+					isLoadingPeak={isLoadingPeak}
+					peakData={peakData}
+					timeClassification={timeClassification}
+				/>
 			</TabPane>
 			<TabPane tab="첨두유율" key="8">
-				<LiquidChart />
+				<PeakHour
+					currentLaneNumber={parseInt(currentLaneNum)}
+					activeVisualKey={activeVisualKey}
+					isLoadingPeak={isLoadingPeak}
+					peakData={peakData}
+					timeClassification={timeClassification}
+				/>
 			</TabPane>
 			<TabPane tab="PHF" key="9">
-				<Statistic title="PHF" value={112893} />
+				<PHF
+					currentLaneNumber={parseInt(currentLaneNum)}
+					activeVisualKey={activeVisualKey}
+					isLoadingPeak={isLoadingPeak}
+					peakData={peakData}
+					timeClassification={timeClassification}
+				/>
 			</TabPane>
 			<TabPane tab="집중률" key="10">
-				Content of Tab Pane 3
+				<PeakRatio
+					currentLaneNumber={parseInt(currentLaneNum)}
+					activeVisualKey={activeVisualKey}
+					isLoadingPeak={isLoadingPeak}
+					peakData={peakData}
+					s
+					timeClassification={timeClassification}
+				/>
 			</TabPane>
 			<TabPane tab="무단횡단" key="11">
 				<DashLineChart
-					lane={currentLaneNum}
-					startDate={startDate}
-					endTime={endTime}
+					currentLaneNumber={parseInt(currentLaneNum)}
+					activeVisualKey={activeVisualKey}
+					isLoadingPedestrians={isLoadingPedestrians}
+					pedestriansData={pedestriansData}
 					timeClassification={timeClassification}
-					interval={interval}
 				/>
 			</TabPane>
 		</Tabs>

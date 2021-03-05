@@ -16,7 +16,7 @@ const MyCascader = (props) => {
 	// const [visible, setVisible] = useState(true);
 	const [parsedOptions, setParsedOptions] = useState([]);
 
-	const baseURL = "http://119.197.240.186:3002/api/v1";
+	const baseURL = "http://119.197.240.186:3003/api";
 	const currentURL = "/locations";
 	var locationOptionsParse = [];
 
@@ -242,7 +242,6 @@ const MyCascader = (props) => {
 			obj[codeKeys[idx]] = item;
 			return obj;
 		}, {});
-
 		setSelectedLocation(selectedLocation);
 		setSelectedLocationCode(selectedLocationCode);
 		if (setLocationChange) {

@@ -13,7 +13,6 @@ export const setLocation = (payload) => ({
 	payload,
 });
 
-
 export const getLocationCode = () => ({
 	type: "LOCATION_CODE_INFO",
 	playload: "",
@@ -22,4 +21,9 @@ export const getLocationCode = () => ({
 export const setLocationCode = (payload) => ({
 	type: "LOCATION_CODE_SET",
 	payload,
+});
+
+export const getURL = () => ({
+	type: "BASE_URL",
+	playload: "",
 });

@@ -8,7 +8,7 @@ import * as actions from "../../../actions";
 const PedestriansPie = (props) => {
 	const { startDate, endTime, interval, cameraCode } = props;
 
-	const baseURL = "http://119.197.240.186:3002/api/v1";
+	const baseURL = "http://119.197.240.186:3003/api";
 	const currentURL = "/statistics/pedestrians?";
 	// const group = timeClassification ? "time" : "lane";
 

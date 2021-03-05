@@ -16,7 +16,7 @@ const LoginCard = () => {
 
 	const login = (values) => {
 		// axios
-		// 	.get("http://119.197.240.186:3002/api/v1/locations/cities", {
+		// 	.get("http://119.197.240.186:3002/api/locations/cities", {
 		// 		headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
 		// 	})
 		// 	.then((res) => {

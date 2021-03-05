@@ -4,33 +4,19 @@ import { Table } from "antd";
 import "../style.less";
 
 const DTFisrtTable = (props) => {
-	const { startDate, endTime, timeClassification, interval } = props;
+	const {
+		isLoadingTrafficTotal,
+		isLoadingTrafficLane,
+		isLoadingPedestrians,
+		trafficTotalData,
+		trafficLaneData,
+		pedestriansData,
+	} = props;
 
 	const columns = [
 		{
 			title: "시간",
 			dataIndex: "time",
-			// render: (value, row, index) => {
-			// 	const obj = {
-			// 		children: value,
-			// 		props: {},
-			// 	};
-			// 	if (index === 0) {
-			// 		obj.props.rowSpan = 6;
-			// 	}
-			// 	if (index > 0 && index < 6) {
-			// 		obj.props.rowSpan = 0;
-			// 	}
-
-			// 	if (index === 6) {
-			// 		obj.props.rowSpan = 5;
-			// 	}
-			// 	// These two are merged into above cell
-			// 	if (index > 6 && index < 11) {
-			// 		obj.props.rowSpan = 0;
-			// 	}
-			// 	return obj;
-			// },
 		},
 		{
 			title: "전체",
