@@ -6,13 +6,13 @@ import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-import TimeStatistic from "../../organisms/visualStatistic/timeStat/timeStat";
+import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
 
 import "./style.less";
 
 const WeekStatPage = () => {
 	const [timeClassification, setTimeClassification] = useState(true);
-	const [firstFilter, setFirstFilter] = useState(true);
+	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 
@@ -41,7 +41,7 @@ const WeekStatPage = () => {
 										startDate={startDate}
 										endTime={endTime}
 										timeClassification={timeClassification}
-										interval="15M"
+										interval="1D"
 									/>
 								</div>
 								{timeClassification ? (
@@ -50,7 +50,7 @@ const WeekStatPage = () => {
 										startDate={startDate}
 										endTime={endTime}
 										timeClassification={timeClassification}
-										interval="15M"
+										interval="1D"
 									/>
 								) : (
 									<div>

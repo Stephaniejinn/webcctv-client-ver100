@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
 
-import axios from "axios";
-import { connect } from "react-redux";
-import * as actions from "../../../actions";
+// import axios from "axios";
+// import { connect } from "react-redux";
+// import * as actions from "../../../actions";
 
-const AvgSpeedLine = (props) => {
+const PCULine = (props) => {
 	const {
 		currentLaneNumber,
 		totalLaneNumber,
@@ -25,16 +25,14 @@ const AvgSpeedLine = (props) => {
 
 	const [Data, setData] = useState([]);
 
-	// const group = timeClassification ? "time" : "lane";
-	var avgSpeedTotalData = [];
-	var avgSpeedLaneData = {};
-
+	var PCUTotalData = [];
+	var PCULaneData = {};
 	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		avgSpeedLaneData[idx.toString()] = [];
+		PCULaneData[idx.toString()] = [];
 	}
 
 	useEffect(() => {
-		if (activeVisualKey === "4") {
+		if (activeVisualKey === "2") {
 			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
 				console.log("activeVisualKey", activeVisualKey);
 				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
@@ -46,92 +44,94 @@ const AvgSpeedLine = (props) => {
 		isLoadingTrafficTotal,
 		isLoadingTrafficLane,
 	]);
+
 	const parseTotalData = () => {
 		if (totalData.length !== 0) {
-			console.log("avg speed has total data");
+			console.log("count total has data");
 			setData(totalData);
 		} else {
-			console.log("count over speed parse");
+			console.log("count count parse");
 			trafficTotalData.forEach((TrafficData) => {
 				const {
 					recordTime,
-					carAvgSpeed,
-					mBusAvgSpeed,
-					mTruckAvgSpeed,
-					motorAvgSpeed,
+					carCnt,
+					mBusCnt,
+					mTruckCnt,
+					motorCnt,
 				} = TrafficData;
-				const tempCar = {};
-				const tempBus = {};
-				const tempTruck = {};
-				const tempMotor = {};
+				let tempCar = {};
+				let tempBus = {};
+				let tempTruck = {};
+				let tempMotor = {};
+
 				tempCar["time"] = recordTime.substring(11, 16);
-				tempCar["value"] = parseFloat(carAvgSpeed);
+				tempCar["value"] = carCnt;
 				tempCar["category"] = "승용차";
 
 				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = parseFloat(mBusAvgSpeed);
+				tempBus["value"] = parseFloat((mBusCnt * 1.8).toFixed(1));
 				tempBus["category"] = "버스";
 
 				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = parseFloat(mTruckAvgSpeed);
+				tempTruck["value"] = parseFloat((mTruckCnt * 1.8).toFixed(1));
 				tempTruck["category"] = "화물차";
 
 				tempMotor["time"] = recordTime.substring(11, 16);
-				tempMotor["value"] = parseFloat(motorAvgSpeed);
+				tempMotor["value"] = motorCnt;
 				tempMotor["category"] = "오토바이";
-
-				avgSpeedTotalData.push(tempCar);
-				avgSpeedTotalData.push(tempBus);
-				avgSpeedTotalData.push(tempTruck);
-				avgSpeedTotalData.push(tempMotor);
+				PCUTotalData.push(tempCar);
+				PCUTotalData.push(tempBus);
+				PCUTotalData.push(tempTruck);
+				PCUTotalData.push(tempMotor);
 			});
-			setTotalData(avgSpeedTotalData);
-			setData(avgSpeedTotalData);
+			setTotalData(PCUTotalData);
+			setData(PCUTotalData);
 		}
 	};
 
 	const parseLaneData = () => {
 		if (Object.keys(laneData).length !== 0) {
-			console.log("avg speed has lane data");
+			console.log("count lane has data");
 			setData(laneData[currentLaneNumber.toString()]);
 		} else {
-			console.log("count avg speed lane parse");
+			console.log("count count parse lane");
 			trafficLaneData.forEach((TrafficData) => {
 				const {
 					laneNumber,
 					recordTime,
-					carAvgSpeed,
-					mBusAvgSpeed,
-					mTruckAvgSpeed,
-					motorAvgSpeed,
+					carCnt,
+					mBusCnt,
+					mTruckCnt,
+					motorCnt,
 				} = TrafficData;
-				const tempCar = {};
-				const tempBus = {};
-				const tempTruck = {};
-				const tempMotor = {};
+				let tempCar = {};
+				let tempBus = {};
+				let tempTruck = {};
+				let tempMotor = {};
+
 				tempCar["time"] = recordTime.substring(11, 16);
-				tempCar["value"] = parseFloat(carAvgSpeed);
+				tempCar["value"] = carCnt;
 				tempCar["category"] = "승용차";
 
 				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = parseFloat(mBusAvgSpeed);
+				tempBus["value"] = (mBusCnt * 1.8).toFixed(1);
 				tempBus["category"] = "버스";
 
 				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = parseFloat(mTruckAvgSpeed);
+				tempTruck["value"] = (mTruckCnt * 1.8).toFixed(1);
 				tempTruck["category"] = "화물차";
 
 				tempMotor["time"] = recordTime.substring(11, 16);
-				tempMotor["value"] = parseFloat(motorAvgSpeed);
+				tempMotor["value"] = motorCnt;
 				tempMotor["category"] = "오토바이";
 
-				avgSpeedLaneData[laneNumber.toString()].push(tempCar);
-				avgSpeedLaneData[laneNumber.toString()].push(tempBus);
-				avgSpeedLaneData[laneNumber.toString()].push(tempTruck);
-				avgSpeedLaneData[laneNumber.toString()].push(tempMotor);
+				PCULaneData[laneNumber.toString()].push(tempCar);
+				PCULaneData[laneNumber.toString()].push(tempBus);
+				PCULaneData[laneNumber.toString()].push(tempTruck);
+				PCULaneData[laneNumber.toString()].push(tempMotor);
 			});
-			setLaneData(avgSpeedLaneData);
-			setData(avgSpeedLaneData[currentLaneNumber.toString()]);
+			setLaneData(PCULaneData);
+			setData(PCULaneData[currentLaneNumber.toString()]);
 		}
 	};
 
@@ -153,4 +153,5 @@ const AvgSpeedLine = (props) => {
 	};
 	return <Line {...config} />;
 };
-export default AvgSpeedLine;
+
+export default PCULine;

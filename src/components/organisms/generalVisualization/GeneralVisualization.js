@@ -3,10 +3,11 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 
+import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
 import TrafficPie from "../../charts/doughnutChart/Traffic";
 import AvgSpeedGauge from "../../charts/gaugeChart/AvgSpeed";
 import AvgSpeedTinyBar from "../../charts/tinyBarChart/AvgSpeed";
-import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
+import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
 
 import "./style.less";
 
@@ -21,15 +22,24 @@ const GeneralVisualization = (props) => {
 		baseURL,
 	} = props;
 
-	const currentURL = "/statistics/traffic?groupBy=time";
+	const trafficURL = "/statistics/traffic?groupBy=time";
+	const violationURL = "/violations/speeding?groupBy=lane";
 	// const group = timeClassification ? "time" : "lane";
-	const [isLoading, setLoading] = useState(true);
+	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
+	const [isLoadingViolation, setLoadingViolation] = useState(true);
+
 	const [trafficData, setTrafficData] = useState([]);
+	const [violationData, setViolationData] = useState([]);
 
 	useEffect(() => {
+		getTrafficData();
+		getViolationData();
+	}, []);
+
+	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${currentURL}&camCode=0004&startDate=2020-09-28&endTime=2020-09-28 23:59:59&interval=15M&limit=0&offset=0`,
+				`${baseURL}${trafficURL}&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=15M&limit=0&offset=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -39,34 +49,66 @@ const GeneralVisualization = (props) => {
 			)
 			.then((res) => {
 				setTrafficData(res.data);
-				setLoading(false);
+				setLoadingTraffic(false);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
-
+	};
+	const getViolationData = () => {
+		axios
+			.get(
+				`${baseURL}${violationURL}&camCode=0004&startDate=${startDate}&endTime=${startDate} 23:59:59`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Cache: "No-cache",
+					},
+				}
+			)
+			.then((res) => {
+				setViolationData(res.data);
+				setLoadingViolation(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 	const TrafficPieChart = (
-		<TrafficPie isLoading={isLoading} trafficData={trafficData} />
+		<TrafficPie isLoading={isLoadingTraffic} trafficData={trafficData} />
 	);
 	const GaugeChart = (
-		<AvgSpeedGauge isLoading={isLoading} trafficData={trafficData} />
+		<AvgSpeedGauge isLoading={isLoadingTraffic} trafficData={trafficData} />
 	);
 	var AvgSpeedTinyBarChart = (
-		<AvgSpeedTinyBar isLoading={isLoading} trafficData={trafficData} />
+		<AvgSpeedTinyBar isLoading={isLoadingTraffic} trafficData={trafficData} />
 	);
+
+	var OverSpeedTinyBarChart = (
+		<OverSpeedTinyBar
+			isLoading={isLoadingViolation}
+			violationData={violationData}
+		/>
+	);
+
 	return (
 		<div className="general-graph-layout">
 			{page === "STREAMING" ? (
 				<div className="general-graph-card">
 					<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-					<VisualizationCard title="차종별 과속차량" />
+					<VisualizationCard
+						title="차종별 과속차량"
+						chart={OverSpeedTinyBarChart}
+					/>
 				</div>
 			) : (
 				<>
 					<div className="general-graph-card">
 						<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-						<VisualizationCard title="차종별 과속차량" />
+						<VisualizationCard
+							title="차종별 과속차량"
+							chart={OverSpeedTinyBarChart}
+						/>
 					</div>
 					<div className="general-graph-card">
 						<VisualizationCard title="평균속도" chart={GaugeChart} />

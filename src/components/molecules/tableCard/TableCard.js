@@ -10,9 +10,9 @@ import { Collapse, Typography, Divider, Button } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 
-import DTFisrtTable from "../timeStatisticsTable/dayTable/DTFirstTable";
 import DTSecondTable from "../timeStatisticsTable/dayTable/DTSecondTable";
 import DTOverSpeedTable from "../timeStatisticsTable/dayTable/DTOverSpeedTable";
+import DLFisrtTable from "../timeStatisticsTable/dayTable/DLFirstTable";
 
 import WTSecondTable from "../timeStatisticsTable/weekTable/WTSecondTable";
 import WTFirstTable from "../timeStatisticsTable/weekTable/WTFirstTable";
@@ -49,7 +49,7 @@ const TableCard = (props) => {
 				<h1> This is rendered only in browser </h1>
 				{period === "DAY" ? (
 					tableKey === "first" ? (
-						<DTFisrtTable
+						<DLFisrtTable
 							lane={currentLaneNum}
 							isLoadingTrafficTotal={isLoadingTrafficTotal}
 							isLoadingTrafficLane={isLoadingTrafficLane}
@@ -62,7 +62,7 @@ const TableCard = (props) => {
 							timeClassification={timeClassification}
 							interval={interval}
 						/>
-					) : tableKey === "second" ? (
+					) : tableKey === "overSpeed" ? (
 						<h1>과속 데이터 테이블</h1>
 					) : (
 						// <DTOverSpeedTable
@@ -86,7 +86,7 @@ const TableCard = (props) => {
 							timeClassification={timeClassification}
 							interval={interval}
 						/>
-					) : tableKey === "second" ? (
+					) : tableKey === "overSpeed" ? (
 						<h1>과속 데이터 테이블</h1>
 					) : (
 						// <DTOverSpeedTable
@@ -110,7 +110,7 @@ const TableCard = (props) => {
 						timeClassification={timeClassification}
 						interval={interval}
 					/>
-				) : tableKey === "second" ? (
+				) : tableKey === "overSpeed" ? (
 					<h1>과속 데이터 테이블</h1>
 				) : (
 					// <DTOverSpeedTable

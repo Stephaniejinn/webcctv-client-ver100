@@ -5,15 +5,15 @@ import { Line } from "@ant-design/charts";
 // import { connect } from "react-redux";
 // import * as actions from "../../../actions";
 
-const PCULine = (props) => {
+const OverSpeedCnt = (props) => {
 	const {
 		currentLaneNumber,
 		totalLaneNumber,
 		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-		trafficTotalData,
-		trafficLaneData,
+		isLoadingOverSpeedTotal,
+		isLoadingOverSpeedLane,
+		overSpeedTotalData,
+		overSpeedLaneData,
 
 		totalData,
 		setTotalData,
@@ -25,24 +25,26 @@ const PCULine = (props) => {
 
 	const [Data, setData] = useState([]);
 
-	var PCUTotalData = [];
-	var PCULaneData = {};
+	var cntTotalData = [];
+	var cntLaneData = {};
 	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		PCULaneData[idx.toString()] = [];
+		cntLaneData[idx.toString()] = [];
 	}
 
 	useEffect(() => {
-		if (activeVisualKey === "2") {
-			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
-				console.log("activeVisualKey", activeVisualKey);
+		if (activeVisualKey === "5") {
+			if (
+				isLoadingOverSpeedTotal === false &&
+				isLoadingOverSpeedLane === false
+			) {
 				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
 			}
 		}
 	}, [
 		currentLaneNumber,
 		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
+		isLoadingOverSpeedTotal,
+		isLoadingOverSpeedLane,
 	]);
 
 	const parseTotalData = () => {
@@ -51,42 +53,40 @@ const PCULine = (props) => {
 			setData(totalData);
 		} else {
 			console.log("count count parse");
-			trafficTotalData.forEach((TrafficData) => {
+			overSpeedTotalData.forEach((TrafficData) => {
 				const {
 					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
+					carSpdCnt,
+					mBusSpdCnt,
+					mTruckSpdCnt,
+					motorSpdCnt,
 				} = TrafficData;
 				const tempCar = {};
 				const tempBus = {};
 				const tempTruck = {};
 				const tempMotor = {};
-				// const busPCU = mBusCnt * 1.8;
-				// const truckPCU = mTruckCnt * 1.8;
 				tempCar["time"] = recordTime.substring(11, 16);
-				tempCar["value"] = carCnt;
+				tempCar["value"] = carSpdCnt;
 				tempCar["category"] = "승용차";
 
 				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = (mBusCnt * 1.8).toFixed(1);
+				tempBus["value"] = mBusSpdCnt;
 				tempBus["category"] = "버스";
 
 				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = (mTruckCnt * 1.8).toFixed(1);
+				tempTruck["value"] = mTruckSpdCnt;
 				tempTruck["category"] = "화물차";
 
 				tempMotor["time"] = recordTime.substring(11, 16);
-				tempMotor["value"] = motorCnt;
+				tempMotor["value"] = motorSpdCnt;
 				tempMotor["category"] = "오토바이";
-				PCUTotalData.push(tempCar);
-				PCUTotalData.push(tempBus);
-				PCUTotalData.push(tempTruck);
-				PCUTotalData.push(tempMotor);
+				cntTotalData.push(tempCar);
+				cntTotalData.push(tempBus);
+				cntTotalData.push(tempTruck);
+				cntTotalData.push(tempMotor);
 			});
-			setTotalData(PCUTotalData);
-			setData(PCUTotalData);
+			setTotalData(cntTotalData);
+			setData(cntTotalData);
 		}
 	};
 
@@ -96,42 +96,42 @@ const PCULine = (props) => {
 			setData(laneData[currentLaneNumber.toString()]);
 		} else {
 			console.log("count count parse lane");
-			trafficLaneData.forEach((TrafficData) => {
+			overSpeedLaneData.forEach((TrafficData) => {
 				const {
 					laneNumber,
 					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
+					carSpdCnt,
+					mBusSpdCnt,
+					mTruckSpdCnt,
+					motorSpdCnt,
 				} = TrafficData;
 				const tempCar = {};
 				const tempBus = {};
 				const tempTruck = {};
 				const tempMotor = {};
 				tempCar["time"] = recordTime.substring(11, 16);
-				tempCar["value"] = carCnt;
+				tempCar["value"] = carSpdCnt;
 				tempCar["category"] = "승용차";
 
 				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = (mBusCnt * 1.8).toFixed(1);
+				tempBus["value"] = mBusSpdCnt;
 				tempBus["category"] = "버스";
 
 				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = (mTruckCnt * 1.8).toFixed(1);
+				tempTruck["value"] = mTruckSpdCnt;
 				tempTruck["category"] = "화물차";
 
 				tempMotor["time"] = recordTime.substring(11, 16);
-				tempMotor["value"] = motorCnt;
+				tempMotor["value"] = motorSpdCnt;
 				tempMotor["category"] = "오토바이";
 
-				PCULaneData[laneNumber.toString()].push(tempCar);
-				PCULaneData[laneNumber.toString()].push(tempBus);
-				PCULaneData[laneNumber.toString()].push(tempTruck);
-				PCULaneData[laneNumber.toString()].push(tempMotor);
+				cntLaneData[laneNumber.toString()].push(tempCar);
+				cntLaneData[laneNumber.toString()].push(tempBus);
+				cntLaneData[laneNumber.toString()].push(tempTruck);
+				cntLaneData[laneNumber.toString()].push(tempMotor);
 			});
-			setLaneData(PCULaneData);
-			setData(PCULaneData[currentLaneNumber.toString()]);
+			setLaneData(cntLaneData);
+			setData(cntLaneData[currentLaneNumber.toString()]);
 		}
 	};
 
@@ -154,4 +154,4 @@ const PCULine = (props) => {
 	return <Line {...config} />;
 };
 
-export default PCULine;
+export default OverSpeedCnt;

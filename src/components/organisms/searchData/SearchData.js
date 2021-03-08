@@ -46,14 +46,14 @@ const SeachData = (props) => {
 	const handleSearch = () => {
 		if (
 			tempStartDate !== "" &&
-			tempEndTime !== "" &&
-			selectedLocation.length !== 0
+			tempEndTime !== ""
+			// && selectedLocation.length !== 0
 		) {
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
-			setLocationInfo(selectedLocation);
-			setLocationCodeInfo(selectedLocationCode);
+			// setLocationInfo(selectedLocation);
+			// setLocationCodeInfo(selectedLocationCode);
 			if (period === "SERACH") {
 				setSearchUnit(unit);
 			}

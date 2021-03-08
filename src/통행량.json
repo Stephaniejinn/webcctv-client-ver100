@@ -1,0 +1,35 @@
+//전체 혹은 특정 차선에 대한 시간별 데이터
+[
+  {        
+    "recordTime": "2020-09-02T00:00:17.000Z",
+    "carCnt": 3768,
+    "mBusCnt": 3965,
+    "mTruckCnt": 3939,
+    "motorCnt": 3584
+  },    
+  {
+    "recordTime": "2020-09-02T00:15:17.000Z",
+    "carCnt": 4180,
+    "mBusCnt": 4192,
+    "mTruckCnt": 3867,
+    "motorCnt": 3566
+  }
+]
+
+// 차선별 데이터
+[
+  {
+      "laneNumber": 1,
+      "carCnt": 151843,
+      "mBusCnt": 149194,
+      "mTruckCnt": 149796,
+      "motorCnt": 149059
+  },   
+  {
+    "laneNumber": 2,
+    "carCnt": 147622,
+    "mBusCnt": 151477,
+    "mTruckCnt": 149901,
+    "motorCnt": 149962
+  }
+]

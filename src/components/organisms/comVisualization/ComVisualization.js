@@ -5,7 +5,7 @@ import ComVisualHalf from "../../molecules/comVisualHalf/ComVisualHalf";
 import ComVisualOne from "../../molecules/comVisualOne/ComVisualOne";
 import Pie from "../../charts/pieChart";
 import Funnel from "../../charts/funnelChart";
-import Bar from "../../charts/barChart";
+import Bar from "../../charts/barChart/DLCnt";
 
 import "./style.less";
 

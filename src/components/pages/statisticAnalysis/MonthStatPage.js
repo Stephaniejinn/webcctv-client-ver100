@@ -6,7 +6,7 @@ import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-import TimeStatistic from "../../organisms/visualStatistic/timeStat/timeStat";
+import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
 
 import "./style.less";
 
