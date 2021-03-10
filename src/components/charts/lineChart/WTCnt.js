@@ -35,7 +35,7 @@ const WTCnt = (props) => {
 	}, [
 		currentLaneNumber,
 		activeVisualKey,
-		isLoadingTrafficTotal,
+		// isLoadingTrafficTotal,
 		isLoadingTrafficLane,
 	]);
 

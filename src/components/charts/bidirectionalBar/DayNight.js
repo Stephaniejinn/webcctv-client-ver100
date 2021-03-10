@@ -53,6 +53,20 @@ const MyBidirectionalBar = (props) => {
 	}
 
 	useEffect(() => {
+		// console.log("trafficTotalData,1", trafficTotalData);
+		if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
+			setTotalData([]);
+			setLaneData({});
+			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
+		}
+	}, [
+		trafficLaneData,
+		trafficTotalData,
+		isLoadingTrafficTotal,
+		isLoadingTrafficLane,
+	]);
+
+	useEffect(() => {
 		if (activeVisualKey === "6") {
 			if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
 				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
@@ -61,8 +75,8 @@ const MyBidirectionalBar = (props) => {
 	}, [
 		currentLaneNumber,
 		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
+		// isLoadingTrafficTotal,
+		// isLoadingTrafficLane,
 	]);
 
 	const parseTotalData = () => {

@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";
 
-import TableCard from "../../../molecules/tableCard/TableCard";
+import DayTableCard from "../../../molecules/tableCard/DayTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
 import "./style.less";
 
@@ -47,7 +47,7 @@ const LaneVisualization = (props) => {
 		getTrafficTotalData();
 		getOverSpeedData();
 		getPeakData();
-	}, []);
+	}, [cameraCode, startDate, endTime]);
 
 	const getTrafficTotalData = () => {
 		axios
@@ -140,7 +140,7 @@ const LaneVisualization = (props) => {
 					overSpeedCntTotalData={overSpeedCntTotalData}
 					setOverSpeedCntTotalData={setOverSpeedCntTotalData}
 				/>
-				<TableCard
+				<DayTableCard
 					period={period}
 					tableKey="first"
 					// lane={currentLaneNum}
@@ -151,7 +151,7 @@ const LaneVisualization = (props) => {
 					endTime={endTime}
 					interval="15M"
 				/>
-				<TableCard
+				<DayTableCard
 					period={period}
 					tableKey="overSpeed"
 					// lane={currentLaneNum}

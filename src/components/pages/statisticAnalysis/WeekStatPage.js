@@ -25,7 +25,7 @@ const WeekStatPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb pageHierarchy={["데시보드", "통계 분석", "주간 별"]} />
+						<Breadcrumb pageHierarchy={["대시보드", "통계 분석", "주간 별"]} />
 						<SearchData
 							period="WEEK"
 							classification={timeClassification}

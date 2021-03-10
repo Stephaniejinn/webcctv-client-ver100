@@ -20,12 +20,19 @@ const VehicleRatio = (props) => {
 	var RatioTotalData = [];
 
 	useEffect(() => {
+		if (isLoadingTrafficTotal === false) {
+			setTotalData([]);
+			parseTotalData();
+		}
+	}, [trafficTotalData]);
+
+	useEffect(() => {
 		if (activeVisualKey === "3") {
 			if (isLoadingTrafficTotal === false) {
 				parseTotalData();
 			}
 		}
-	}, [isLoadingTrafficTotal]);
+	}, [isLoadingTrafficTotal, activeVisualKey]);
 
 	const parseTotalData = () => {
 		if (totalData.length !== 0) {

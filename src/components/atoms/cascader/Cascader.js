@@ -198,7 +198,7 @@ const MyCascader = (props) => {
 			.get(
 				// `${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
 
-				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/002/cameras`,
+				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -10,7 +10,7 @@ const OverSpeedTinyColumn = (props) => {
 		if (!isLoading) {
 			parseViolationData();
 		}
-	}, [isLoading]);
+	}, [isLoading, violationData]);
 
 	const parseViolationData = () => {
 		var overSpeedData = [0, 0, 0, 0];

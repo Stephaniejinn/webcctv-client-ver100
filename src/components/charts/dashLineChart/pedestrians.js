@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
+import moment from "moment";
+
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
@@ -19,17 +21,20 @@ const DashLine = (props) => {
 	// const group = timeClassification ? "time" : "lane";
 
 	useEffect(() => {
-		if (!isLoadingPedestrians) {
-			Parse();
+		if (activeVisualKey === "11") {
+			if (!isLoadingPedestrians) {
+				Parse();
+			}
 		}
-	}, [isLoadingPedestrians]);
+	}, [isLoadingPedestrians, pedestriansData, activeVisualKey]);
+
 	const Parse = () => {
 		pedestriansData.forEach((pedestrianData) => {
 			const { recordTime, pedestrianCnt, jaywalkCnt } = pedestrianData;
 			const totalTemp = {};
 			const personTemp = {};
 			const jaywalkTemp = {};
-			const timeTemp = recordTime.substring(11, 16);
+			const timeTemp = moment(recordTime).format("HH:mm");
 			const personCnt = pedestrianCnt - jaywalkCnt;
 			totalTemp["date"] = timeTemp;
 			totalTemp["type"] = "총 보행자";

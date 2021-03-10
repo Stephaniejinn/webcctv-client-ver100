@@ -10,7 +10,7 @@ const AvgSpeedGauge = (props) => {
 		if (!isLoading) {
 			parseAvgData();
 		}
-	}, [isLoading]);
+	}, [isLoading, trafficData]);
 
 	const parseAvgData = () => {
 		var speedData = [0, 0, 0, 0];

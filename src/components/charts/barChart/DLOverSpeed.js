@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Column } from "@ant-design/charts";
+import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 const DLOverSpeed = (props) => {
 	const {
@@ -20,12 +21,19 @@ const DLOverSpeed = (props) => {
 	var cntTotalData = [];
 
 	useEffect(() => {
+		if (isLoadingOverSpeed === false) {
+			setTotalData([]);
+			parseTotalData();
+		}
+	}, [overSpeedData]);
+
+	useEffect(() => {
 		if (activeVisualKey === "5") {
 			if (isLoadingOverSpeed === false) {
 				parseTotalData();
 			}
 		}
-	}, [isLoadingOverSpeed]);
+	}, [isLoadingOverSpeed, activeVisualKey]);
 
 	const parseTotalData = () => {
 		if (totalData.length !== 0) {

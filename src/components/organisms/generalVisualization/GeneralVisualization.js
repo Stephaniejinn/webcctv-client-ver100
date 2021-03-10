@@ -34,7 +34,7 @@ const GeneralVisualization = (props) => {
 	useEffect(() => {
 		getTrafficData();
 		getViolationData();
-	}, []);
+	}, [cameraCode, startDate, endTime]);
 
 	const getTrafficData = () => {
 		axios

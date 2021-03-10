@@ -20,12 +20,19 @@ const LaneCnt = (props) => {
 	var cntTotalData = [];
 
 	useEffect(() => {
+		if (isLoadingTrafficTotal === false) {
+			setTotalData([]);
+			parseTotalData();
+		}
+	}, [trafficTotalData]);
+
+	useEffect(() => {
 		if (activeVisualKey === "1") {
 			if (isLoadingTrafficTotal === false) {
 				parseTotalData();
 			}
 		}
-	}, [isLoadingTrafficTotal]);
+	}, [isLoadingTrafficTotal, activeVisualKey]);
 
 	const parseTotalData = () => {
 		if (totalData.length !== 0) {

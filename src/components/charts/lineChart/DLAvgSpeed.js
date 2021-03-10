@@ -20,12 +20,19 @@ const LaneAvgSpeedLine = (props) => {
 	var avgSpeedTotalData = [];
 
 	useEffect(() => {
+		if (isLoadingTrafficTotal === false) {
+			setTotalData([]);
+			parseTotalData();
+		}
+	}, [trafficTotalData]);
+
+	useEffect(() => {
 		if (activeVisualKey === "4") {
 			if (isLoadingTrafficTotal === false) {
 				parseTotalData();
 			}
 		}
-	}, [isLoadingTrafficTotal]);
+	}, [isLoadingTrafficTotal, activeVisualKey]);
 
 	const parseTotalData = () => {
 		if (totalData.length !== 0) {

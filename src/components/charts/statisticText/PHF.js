@@ -17,7 +17,7 @@ const PHF = (props) => {
 
 			setPHF(PHFVal.toFixed(2));
 		}
-	}, [isLoadingPeak]);
+	}, [isLoadingPeak, peakData]);
 
 	return currentLaneNumber === 0 ? (
 		<Statistic title="PHF" value={PHF} />

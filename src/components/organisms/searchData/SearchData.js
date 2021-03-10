@@ -46,25 +46,31 @@ const SeachData = (props) => {
 	const handleSearch = () => {
 		if (
 			tempStartDate !== "" &&
-			tempEndTime !== ""
-			// && selectedLocation.length !== 0
+			tempEndTime !== "" &&
+			Object.keys(selectedLocation).length !== 0
 		) {
+			// console.log("selectedLocation lenth", selectedLocation);
+			// console.log("startDate", tempStartDate);
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
-			// setLocationInfo(selectedLocation);
-			// setLocationCodeInfo(selectedLocationCode);
+			setLocationInfo(selectedLocation);
+			setLocationCodeInfo(selectedLocationCode);
 			if (period === "SERACH") {
 				setSearchUnit(unit);
 			}
-		} else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
-			setFirstFilter(true);
-			setStartDate(tempStartDate);
-			setEndTime(tempEndTime);
-			if (period === "SERACH") {
-				setSearchUnit(unit);
-			}
-		} else {
+		}
+		//  else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
+		// 	console.log("selectedLocation lenth is 0?", selectedLocation.length);
+
+		// 	setFirstFilter(true);
+		// 	setStartDate(tempStartDate);
+		// 	setEndTime(tempEndTime);
+		// 	if (period === "SERACH") {
+		// 		setSearchUnit(unit);
+		// 	}
+		// }
+		else {
 			console.log("need to select start time, end time, location");
 		}
 	};

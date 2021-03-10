@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";
 
-import TableCard from "../../../molecules/tableCard/TableCard";
+import DayTableCard from "../../../molecules/tableCard/DayTableCard";
 import TimeDataVisualization from "../../../molecules/dataVisualization/TimeDataVisualization";
 import "./style.less";
 
@@ -68,13 +68,16 @@ const TimeVisualization = (props) => {
 
 	useEffect(() => {
 		getLaneNum();
+	}, [cameraCode]);
+
+	useEffect(() => {
 		getTrafficTotalData();
 		getTrafficLaneData();
 		getOverSpeedTotalData();
 		getOverSpeedLaneData();
 		getPeakData();
 		getPedestriansData();
-	}, []);
+	}, [cameraCode, startDate, endTime]);
 
 	const getLaneNum = () => {
 		axios
@@ -225,6 +228,7 @@ const TimeVisualization = (props) => {
 				? totalLaneArr.map((tabName, index) => {
 						return (
 							<TabPane tab={tabName} key={index.toString()}>
+								{/* <TabPane tab="{tabName}" key="0"> */}
 								<TimeDataVisualization
 									period={period}
 									timeClassification={timeClassification}
@@ -270,22 +274,22 @@ const TimeVisualization = (props) => {
 									dayNightLaneData={dayNightLaneData}
 									setDayNightLaneData={setDayNightLaneData}
 								/>
-								<TableCard
+								<DayTableCard
 									period={period}
 									tableKey="first"
-									lane={currentLaneNum}
-									isLoadingTrafficTotal={isLoadingTrafficTotal}
-									isLoadingTrafficLane={isLoadingTrafficLane}
-									isLoadingPedestrians={isLoadingPedestrians}
-									trafficTotalData={trafficTotalData}
-									trafficLaneData={trafficLaneData}
-									pedestriansData={pedestriansData}
+									currentLaneNum={currentLaneNum}
+									// isLoadingTrafficTotal={isLoadingTrafficTotal}
+									// isLoadingTrafficLane={isLoadingTrafficLane}
+									// isLoadingPedestrians={isLoadingPedestrians}
+									// trafficTotalData={trafficTotalData}
+									// trafficLaneData={trafficLaneData}
+									// pedestriansData={pedestriansData}
 									timeClassification={timeClassification}
 									startDate={startDate}
 									endTime={endTime}
-									interval="15M"
+									interval={interval}
 								/>
-								<TableCard
+								<DayTableCard
 									period={period}
 									tableKey="overSpeed"
 									lane={currentLaneNum}
@@ -294,7 +298,7 @@ const TimeVisualization = (props) => {
 									timeClassification={timeClassification}
 									interval="15M"
 								/>
-								<TableCard
+								<DayTableCard
 									period={period}
 									tableKey="second"
 									lane={currentLaneNum}

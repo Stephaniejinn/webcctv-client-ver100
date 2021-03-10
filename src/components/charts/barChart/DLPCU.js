@@ -9,10 +9,6 @@ const PCU = (props) => {
 
 		totalData,
 		setTotalData,
-		laneData,
-		setLaneData,
-
-		timeClassification,
 	} = props;
 
 	const [Data, setData] = useState([]);
@@ -24,12 +20,19 @@ const PCU = (props) => {
 	var PCUTotalData = [];
 
 	useEffect(() => {
+		if (isLoadingTrafficTotal === false) {
+			setTotalData([]);
+			parseTotalData();
+		}
+	}, [trafficTotalData]);
+
+	useEffect(() => {
 		if (activeVisualKey === "2") {
 			if (isLoadingTrafficTotal === false) {
 				parseTotalData();
 			}
 		}
-	}, [isLoadingTrafficTotal]);
+	}, [isLoadingTrafficTotal, activeVisualKey]);
 
 	const parseTotalData = () => {
 		if (totalData.length !== 0) {

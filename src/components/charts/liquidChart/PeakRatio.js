@@ -19,7 +19,7 @@ const PeakRatio = (props) => {
 			setPeakRatio(peakRatioVal.toFixed(2));
 			console.log(peakRatioVal.toFixed(2));
 		}
-	}, [isLoadingPeak]);
+	}, [isLoadingPeak, peakData]);
 
 	var config = {
 		percent: peakRatio,

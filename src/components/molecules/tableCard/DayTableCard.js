@@ -10,9 +10,9 @@ import { Collapse, Typography, Divider, Button } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 
-import DTSecondTable from "../timeStatisticsTable/dayTable/DTSecondTable";
+import DTFirstTable from "../timeStatisticsTable/dayTable/DTFirstTable";
 import DTOverSpeedTable from "../timeStatisticsTable/dayTable/DTOverSpeedTable";
-import DLFisrtTable from "../timeStatisticsTable/dayTable/DLFirstTable";
+import DTSecondTable from "../timeStatisticsTable/dayTable/DTSecondTable";
 
 import WTSecondTable from "../timeStatisticsTable/weekTable/WTSecondTable";
 import WTFirstTable from "../timeStatisticsTable/weekTable/WTFirstTable";
@@ -21,19 +21,19 @@ import MTFirstTable from "../timeStatisticsTable/monthTable/MTFirstTable";
 import MTSecondTable from "../timeStatisticsTable/monthTable/MTSecondTable";
 import "./style.less";
 
-const TableCard = (props) => {
+const DayTableCard = (props) => {
 	const {
 		period,
 		tableKey,
 		currentLaneNum,
 		timeClassification,
 
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-		isLoadingPedestrians,
-		trafficTotalData,
-		trafficLaneData,
-		pedestriansData,
+		// isLoadingTrafficTotal,
+		// isLoadingTrafficLane,
+		// isLoadingPedestrians,
+		// trafficTotalData,
+		// trafficLaneData,
+		// pedestriansData,
 
 		startDate,
 		endTime,
@@ -49,14 +49,14 @@ const TableCard = (props) => {
 				<h1> This is rendered only in browser </h1>
 				{period === "DAY" ? (
 					tableKey === "first" ? (
-						<DLFisrtTable
-							lane={currentLaneNum}
-							isLoadingTrafficTotal={isLoadingTrafficTotal}
-							isLoadingTrafficLane={isLoadingTrafficLane}
-							isLoadingPedestrians={isLoadingPedestrians}
-							trafficTotalData={trafficTotalData}
-							trafficLaneData={trafficLaneData}
-							pedestriansData={pedestriansData}
+						<DTFirstTable
+							currentLaneNum={parseInt(currentLaneNum)}
+							// isLoadingTrafficTotal={isLoadingTrafficTotal}
+							// isLoadingTrafficLane={isLoadingTrafficLane}
+							// isLoadingPedestrians={isLoadingPedestrians}
+							// trafficTotalData={trafficTotalData}
+							// trafficLaneData={trafficLaneData}
+							// pedestriansData={pedestriansData}
 							startDate={startDate}
 							endTime={endTime}
 							timeClassification={timeClassification}
@@ -146,4 +146,4 @@ const mapDispatchToProps = (dispatch) => {
 		},
 	};
 };
-export default connect(mapStateToProps, mapDispatchToProps)(TableCard);
+export default connect(mapStateToProps, mapDispatchToProps)(DayTableCard);

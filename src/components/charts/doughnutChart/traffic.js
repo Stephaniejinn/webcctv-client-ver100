@@ -9,7 +9,7 @@ const TrafficPie = (props) => {
 		if (!isLoading) {
 			parseTraffic();
 		}
-	}, [isLoading]);
+	}, [isLoading, trafficData]);
 
 	const parseTraffic = () => {
 		var vehicleRatioData = [
@@ -38,7 +38,7 @@ const TrafficPie = (props) => {
 			vehicleRatioData[2].value += mTruckCnt;
 			vehicleRatioData[3].value += motorCnt;
 		});
-		// console.log(vehicleRatioData);
+		// console.log("vehicleRatioData", vehicleRatioData);
 		setVehicleRatio(vehicleRatioData);
 	};
 	var config = {

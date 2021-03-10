@@ -10,7 +10,7 @@ const AvgSpeedTinyColumn = (props) => {
 		if (!isLoading) {
 			parseTrafficData();
 		}
-	}, [isLoading]);
+	}, [isLoading, trafficData]);
 
 	const parseTrafficData = () => {
 		var speedData = [0, 0, 0, 0];

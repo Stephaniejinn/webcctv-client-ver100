@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
+import moment from "moment";
 
 // import axios from "axios";
 // import { connect } from "react-redux";
@@ -30,17 +31,32 @@ const VehicleRatio = (props) => {
 	}
 
 	useEffect(() => {
+		console.log("trafficTotalData,1", trafficTotalData);
+		if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
+			setTotalData([]);
+			setLaneData({});
+			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
+		}
+	}, [
+		trafficLaneData,
+		trafficTotalData,
+		isLoadingTrafficTotal,
+		isLoadingTrafficLane,
+	]);
+
+	useEffect(() => {
 		if (activeVisualKey === "3") {
 			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
-				console.log("activeVisualKey", activeVisualKey);
+				console.log("trafficTotalData,2");
+
 				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
 			}
 		}
 	}, [
 		currentLaneNumber,
 		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
+		// isLoadingTrafficTotal,
+		// isLoadingTrafficLane,
 	]);
 
 	const parseTotalData = () => {
@@ -64,21 +80,21 @@ const VehicleRatio = (props) => {
 
 				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
 
-				tempCar["time"] = recordTime.substring(11, 16);
+				tempCar["time"] = moment(recordTime).format("HH:mm");
 				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
 				tempCar["category"] = "승용차";
 
-				tempBus["time"] = recordTime.substring(11, 16);
+				tempBus["time"] = moment(recordTime).format("HH:mm");
 				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
 				tempBus["category"] = "버스";
 
-				tempTruck["time"] = recordTime.substring(11, 16);
+				tempTruck["time"] = moment(recordTime).format("HH:mm");
 				tempTruck["value"] = parseFloat(
 					((mTruckCnt / totalCnt) * 100).toFixed(2)
 				);
 				tempTruck["category"] = "화물차";
 
-				tempMotor["time"] = recordTime.substring(11, 16);
+				tempMotor["time"] = moment(recordTime).format("HH:mm");
 				tempMotor["value"] = parseFloat(
 					((motorCnt / totalCnt) * 100).toFixed(2)
 				);
@@ -115,21 +131,21 @@ const VehicleRatio = (props) => {
 
 				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
 
-				tempCar["time"] = recordTime.substring(11, 16);
+				tempCar["time"] = moment(recordTime).format("HH:mm");
 				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
 				tempCar["category"] = "승용차";
 
-				tempBus["time"] = recordTime.substring(11, 16);
+				tempBus["time"] = moment(recordTime).format("HH:mm");
 				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
 				tempBus["category"] = "버스";
 
-				tempTruck["time"] = recordTime.substring(11, 16);
+				tempTruck["time"] = moment(recordTime).format("HH:mm");
 				tempTruck["value"] = parseFloat(
 					((mTruckCnt / totalCnt) * 100).toFixed(2)
 				);
 				tempTruck["category"] = "화물차";
 
-				tempMotor["time"] = recordTime.substring(11, 16);
+				tempMotor["time"] = moment(recordTime).format("HH:mm");
 				tempMotor["value"] = parseFloat(
 					((motorCnt / totalCnt) * 100).toFixed(2)
 				);

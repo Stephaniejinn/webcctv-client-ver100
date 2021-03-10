@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
+import moment from "moment";
 
 // import axios from "axios";
 // import { connect } from "react-redux";
@@ -31,18 +32,35 @@ const CntLine = (props) => {
 		cntLaneData[idx.toString()] = [];
 	}
 
+	// 시간 혹은 카메라를 바꿧을때만 실행
+	useEffect(() => {
+		if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
+			console.log("trafficTotalData 1");
+			setTotalData([]);
+			setLaneData({});
+			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
+		}
+		// isTimeChanged = true;
+	}, [
+		trafficLaneData,
+		trafficTotalData,
+		isLoadingTrafficTotal,
+		isLoadingTrafficLane,
+	]);
+
 	useEffect(() => {
 		if (activeVisualKey === "1") {
-			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
-				console.log("activeVisualKey", activeVisualKey);
+			if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
+				console.log("trafficTotalData 2");
 				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
+				// isTimeChanged = false;
 			}
 		}
 	}, [
 		currentLaneNumber,
 		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
+		// isLoadingTrafficTotal,
+		// isLoadingTrafficLane,
 	]);
 
 	const parseTotalData = () => {
@@ -63,19 +81,19 @@ const CntLine = (props) => {
 				const tempBus = {};
 				const tempTruck = {};
 				const tempMotor = {};
-				tempCar["time"] = recordTime.substring(11, 16);
+				tempCar["time"] = moment(recordTime).format("HH:mm");
 				tempCar["value"] = carCnt;
 				tempCar["category"] = "승용차";
 
-				tempBus["time"] = recordTime.substring(11, 16);
+				tempBus["time"] = moment(recordTime).format("HH:mm");
 				tempBus["value"] = mBusCnt;
 				tempBus["category"] = "버스";
 
-				tempTruck["time"] = recordTime.substring(11, 16);
+				tempTruck["time"] = moment(recordTime).format("HH:mm");
 				tempTruck["value"] = mTruckCnt;
 				tempTruck["category"] = "화물차";
 
-				tempMotor["time"] = recordTime.substring(11, 16);
+				tempMotor["time"] = moment(recordTime).format("HH:mm");
 				tempMotor["value"] = motorCnt;
 				tempMotor["category"] = "오토바이";
 				cntTotalData.push(tempCar);
@@ -107,19 +125,19 @@ const CntLine = (props) => {
 				const tempBus = {};
 				const tempTruck = {};
 				const tempMotor = {};
-				tempCar["time"] = recordTime.substring(11, 16);
+				tempCar["time"] = moment(recordTime).format("HH:mm");
 				tempCar["value"] = carCnt;
 				tempCar["category"] = "승용차";
 
-				tempBus["time"] = recordTime.substring(11, 16);
+				tempBus["time"] = moment(recordTime).format("HH:mm");
 				tempBus["value"] = mBusCnt;
 				tempBus["category"] = "버스";
 
-				tempTruck["time"] = recordTime.substring(11, 16);
+				tempTruck["time"] = moment(recordTime).format("HH:mm");
 				tempTruck["value"] = mTruckCnt;
 				tempTruck["category"] = "화물차";
 
-				tempMotor["time"] = recordTime.substring(11, 16);
+				tempMotor["time"] = moment(recordTime).format("HH:mm");
 				tempMotor["value"] = motorCnt;
 				tempMotor["category"] = "오토바이";
 

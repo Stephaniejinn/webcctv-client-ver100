@@ -15,7 +15,7 @@ const Peak15 = (props) => {
 		if (isLoadingPeak === false) {
 			setPeakHour(peakData[0]["peak15Minute"].substring(12, 16));
 		}
-	}, [isLoadingPeak]);
+	}, [isLoadingPeak, peakData]);
 
 	return currentLaneNumber === 0 ? (
 		<Statistic title="첨두시간" value={peak15} />
