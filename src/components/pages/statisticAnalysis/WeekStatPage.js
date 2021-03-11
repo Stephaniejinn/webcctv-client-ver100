@@ -7,6 +7,7 @@ import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
 import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
+import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 
 import "./style.less";
 
@@ -53,26 +54,13 @@ const WeekStatPage = () => {
 										interval="1D"
 									/>
 								) : (
-									<div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											1차 데이터 테이블
-										</div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											1차 데이터 테이블
-										</div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											2차 데이터 테이블
-										</div>
-									</div>
+									<LaneStatistic
+										period="WEEK"
+										startDate={startDate}
+										endTime={endTime}
+										timeClassification={timeClassification}
+										interval="1D"
+									/>
 								)}
 							</>
 						) : null}

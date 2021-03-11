@@ -14,34 +14,32 @@ const SeachData = (props) => {
 		period,
 		classification,
 		setClassification,
-		setSearchUnit,
 		setStartDate,
 		setEndTime,
 		setFirstFilter,
 		setLocationInfo,
 		setLocationCodeInfo,
 		camera,
+		// setSearchUnit,
 	} = props;
 
 	const { Title } = Typography;
 	const { Text } = Typography;
 	const { Option } = Select;
 
-	// const [locationChange, setLocationChange] = useState(false);
 	const [tempStartDate, setTempStartDate] = useState("");
 	const [tempEndTime, setTempEndTime] = useState("");
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
-	const [unit, setUnit] = useState("15M");
 
 	const day = "일간 누적 통계";
 	const week = "주간 누적 통계";
 	const month = "월간 누적 통계";
 	const search = "기간 별 데이터 조회";
 
-	const handleUnitSelectChange = (value) => {
-		setUnit(value);
-	};
+	// const handleUnitSelectChange = (value) => {
+	// 	setUnit(value);
+	// };
 
 	const handleSearch = () => {
 		if (
@@ -49,28 +47,25 @@ const SeachData = (props) => {
 			tempEndTime !== "" &&
 			Object.keys(selectedLocation).length !== 0
 		) {
+			//if location changed
 			// console.log("selectedLocation lenth", selectedLocation);
-			// console.log("startDate", tempStartDate);
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);
-			if (period === "SERACH") {
-				setSearchUnit(unit);
-			}
-		}
-		//  else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
-		// 	console.log("selectedLocation lenth is 0?", selectedLocation.length);
-
-		// 	setFirstFilter(true);
-		// 	setStartDate(tempStartDate);
-		// 	setEndTime(tempEndTime);
-		// 	if (period === "SERACH") {
-		// 		setSearchUnit(unit);
-		// 	}
-		// }
-		else {
+			// if (period === "SERACH") {
+			// 	setSearchUnit(unit);
+			// }
+		} else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
+			//if start and end date changed, location doesn't change
+			setFirstFilter(true);
+			setStartDate(tempStartDate);
+			setEndTime(tempEndTime);
+			// if (period === "SERACH") {
+			// 	setSearchUnit(unit);
+			// }
+		} else {
 			console.log("need to select start time, end time, location");
 		}
 	};
@@ -91,48 +86,50 @@ const SeachData = (props) => {
 					<Cascader
 						setSelectedLocation={setSelectedLocation}
 						setSelectedLocationCode={setSelectedLocationCode}
-						// setLocationChange={setLocationChange}
 					/>
 					<DatePicker
 						period={period}
 						setTempStartDate={setTempStartDate}
 						setTempEndTime={setTempEndTime}
 					/>
-					<div className="search-area-switch">
-						<Space>
-							<Text strong style={{ marginRight: 1 }}>
-								시간별 기준
-							</Text>
-							<Switch
-								defaultChecked={classification}
-								checked={classification}
-								onChange={(checked) => setClassification(checked)}
-							/>
-						</Space>
-						<Space>
-							<Text strong style={{ marginRight: 1 }}>
-								차선별 기준
-							</Text>
-							<Switch
-								defaultChecked={!classification}
-								checked={!classification}
-								onChange={(checked) => setClassification(!checked)}
-							/>
-						</Space>
-					</div>
-					{period === "SEARCH" ? (
-						<Select onChange={handleUnitSelectChange} defaultValue="15M">
-							<Option value="15M">15분 단위</Option>
-							<Option value="1H">1시간 단위</Option>
-						</Select>
-					) : (
-						classification === false &&
-						(period === "WEEK" ? (
-							<MultiRadio page={period} />
-						) : period === "MONTH" ? (
-							<MultiRadio page={period} />
-						) : null)
+					{period === "SEARCH" ? null : (
+						<div className="search-area-switch">
+							<Space>
+								<Text strong style={{ marginRight: 1 }}>
+									시간별 기준
+								</Text>
+								<Switch
+									defaultChecked={classification}
+									checked={classification}
+									onChange={(checked) => setClassification(checked)}
+								/>
+							</Space>
+							<Space>
+								<Text strong style={{ marginRight: 1 }}>
+									차선별 기준
+								</Text>
+								<Switch
+									defaultChecked={!classification}
+									checked={!classification}
+									onChange={(checked) => setClassification(!checked)}
+								/>
+							</Space>
+						</div>
 					)}
+					{
+						// period === "SEARCH" ? (
+						// 	<Select onChange={handleUnitSelectChange} defaultValue="15M">
+						// 		<Option value="15M">15분 단위</Option>
+						// 		<Option value="1H">1시간 단위</Option>
+						// 	</Select>
+						// ) : (
+						classification === false &&
+							(period === "WEEK" ? (
+								<MultiRadio page={period} />
+							) : period === "MONTH" ? (
+								<MultiRadio page={period} />
+							) : null)
+					}
 				</div>
 				<div className="search-area-input-button">
 					<Button

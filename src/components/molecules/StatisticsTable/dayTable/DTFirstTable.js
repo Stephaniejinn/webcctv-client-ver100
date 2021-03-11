@@ -542,7 +542,6 @@ const DTFisrtTable = (props) => {
 
 				const arr = [FirstRow];
 				const dataWithTotal = arr.concat(TotalData);
-				console.log(dataWithTotal);
 				setData(dataWithTotal);
 			})
 			.catch((err) => {

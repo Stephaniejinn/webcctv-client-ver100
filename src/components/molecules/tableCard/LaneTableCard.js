@@ -1,10 +1,4 @@
 import React from "react";
-import {
-	BrowserView,
-	MobileView,
-	isBrowser,
-	isMobile,
-} from "react-device-detect";
 import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
 import { Collapse, Typography, Divider, Button } from "antd";
 import { connect } from "react-redux";
@@ -28,14 +22,6 @@ const LaneTableCard = (props) => {
 		tableKey,
 		currentLaneNum,
 		timeClassification,
-
-		// isLoadingTrafficTotal,
-		// isLoadingTrafficLane,
-		// isLoadingPedestrians,
-		// trafficTotalData,
-		// trafficLaneData,
-		// pedestriansData,
-
 		startDate,
 		endTime,
 		// interval,
@@ -46,40 +32,19 @@ const LaneTableCard = (props) => {
 
 	return (
 		<div className="table-card">
-			<BrowserView>
-				<h1> This is rendered only in browser </h1>
-				{period === "DAY" ? (
-					tableKey === "first" ? (
-						<DLFirstTable
-							currentLaneNum={parseInt(currentLaneNum)}
-							startDate={startDate}
-							endTime={endTime}
-							timeClassification={timeClassification}
-						/>
-					) : tableKey === "overSpeed" ? (
-						<h1>과속 데이터 테이블</h1>
-					) : (
-						<h1>2차 데이터 테이블</h1>
-					)
-				) : period === "WEEK" ? (
-					tableKey === "first" ? (
-						<h1>1차 데이터 테이블</h1>
-					) : tableKey === "overSpeed" ? (
-						<h1>과속 데이터 테이블</h1>
-					) : (
-						<h1>2차 데이터 테이블</h1>
-					)
-				) : tableKey === "first" ? (
-					<h1>1차 데이터 테이블</h1>
-				) : tableKey === "overSpeed" ? (
-					<h1>과속 데이터 테이블</h1>
-				) : (
-					<h1>2차 데이터 테이블</h1>
-				)}
-			</BrowserView>
-			<MobileView>
-				<h1> This is rendered only on mobile </h1>
-			</MobileView>
+			<h1> This is rendered only in browser </h1>
+			{period === "DAY" ? (
+				<DLFirstTable
+					currentLaneNum={parseInt(currentLaneNum)}
+					startDate={startDate}
+					endTime={endTime}
+					timeClassification={timeClassification}
+				/>
+			) : period === "WEEK" ? (
+				<h1>WEEK 1차 데이터 테이블</h1>
+			) : (
+				<h1>Month 1차 데이터 테이블</h1>
+			)}
 		</div>
 	);
 };

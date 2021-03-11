@@ -4,38 +4,22 @@ import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
 
 import "./style.less";
 
-const SearchCollapsedTable = ({ classification, searchUnit }) => {
+const SearchCollapsedTable = () => {
 	const { Panel } = Collapse;
 	const { Title } = Typography;
 
-	var collapseHeader;
-	if (classification === true) {
-		collapseHeader = (
-			<div className="table-collapse-header">
-				1차 데이터
-				<Divider type="vertical" />
-				수인사거리1[하행]
-				<Divider type="vertical" />
-				2020년 1월 1월 ~ 2020년 1월 12일
-				<Divider type="vertical" />
-				구간 전체 시간별 데이터 <Divider type="vertical" />
-				{searchUnit}분 단위
-			</div>
-		);
-	} else {
-		collapseHeader = (
-			<div className="table-collapse-header">
-				1차 데이터
-				<Divider type="vertical" />
-				수인사거리1[하행]
-				<Divider type="vertical" />
-				2020년 1월 1월 ~ 2020년 1월 12일
-				<Divider type="vertical" />
-				구간 전체 차선별 데이터 <Divider type="vertical" />
-				{searchUnit}분 단위
-			</div>
-		);
-	}
+	const collapseHeader = (
+		<div className="table-collapse-header">
+			1차 데이터
+			<Divider type="vertical" />
+			수인사거리1[하행]
+			<Divider type="vertical" />
+			2020년 1월 1월 ~ 2020년 1월 12일
+			<Divider type="vertical" />
+			구간 전체 시간별 데이터 <Divider type="vertical" />
+			15분 단위
+		</div>
+	);
 
 	const genExtra = () => (
 		<div

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Tabs } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";
@@ -18,7 +17,6 @@ const LaneVisualization = (props) => {
 		cameraCode,
 		baseURL,
 	} = props;
-	const { TabPane } = Tabs;
 
 	const [activeVisualKey, setActiveVisualKey] = useState("1");
 
@@ -108,57 +106,38 @@ const LaneVisualization = (props) => {
 			});
 	};
 
-	function callback(key) {
-		// setCurrentLaneNum(key);
-		// console.log("key", key);
-	}
 	return (
-		<Tabs defaultActiveKey="0" onChange={callback}>
-			<TabPane tab="일간 전체" key="0">
-				<LaneDataVisualization
-					period={period}
-					timeClassification={timeClassification}
-					// totalLaneNumber={laneNum}
-					// currentLaneNum={currentLaneNum}
-					// setCurrentLaneNum={setCurrentLaneNum}
-					activeVisualKey={activeVisualKey}
-					setActiveVisualKey={setActiveVisualKey}
-					isLoadingTrafficTotal={isLoadingTrafficTotal}
-					isLoadingOverSpeed={isLoadingOverSpeed}
-					isLoadingPeak={isLoadingPeak}
-					trafficTotalData={trafficTotalData}
-					overSpeedData={overSpeedData}
-					peakData={peakData}
-					cntTotalData={cntTotalData}
-					setCntTotalData={setCntTotalData}
-					PCUTotalData={PCUTotalData}
-					setPCUTotalData={setPCUTotalData}
-					ratioTotalData={ratioTotalData}
-					setRatioTotalData={setRatioTotalData}
-					avgSpeedTotalData={avgSpeedTotalData}
-					setAvgSpeedTotalData={setAvgSpeedTotalData}
-					overSpeedCntTotalData={overSpeedCntTotalData}
-					setOverSpeedCntTotalData={setOverSpeedCntTotalData}
-				/>
-				<LaneTableCard
-					period={period}
-					tableKey="first"
-					timeClassification={timeClassification}
-					startDate={startDate}
-					endTime={endTime}
-					// interval={interval}
-				/>
-				<LaneTableCard
-					period={period}
-					tableKey="overSpeed"
-					// lane={currentLaneNum}
-					startDate={startDate}
-					endTime={endTime}
-					timeClassification={timeClassification}
-					interval="15M"
-				/>
-			</TabPane>
-		</Tabs>
+		<>
+			<LaneDataVisualization
+				period={period}
+				timeClassification={timeClassification}
+				activeVisualKey={activeVisualKey}
+				setActiveVisualKey={setActiveVisualKey}
+				isLoadingTrafficTotal={isLoadingTrafficTotal}
+				isLoadingOverSpeed={isLoadingOverSpeed}
+				isLoadingPeak={isLoadingPeak}
+				trafficTotalData={trafficTotalData}
+				overSpeedData={overSpeedData}
+				peakData={peakData}
+				cntTotalData={cntTotalData}
+				setCntTotalData={setCntTotalData}
+				PCUTotalData={PCUTotalData}
+				setPCUTotalData={setPCUTotalData}
+				ratioTotalData={ratioTotalData}
+				setRatioTotalData={setRatioTotalData}
+				avgSpeedTotalData={avgSpeedTotalData}
+				setAvgSpeedTotalData={setAvgSpeedTotalData}
+				overSpeedCntTotalData={overSpeedCntTotalData}
+				setOverSpeedCntTotalData={setOverSpeedCntTotalData}
+			/>
+			<LaneTableCard
+				period={period}
+				tableKey="first"
+				timeClassification={timeClassification}
+				startDate={startDate}
+				endTime={endTime}
+			/>
+		</>
 	);
 };
 

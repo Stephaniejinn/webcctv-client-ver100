@@ -212,8 +212,8 @@ const MyCascader = (props) => {
 					const cameraTemp = {};
 					cameraTemp["value"] = camCode;
 					upboundFlag
-						? (cameraTemp["label"] = camName + "[상행]")
-						: (cameraTemp["label"] = camName + "[하행]");
+						? (cameraTemp["label"] = camName + " [상행]")
+						: (cameraTemp["label"] = camName + " [하행]");
 
 					currentCameras.push(cameraTemp);
 				});

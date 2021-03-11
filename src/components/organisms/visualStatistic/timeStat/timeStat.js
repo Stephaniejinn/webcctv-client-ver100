@@ -286,7 +286,7 @@ const TimeVisualization = (props) => {
 								<TimeTableCard
 									period={period}
 									tableKey="overSpeed"
-									lane={currentLaneNum}
+									currentLaneNum={currentLaneNum}
 									startDate={startDate}
 									endTime={endTime}
 									timeClassification={timeClassification}
@@ -295,7 +295,7 @@ const TimeVisualization = (props) => {
 								<TimeTableCard
 									period={period}
 									tableKey="second"
-									lane={currentLaneNum}
+									currentLaneNum={currentLaneNum}
 									startDate={startDate}
 									endTime={endTime}
 									timeClassification={timeClassification}

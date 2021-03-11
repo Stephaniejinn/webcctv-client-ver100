@@ -30,19 +30,15 @@ const SearchDownloadPage = () => {
 							period="SEARCH"
 							classification={timeClassification}
 							setClassification={setTimeClassification}
-							searchUnit={searchUnit}
-							setSearchUnit={setSearchUnit}
 							startDate={startDate}
 							setStartDate={setStartDate}
 							endTime={endTime}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
+							// searchUnit={searchUnit}
 						/>
 						{firstFilter ? (
-							<SearchResultTab
-								classification={timeClassification}
-								searchUnit={searchUnit}
-							/>
+							<SearchResultTab classification={timeClassification} />
 						) : null}
 					</Content>
 				</Layout>

@@ -7,12 +7,13 @@ import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
 import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
+import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 
 import "./style.less";
 
 const MonthStatPage = () => {
 	const [timeClassification, setTimeClassification] = useState(true);
-	const [firstFilter, setFirstFilter] = useState(true);
+	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 
@@ -50,29 +51,16 @@ const MonthStatPage = () => {
 										startDate={startDate}
 										endTime={endTime}
 										timeClassification={timeClassification}
-										interval="15M"
+										interval="1W"
 									/>
 								) : (
-									<div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											1차 데이터 테이블
-										</div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											1차 데이터 테이블
-										</div>
-										<div
-											className="site-layout-background"
-											style={{ padding: 24, minHeight: 360 }}
-										>
-											2차 데이터 테이블
-										</div>
-									</div>
+									<LaneStatistic
+										period="MONTH"
+										startDate={startDate}
+										endTime={endTime}
+										timeClassification={timeClassification}
+										interval="1W"
+									/>
 								)}
 							</>
 						) : null}

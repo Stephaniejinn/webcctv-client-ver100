@@ -12,8 +12,6 @@ import "./index.less";
 
 const store = createStore(reducers);
 console.log(store.getState());
-// store.subscribe(() => console.log(store.getState()));
-// store.dispatch(actions.setLocation({ city: "city", district: "district" }));
 
 ReactDOM.render(
 	// <Provider store={createStore(reducers)}>

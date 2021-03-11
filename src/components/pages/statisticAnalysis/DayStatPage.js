@@ -38,7 +38,6 @@ const DayStatPage = () => {
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
 						/>
-						{/* {console.log("startDate first", startDate)} */}
 						{firstFilter ? (
 							<>
 								<div className="statistic-general-visualization">

@@ -4,7 +4,7 @@ import { Table } from "antd";
 import "../style.less";
 
 const MTFirstTable = (props) => {
-	const { startDate, endTime, timeClassification, interval } = props;
+	const { startDate, endTime, interval } = props;
 
 	const columns = [
 		{
