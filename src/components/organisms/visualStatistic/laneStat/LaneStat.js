@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";
 
-import DayTableCard from "../../../molecules/tableCard/DayTableCard";
+import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
 import "./style.less";
 
@@ -140,18 +140,15 @@ const LaneVisualization = (props) => {
 					overSpeedCntTotalData={overSpeedCntTotalData}
 					setOverSpeedCntTotalData={setOverSpeedCntTotalData}
 				/>
-				<DayTableCard
+				<LaneTableCard
 					period={period}
 					tableKey="first"
-					// lane={currentLaneNum}
-					isLoadingTrafficTotal={isLoadingTrafficTotal}
-					trafficTotalData={trafficTotalData}
 					timeClassification={timeClassification}
 					startDate={startDate}
 					endTime={endTime}
-					interval="15M"
+					// interval={interval}
 				/>
-				<DayTableCard
+				<LaneTableCard
 					period={period}
 					tableKey="overSpeed"
 					// lane={currentLaneNum}

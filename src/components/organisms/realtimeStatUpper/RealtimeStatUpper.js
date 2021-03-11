@@ -13,12 +13,12 @@ const RealtimeStatUpper = (props) => {
 	return (
 		<>
 			<Breadcrumb
-				pageHierarchy={["데시보드", "실시간 데이터"]}
+				pageHierarchy={["대시보드", "실시간 데이터"]}
 				locationHierarchy={[city, district, road, spot]}
 			/>
 			<div className="page-title-and-search-input">
 				<Title level={3} style={{ minWidth: 285 }}>
-					실시간 통게 | {camera}
+					실시간 통계 | {camera}
 				</Title>
 				<div className="search-input-drawer">
 					<SearchDrawer />

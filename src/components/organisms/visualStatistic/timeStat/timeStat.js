@@ -4,7 +4,7 @@ import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";
 
-import DayTableCard from "../../../molecules/tableCard/DayTableCard";
+import TimeTableCard from "../../../molecules/tableCard/TimeTableCard";
 import TimeDataVisualization from "../../../molecules/dataVisualization/TimeDataVisualization";
 import "./style.less";
 
@@ -274,22 +274,16 @@ const TimeVisualization = (props) => {
 									dayNightLaneData={dayNightLaneData}
 									setDayNightLaneData={setDayNightLaneData}
 								/>
-								<DayTableCard
+								<TimeTableCard
 									period={period}
 									tableKey="first"
 									currentLaneNum={currentLaneNum}
-									// isLoadingTrafficTotal={isLoadingTrafficTotal}
-									// isLoadingTrafficLane={isLoadingTrafficLane}
-									// isLoadingPedestrians={isLoadingPedestrians}
-									// trafficTotalData={trafficTotalData}
-									// trafficLaneData={trafficLaneData}
-									// pedestriansData={pedestriansData}
 									timeClassification={timeClassification}
 									startDate={startDate}
 									endTime={endTime}
 									interval={interval}
 								/>
-								<DayTableCard
+								<TimeTableCard
 									period={period}
 									tableKey="overSpeed"
 									lane={currentLaneNum}
@@ -298,7 +292,7 @@ const TimeVisualization = (props) => {
 									timeClassification={timeClassification}
 									interval="15M"
 								/>
-								<DayTableCard
+								<TimeTableCard
 									period={period}
 									tableKey="second"
 									lane={currentLaneNum}
