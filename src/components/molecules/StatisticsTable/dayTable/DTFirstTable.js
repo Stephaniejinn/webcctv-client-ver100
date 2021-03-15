@@ -13,6 +13,7 @@ const DTFisrtTable = (props) => {
 		currentLaneNum,
 		startDate,
 		endTime,
+		currentTime = "23:59:59",
 		interval,
 		cameraCode,
 		baseURL,
@@ -388,7 +389,7 @@ const DTFisrtTable = (props) => {
 	const axiosData = () => {
 		axios
 			.get(
-				`${baseURL}/statistics/traffic/first?groupBy=time&interval=${interval}&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&laneNumber=${currentLaneNum}`,
+				`${baseURL}/statistics/traffic/first?groupBy=time&interval=${interval}&camCode=0004&startDate=${startDate}&endTime=${endTime} ${currentTime}&laneNumber=${currentLaneNum}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,

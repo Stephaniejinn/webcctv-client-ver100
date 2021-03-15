@@ -35,6 +35,7 @@ const WeekStatPage = () => {
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
 						/>
+						{console.log(timeClassification)}
 						{firstFilter ? (
 							<>
 								<div className="statistic-general-visualization">

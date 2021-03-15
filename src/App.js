@@ -15,7 +15,7 @@ import LoginPage from "./components/pages/login/LoginPage";
 const App = () => {
 	window.localStorage.setItem(
 		"token",
-		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkdCMTAwMSIsImlhdCI6MTYxNTE2ODA1NSwiZXhwIjoxNjE1NzcyODU1LCJpc3MiOiJnbG9iYWxicmlkZ2UuY29tIiwianRpIjoiZGI5OGM1YjMtYjM0YS00MGM2LWJjNWEtNGRhOTNlZTU3MzI5In0.093UYCyChlM5AJfmI031YaWJHKR0ktcU9TK3eTsuOpk"
+		"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkdCMTAwMSIsImlhdCI6MTYxNTc3NjEzMywiZXhwIjoxNjE2MzgwOTMzLCJpc3MiOiJnbG9iYWxicmlkZ2UuY29tIiwianRpIjoiYWU5YTk4MDktOGU0MC00YTkwLTg5MTgtNjY4NzA1MmY5NTE3In0.wLockphNu6Nkinm6kZbG44pYHbsRR-K5y7U7r6firrM"
 	);
 
 	return (

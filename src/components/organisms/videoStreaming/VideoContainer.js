@@ -1,36 +1,63 @@
 import React from "react";
 import { Card, Typography } from "antd";
-import moment from "moment";
 
-// import Video from "../../molecules/video/Video";
+import axios from "axios";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
+
+import Video from "../../molecules/video/Video";
 import GeneralVisualization from "../generalVisualization/GeneralVisualization";
 
 import "./style.less";
 
 const { Title } = Typography;
 
-const VideoContainer = ({ camName, httpAddress, page }) => {
-	// const date = moment(new Date()).format("YYYY-MM-DD");
-	const date = "2020-03-11";
-
+const VideoContainer = ({
+	page,
+	camName,
+	httpAddress,
+	date = "",
+	currentTime = "",
+	realtimeCamCode = "",
+}) => {
 	return (
 		<div className="video-container">
-			{page === "STREAMING" ? <Title level={5}>{camName}</Title> : null}
+			{page === "STREAMING" && <Title level={5}>{camName}</Title>}
 			<div className="video-container-streamming">
-				<Card />
-				{/* <Card>{httpAddress && <Video source={httpAddress} />}</Card> */}
+				<Card>{httpAddress && <Video source={httpAddress} />}</Card>
 			</div>
-			{page === "STREAMING" ? (
+			{page === "STREAMING" && (
 				<div className="video-container-graph">
 					<GeneralVisualization
-						timeClassification={true}
 						page={page}
 						startDate={date}
 						endTime={date}
+						currentTime={currentTime}
+						realtimeCamCode="0004"
 					/>
 				</div>
-			) : null}
+			)}
 		</div>
 	);
 };
-export default VideoContainer;
+const mapStateToProps = (state) => {
+	return {
+		city: state.location.city,
+		district: state.location.district,
+		road: state.location.road,
+		spot: state.location.spot,
+		camera: state.location.camera,
+		baseURL: state.baseURL.baseURL,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getLocationInfo: () => {
+			dispatch(actions.getLocation());
+		},
+		getBaseURL: () => {
+			dispatch(actions.getURL());
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(VideoContainer);

@@ -11,14 +11,17 @@ const MyCascader = (props) => {
 		setSelectedLocationCode,
 		displayLocation = true,
 		setLocationChange,
+		baseURL,
 	} = props;
 
 	// const [visible, setVisible] = useState(true);
 	const [parsedOptions, setParsedOptions] = useState([]);
+	const [camAddress, setCamAddress] = useState({});
 
-	const baseURL = "http://119.197.240.186:3003/api";
+	// const baseURL = "http://119.197.240.186:3003/api";
 	const currentURL = "/locations";
 	var locationOptionsParse = [];
+	var cameraAddress = {};
 
 	if (props.city === "" || displayLocation === false) {
 		var defaultOption = [];
@@ -56,6 +59,7 @@ const MyCascader = (props) => {
 					getDisricts(cityCode);
 					// console.log("options test: ", locationOptionsParse);
 					setParsedOptions(locationOptionsParse);
+					setCamAddress(cameraAddress);
 				});
 			})
 			.catch((err) => {
@@ -208,7 +212,7 @@ const MyCascader = (props) => {
 			)
 			.then((res) => {
 				res.data.forEach((cameraInfo) => {
-					const { camCode, camName, upboundFlag } = cameraInfo;
+					const { camCode, camName, upboundFlag, httpStreamAddr } = cameraInfo;
 					const cameraTemp = {};
 					cameraTemp["value"] = camCode;
 					upboundFlag
@@ -216,6 +220,7 @@ const MyCascader = (props) => {
 						: (cameraTemp["label"] = camName + " [하행]");
 
 					currentCameras.push(cameraTemp);
+					cameraAddress[camCode] = httpStreamAddr;
 				});
 			})
 			.catch((err) => {
@@ -242,6 +247,7 @@ const MyCascader = (props) => {
 			obj[codeKeys[idx]] = item;
 			return obj;
 		}, {});
+		selectedLocationCode["camAddress"] = camAddress[value[4]];
 		setSelectedLocation(selectedLocation);
 		setSelectedLocationCode(selectedLocationCode);
 		if (setLocationChange) {
@@ -279,12 +285,16 @@ const mapStateToProps = (state) => {
 		road: state.location.road,
 		spot: state.location.spot,
 		camera: state.location.camera,
+		baseURL: state.baseURL.baseURL,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
 		getLocationInfo: () => {
 			dispatch(actions.getLocation());
+		},
+		getBaseURL: () => {
+			dispatch(actions.getURL());
 		},
 	};
 };

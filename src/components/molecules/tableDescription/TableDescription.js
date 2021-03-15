@@ -1,6 +1,5 @@
 import React from "react";
-import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
-import { Collapse, Typography, Divider, Button } from "antd";
+import { Typography, Divider } from "antd";
 import moment from "moment";
 import "moment-timezone";
 
@@ -16,7 +15,9 @@ const TableDescription = (props) => {
 		startDate,
 		endTime,
 		camera,
+		currentTime,
 		timeClassification,
+		page = "",
 	} = props;
 
 	const { Title, Text } = Typography;
@@ -28,17 +29,29 @@ const TableDescription = (props) => {
 		tableKey === "first" ? "1차" : tableKey === "second" ? "2차" : "과속 ";
 	return (
 		<div className="table-description">
-			<Title level={5}>
-				{periodText} 누적 통계 {dataTypeText} 데이터 분석
-			</Title>
+			{page === "REALSTATISTIC" ? (
+				<Title level={5}> 실시간 통계 데이터</Title>
+			) : (
+				<Title level={5}>
+					{periodText} 누적 통계 {dataTypeText} 데이터 분석
+				</Title>
+			)}
 			<Divider />
 			<Text>
 				{period === "DAY" ? (
-					<>
-						{dataTypeText} 분석 <Divider type="vertical" /> {camera}
-						<Divider type="vertical" />
-						{moment(startDate).format("YYYY년 MM월 DD일")}
-					</>
+					page === "REALSTATISTIC" ? (
+						<>
+							{camera}
+							<Divider type="vertical" />
+							{moment(startDate).format("YYYY년 MM월 DD일")} {currentTime}
+						</>
+					) : (
+						<>
+							{dataTypeText} 분석 <Divider type="vertical" /> {camera}
+							<Divider type="vertical" />
+							{moment(startDate).format("YYYY년 MM월 DD일")}
+						</>
+					)
 				) : (
 					<>
 						{dataTypeText} 분석 <Divider type="vertical" /> {camera}

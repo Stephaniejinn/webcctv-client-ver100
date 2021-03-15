@@ -1,22 +1,25 @@
 import React from "react";
-import { Layout, Typography } from "antd";
+import { Layout } from "antd";
+import moment from "moment";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
 import RealtimeStatUpper from "../../organisms/realtimeStatUpper/RealtimeStatUpper";
 import VideoContainer from "../../organisms/videoStreaming/VideoContainer";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-// import SearchDrawer from "../../molecules/searchDrawer/SearchDrawer";
-// import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
+import TimeTableCard from "../../molecules/tableCard/TimeTableCard";
 
 import "./style.less";
 
-const RealtimeStatisticPage = () => {
+const RealtimeStatisticPage = (props) => {
+	const { camAddress, camera } = props;
 	const { Content } = Layout;
 	// const date = moment(new Date()).format("YYYY-MM-DD");
+	const currentTime = moment(new Date()).format("HH:mm:ss");
 	const date = "2020-03-11";
 
-	// const { Title } = Typography;
 	return (
 		<div className="realtime-statistic-page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -26,15 +29,26 @@ const RealtimeStatisticPage = () => {
 					<Content style={{ margin: "0 16px" }}>
 						<RealtimeStatUpper />
 						<div className="realtime-statistic-video-and-graph">
-							<VideoContainer camName="camName" httpAddress="address" />
+							<VideoContainer camName={camera} httpAddress={camAddress} />
 							<div className="realtime-statistic-graph">
 								<GeneralVisualization
+									page="REALSTATISTIC"
 									startDate={date}
 									endTime={date}
-									timeClassification={true}
+									currentTime={currentTime}
 								/>
 							</div>
 						</div>
+						<TimeTableCard
+							period="DAY"
+							page="REALSTATISTIC"
+							tableKey="first"
+							currentLaneNum="0"
+							startDate={date}
+							endTime={date}
+							currentTime={currentTime}
+							interval="15M"
+						/>
 					</Content>
 				</Layout>
 			</Layout>
@@ -42,4 +56,23 @@ const RealtimeStatisticPage = () => {
 	);
 };
 
-export default RealtimeStatisticPage;
+const mapStateToProps = (state) => {
+	return {
+		camAddress: state.locationCode.camAddress,
+		camera: state.location.camera,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getLocationInfo: () => {
+			dispatch(actions.getLocation());
+		},
+		getLocationCodeInfo: () => {
+			dispatch(actions.getLocationCode());
+		},
+	};
+};
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(RealtimeStatisticPage);

@@ -25,7 +25,9 @@ const TimeTableCard = (props) => {
 		currentLaneNum,
 		startDate,
 		endTime,
+		currentTime = "23:59:59",
 		interval,
+		page = "",
 	} = props;
 
 	return (
@@ -39,6 +41,8 @@ const TimeTableCard = (props) => {
 							endTime={endTime}
 							timeClassification={true}
 							tableKey={tableKey}
+							page={page}
+							currentTime={currentTime}
 							// currentLaneNum={parseInt(currentLaneNum)}
 						/>
 						<DTFirstTable
@@ -46,6 +50,7 @@ const TimeTableCard = (props) => {
 							startDate={startDate}
 							endTime={endTime}
 							interval={interval}
+							currentTime={currentTime}
 						/>
 					</>
 				) : parseInt(currentLaneNum) === 0 ? (
@@ -56,7 +61,6 @@ const TimeTableCard = (props) => {
 							endTime={endTime}
 							timeClassification={true}
 							tableKey={tableKey}
-							// currentLaneNum={parseInt(currentLaneNum)}
 						/>
 						{tableKey === "overSpeed" ? (
 							<OverSpeedTable startDate={startDate} endTime={endTime} />

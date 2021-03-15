@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Switch, Space, Button, Select } from "antd";
+import { Typography, Button, Radio } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
 
@@ -25,21 +25,17 @@ const SeachData = (props) => {
 
 	const { Title } = Typography;
 	const { Text } = Typography;
-	const { Option } = Select;
 
 	const [tempStartDate, setTempStartDate] = useState("");
 	const [tempEndTime, setTempEndTime] = useState("");
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
+	// const [radioValue, setRadioValue] = useState(1)
 
 	const day = "일간 누적 통계";
 	const week = "주간 누적 통계";
 	const month = "월간 누적 통계";
 	const search = "기간 별 데이터 조회";
-
-	// const handleUnitSelectChange = (value) => {
-	// 	setUnit(value);
-	// };
 
 	const handleSearch = () => {
 		if (
@@ -48,23 +44,16 @@ const SeachData = (props) => {
 			Object.keys(selectedLocation).length !== 0
 		) {
 			//if location changed
-			// console.log("selectedLocation lenth", selectedLocation);
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);
-			// if (period === "SERACH") {
-			// 	setSearchUnit(unit);
-			// }
 		} else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
 			//if start and end date changed, location doesn't change
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
-			// if (period === "SERACH") {
-			// 	setSearchUnit(unit);
-			// }
 		} else {
 			console.log("need to select start time, end time, location");
 		}
@@ -83,53 +72,47 @@ const SeachData = (props) => {
 			</Title>
 			<div className="search-area-body">
 				<div className="search-area-input">
-					<Cascader
-						setSelectedLocation={setSelectedLocation}
-						setSelectedLocationCode={setSelectedLocationCode}
-					/>
-					<DatePicker
-						period={period}
-						setTempStartDate={setTempStartDate}
-						setTempEndTime={setTempEndTime}
-					/>
-					{period === "SEARCH" ? null : (
-						<div className="search-area-switch">
-							<Space>
-								<Text strong style={{ marginRight: 1 }}>
-									시간별 기준
+					<div className="search-area-input">
+						<Cascader
+							setSelectedLocation={setSelectedLocation}
+							setSelectedLocationCode={setSelectedLocationCode}
+						/>
+						<DatePicker
+							period={period}
+							setTempStartDate={setTempStartDate}
+							setTempEndTime={setTempEndTime}
+						/>
+						{period !== "SEARCH" && (
+							<div className="search-area-radio">
+								<Text
+									strong
+									style={{ marginRight: 10, minWidth: 60, marginTop: 4 }}
+								>
+									조회기준
 								</Text>
-								<Switch
-									defaultChecked={classification}
-									checked={classification}
-									onChange={(checked) => setClassification(checked)}
-								/>
-							</Space>
-							<Space>
-								<Text strong style={{ marginRight: 1 }}>
-									차선별 기준
-								</Text>
-								<Switch
-									defaultChecked={!classification}
-									checked={!classification}
-									onChange={(checked) => setClassification(!checked)}
-								/>
-							</Space>
-						</div>
-					)}
-					{
-						// period === "SEARCH" ? (
-						// 	<Select onChange={handleUnitSelectChange} defaultValue="15M">
-						// 		<Option value="15M">15분 단위</Option>
-						// 		<Option value="1H">1시간 단위</Option>
-						// 	</Select>
-						// ) : (
-						classification === false &&
-							(period === "WEEK" ? (
+								<Radio.Group
+									defaultChecked={true}
+									value={classification}
+									onChange={(e) => setClassification(e.target.value)}
+									optionType="button"
+								>
+									<Radio.Button value={true}>시간별</Radio.Button>
+									<Radio.Button value={false}>차선별</Radio.Button>
+								</Radio.Group>
+							</div>
+						)}
+					</div>
+
+					{classification === false &&
+						(period === "WEEK" ? (
+							<div className="search-area-input-radio">
 								<MultiRadio page={period} />
-							) : period === "MONTH" ? (
+							</div>
+						) : period === "MONTH" ? (
+							<div className="search-area-input-radio">
 								<MultiRadio page={period} />
-							) : null)
-					}
+							</div>
+						) : null)}
 				</div>
 				<div className="search-area-input-button">
 					<Button

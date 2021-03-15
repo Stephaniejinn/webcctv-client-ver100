@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Button } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
@@ -12,11 +13,18 @@ const CascaderWButton = (props) => {
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
 	const [locationChange, setLocationChange] = useState(false);
+	const history = useHistory();
+	const { pathname } = window.location;
 
 	const handleSearch = () => {
 		if (locationChange) {
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);
+			if (pathname !== "/realtime/statistic") {
+				history.push("/realtime/statistic");
+			}
+		} else {
+			console.log("location didn't change or empty");
 		}
 	};
 

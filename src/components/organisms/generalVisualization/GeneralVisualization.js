@@ -14,32 +14,33 @@ import "./style.less";
 const GeneralVisualization = (props) => {
 	const {
 		page = "DEFAULT",
-		period,
 		startDate,
 		endTime,
-		interval,
 		cameraCode,
+		currentTime = "23:59:59",
+		realtimeCamCode = "",
 		baseURL,
 	} = props;
 
 	const trafficURL = "/statistics/traffic?groupBy=time";
 	const violationURL = "/violations/speeding?groupBy=lane";
-	// const group = timeClassification ? "time" : "lane";
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [isLoadingViolation, setLoadingViolation] = useState(true);
 
 	const [trafficData, setTrafficData] = useState([]);
 	const [violationData, setViolationData] = useState([]);
 
+	const camCode = page === "STREAMING" ? realtimeCamCode : cameraCode;
+
 	useEffect(() => {
 		getTrafficData();
 		getViolationData();
-	}, [cameraCode, startDate, endTime]);
+	}, [camCode, startDate, endTime]);
 
 	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=15M&limit=0&offset=0`,
+				`${baseURL}${trafficURL}&camCode=0004&startDate=${startDate}&endTime=${endTime} ${currentTime}&interval=15M&limit=0&offset=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -58,7 +59,7 @@ const GeneralVisualization = (props) => {
 	const getViolationData = () => {
 		axios
 			.get(
-				`${baseURL}${violationURL}&camCode=0004&startDate=${startDate}&endTime=${startDate} 23:59:59`,
+				`${baseURL}${violationURL}&camCode=0004&startDate=${startDate}&endTime=${startDate} ${currentTime}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
