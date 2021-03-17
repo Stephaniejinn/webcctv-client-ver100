@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
@@ -11,10 +11,10 @@ import "../style.less";
 
 const SearchDownloadPage = () => {
 	const [timeClassification, setTimeClassification] = useState(true);
-	const [searchUnit, setSearchUnit] = useState("15M");
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
+	const [count, setCount] = useState(false);
 
 	const { Content } = Layout;
 
@@ -35,10 +35,24 @@ const SearchDownloadPage = () => {
 							endTime={endTime}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
-							// searchUnit={searchUnit}
+							setCount={setCount}
 						/>
 						{firstFilter ? (
-							<SearchResultTab classification={timeClassification} />
+							count ? (
+								<SearchResultTab classification={timeClassification} />
+							) : (
+								<div
+									style={{
+										marginTop: 20,
+										marginBottom: 20,
+										textAlign: "center",
+										paddingTop: 30,
+										paddingBottom: 30,
+									}}
+								>
+									<Spin size="large" />
+								</div>
+							)
 						) : null}
 					</Content>
 				</Layout>

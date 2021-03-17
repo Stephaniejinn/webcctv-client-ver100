@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { Gauge } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const AvgSpeedGauge = (props) => {
 	const { isLoading, trafficData } = props;
 
-	const [avgSpeed, setavgSpeed] = useState([]);
+	const [Data, setavgSpeed] = useState([]);
+	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
 		if (!isLoading) {
+			setLoadingData(true);
 			parseAvgData();
 		}
 	}, [isLoading, trafficData]);
@@ -29,10 +32,11 @@ const AvgSpeedGauge = (props) => {
 			4 /
 			100;
 		setavgSpeed(GeneralAvgSpeed);
+		setLoadingData(false);
 	};
 
 	var config = {
-		percent: avgSpeed,
+		percent: Data,
 		range: {
 			ticks: [0, 1 / 3, 2 / 3, 1],
 			color: ["#F4664A", "#FAAD14", "#30BF78"],
@@ -63,7 +67,25 @@ const AvgSpeedGauge = (props) => {
 			},
 		},
 	};
-	return <Gauge {...config} />;
+	return (
+		<>
+			{isLoadingData ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Gauge {...config} />
+			)}
+		</>
+	);
 };
 
 export default AvgSpeedGauge;

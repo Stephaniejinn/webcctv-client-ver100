@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs } from "antd";
+import { Tabs, Spin, Space } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../actions";

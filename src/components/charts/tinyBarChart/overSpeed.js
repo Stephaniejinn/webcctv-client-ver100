@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { TinyColumn } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const OverSpeedTinyColumn = (props) => {
 	const { violationData, isLoading } = props;
 
 	const [Data, setData] = useState([]);
+	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
 		if (!isLoading) {
+			setLoadingData(true);
 			parseViolationData();
 		}
 	}, [isLoading, violationData]);
@@ -23,6 +26,7 @@ const OverSpeedTinyColumn = (props) => {
 		});
 
 		setData(overSpeedData);
+		setLoadingData(false);
 	};
 
 	var customlabel = ["승용차", "버스", "화물차", "오토바이"];
@@ -50,7 +54,26 @@ const OverSpeedTinyColumn = (props) => {
 			},
 		},
 	};
-	return <TinyColumn {...config} />;
+
+	return (
+		<>
+			{isLoadingData ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<TinyColumn {...config} />
+			)}
+		</>
+	);
 };
 
 export default OverSpeedTinyColumn;

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Pie } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const TrafficPie = (props) => {
 	const { trafficData, isLoading } = props;
-	const [vehicleRatio, setVehicleRatio] = useState([]);
+	const [Data, setVehicleRatio] = useState([]);
+	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
 		if (!isLoading) {
+			setLoadingData(true);
 			parseTraffic();
 		}
 	}, [isLoading, trafficData]);
@@ -40,10 +43,11 @@ const TrafficPie = (props) => {
 		});
 		// console.log("vehicleRatioData", vehicleRatioData);
 		setVehicleRatio(vehicleRatioData);
+		setLoadingData(false);
 	};
 	var config = {
 		appendPadding: 0,
-		data: vehicleRatio,
+		data: Data,
 		angleField: "value",
 		colorField: "type",
 		radius: 1,
@@ -78,7 +82,25 @@ const TrafficPie = (props) => {
 			},
 		},
 	};
-	return <Pie {...config} />;
+	return (
+		<>
+			{isLoadingData ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Pie {...config} />
+			)}
+		</>
+	);
 };
 
 export default TrafficPie;

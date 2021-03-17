@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { TinyColumn } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const AvgSpeedTinyColumn = (props) => {
 	const { trafficData, isLoading } = props;
 
 	const [avgSpeed, setAvgSpeed] = useState([]);
+	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
 		if (!isLoading) {
+			setLoadingData(true);
 			parseTrafficData();
 		}
 	}, [isLoading, trafficData]);
@@ -24,6 +27,7 @@ const AvgSpeedTinyColumn = (props) => {
 
 		const avgSpeedData = speedData.map((item) => item / trafficData.length);
 		setAvgSpeed(avgSpeedData);
+		setLoadingData(false);
 	};
 
 	var customlabel = ["승용차", "버스", "화물차", "오토바이"];
@@ -51,7 +55,25 @@ const AvgSpeedTinyColumn = (props) => {
 			},
 		},
 	};
-	return <TinyColumn {...config} />;
+	return (
+		<>
+			{isLoadingData ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<TinyColumn {...config} />
+			)}
+		</>
+	);
 };
 
 export default AvgSpeedTinyColumn;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Spin } from "antd";
 import moment from "moment";
 
 import axios from "axios";
@@ -550,7 +550,25 @@ const DTFisrtTable = (props) => {
 			});
 	};
 
-	return <Table columns={columns} dataSource={Data} size="small" bordered />;
+	return (
+		<>
+			{Data.length === 0 ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Table columns={columns} dataSource={Data} size="small" bordered />
+			)}
+		</>
+	);
 };
 const mapStateToProps = (state) => {
 	return {

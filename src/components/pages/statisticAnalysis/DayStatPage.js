@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout } from "antd";
+import React, { useState, useEffect } from "react";
+import { Layout, Spin } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
@@ -19,6 +19,7 @@ const DayStatPage = () => {
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
+	const [count, setCount] = useState(false);
 
 	const { Content } = Layout;
 
@@ -37,34 +38,48 @@ const DayStatPage = () => {
 							setStartDate={setStartDate}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
+							setCount={setCount}
 						/>
 						{firstFilter ? (
-							<>
-								<div className="statistic-general-visualization">
-									<GeneralVisualization
-										startDate={startDate}
-										endTime={endTime}
-										interval="15M"
-									/>
+							count ? (
+								<>
+									<div className="statistic-general-visualization">
+										<GeneralVisualization
+											startDate={startDate}
+											endTime={endTime}
+										/>
+									</div>
+									{timeClassification ? (
+										<TimeStatistic
+											period="DAY"
+											startDate={startDate}
+											endTime={endTime}
+											timeClassification={timeClassification}
+											interval="15M"
+										/>
+									) : (
+										<LaneStatistic
+											period="DAY"
+											startDate={startDate}
+											endTime={endTime}
+											timeClassification={timeClassification}
+											interval="15M"
+										/>
+									)}
+								</>
+							) : (
+								<div
+									style={{
+										marginTop: 20,
+										marginBottom: 20,
+										textAlign: "center",
+										paddingTop: 30,
+										paddingBottom: 30,
+									}}
+								>
+									<Spin size="large" />
 								</div>
-								{timeClassification ? (
-									<TimeStatistic
-										period="DAY"
-										startDate={startDate}
-										endTime={endTime}
-										timeClassification={timeClassification}
-										interval="15M"
-									/>
-								) : (
-									<LaneStatistic
-										period="DAY"
-										startDate={startDate}
-										endTime={endTime}
-										timeClassification={timeClassification}
-										interval="15M"
-									/>
-								)}
-							</>
+							)
 						) : null}
 					</Content>
 				</Layout>

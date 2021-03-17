@@ -25,30 +25,27 @@ const MySider = () => {
 	const { pathname: path } = window.location;
 
 	const [siderCollapsed, setSiderCollapsed] = useState(false);
-	const [openKeys, setOpenKeys] = useState(() => {
-		if (
-			path === "/statistic/day" ||
-			path === "/statistic/week" ||
-			path === "/statistic/month"
-		) {
-			return ["statistic"];
-		} else {
-			return [];
-		}
-	});
+	const [openKeys, setOpenKeys] = useState(["statistic"]);
+
+	// const [openKeys, setOpenKeys] = useState(() => {
+	// 	if (
+	// 		path === "/statistic/day" ||
+	// 		path === "/statistic/week" ||
+	// 		path === "/statistic/month"
+	// 	) {
+	// 		return ["statistic"];
+	// 	} else {
+	// 		return [];
+	// 	}
+	// });
 
 	const onCollapse = (collapsed) => {
 		setSiderCollapsed(collapsed);
 	};
 
-	// const handleClick = (e) => {
-	// 	console.log("click", e);
-	// };
-
 	const onOpenChange = (keys) => {
 		setOpenKeys(keys);
-		// console.log("check keys", keys);
-		// console.log("check open", openKeys);
+		console.log("check keys", keys);
 	};
 
 	return (
@@ -87,6 +84,7 @@ const MySider = () => {
 				defaultSelectedKeys={["/realtime/streaming"]}
 				selectedKeys={path}
 				openKeys={openKeys}
+				defaultOpenKeys={["statistic"]}
 				onOpenChange={onOpenChange}
 			>
 				<Menu.Item key="/realtime/streaming" icon={<VideoCameraOutlined />}>
@@ -116,9 +114,9 @@ const MySider = () => {
 				<Menu.Item key="/search" icon={<FileTextOutlined />}>
 					<Link to="/search">데이터 조회 및 다운로드</Link>
 				</Menu.Item>
-				<Menu.Item key="/comparison" icon={<PieChartOutlined />}>
+				{/* <Menu.Item key="/comparison" icon={<PieChartOutlined />}>
 					<Link to="/comparison">통계 비교</Link>
-				</Menu.Item>
+				</Menu.Item> */}
 			</Menu>
 		</Sider>
 	);

@@ -24,6 +24,7 @@ const GeneralVisualization = (props) => {
 
 	const trafficURL = "/statistics/traffic?groupBy=time";
 	const violationURL = "/violations/speeding?groupBy=lane";
+	// const group = timeClassification ? "time" : "lane";
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [isLoadingViolation, setLoadingViolation] = useState(true);
 

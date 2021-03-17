@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, Statistic } from "antd";
-
+import { Tabs, Spin } from "antd";
 import DayCntLineChart from "../../charts/lineChart/DTCnt";
 import DayPCULineChart from "../../charts/lineChart/DTPCU";
 import DayVehicleRatio from "../../charts/lineChart/DTVehicleRatio";

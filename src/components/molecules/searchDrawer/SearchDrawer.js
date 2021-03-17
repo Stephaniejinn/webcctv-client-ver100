@@ -26,6 +26,7 @@ const SearchDrawer = () => {
 				/>
 				<Drawer
 					placement="right"
+					maskStyle={{ backgroundColor: "transparent" }}
 					closable={false}
 					onClose={onClose}
 					visible={drawerVisible}

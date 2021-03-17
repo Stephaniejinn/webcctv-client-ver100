@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import { Table, Spin, Button, Modal } from "antd";
 import moment from "moment";
 
 import axios from "axios";
@@ -12,10 +12,12 @@ const DTOverSpeedTable = (props) => {
 	const { startDate, endTime, cameraCode, baseURL } = props;
 
 	const [Data, setData] = useState([]);
-
+	const [isLoadingData, setLoadingData] = useState(true);
+	const [isModalVisible, setIsModalVisible] = useState(false);
 	var TotalData = [];
 
 	useEffect(() => {
+		setLoadingData(true);
 		axiosData();
 	}, [startDate, endTime, cameraCode]);
 
@@ -23,27 +25,61 @@ const DTOverSpeedTable = (props) => {
 		{
 			title: "시간",
 			dataIndex: "time",
+			key: "time",
 		},
 		{
 			title: "차량번호",
 			dataIndex: "licenseNumber",
+			key: "licenseNumber",
 		},
 		{
 			title: "위반속도(km/h)",
 			dataIndex: "speed",
+			key: "speed",
 		},
 		{
 			title: "차종",
 			dataIndex: "vehicleType",
+			key: "vehicleType",
 		},
 		{
 			title: "이미지",
 			dataIndex: "imageLink",
+			key: "imageLink",
+			render: (imglink) => (
+				<>
+					<Button
+						type="link"
+						size="small"
+						onClick={() => setIsModalVisible(true)}
+					>
+						이미지 링크
+					</Button>
+					<Modal
+						title="과속차량 이미지"
+						centered
+						maskStyle={{ backgroundColor: "transparent" }}
+						visible={isModalVisible}
+						onOk={() => setIsModalVisible(false)}
+						onCancel={() => setIsModalVisible(false)}
+						footer={[
+							<Button
+								key="submit"
+								type="primary"
+								onClick={() => setIsModalVisible(false)}
+							>
+								확인
+							</Button>,
+						]}
+					>
+						<p>{imglink}</p>
+					</Modal>
+				</>
+			),
 		},
 	];
 
 	const axiosData = () => {
-		console.log(startDate, endTime);
 		axios
 			.get(
 				`${baseURL}/violations/speeding/records?camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
@@ -80,6 +116,7 @@ const DTOverSpeedTable = (props) => {
 					TotalData.push(dataTemp);
 				});
 				setData(TotalData);
+				setLoadingData(false);
 			})
 			.catch((err) => {
 				console.log(err);
@@ -87,11 +124,23 @@ const DTOverSpeedTable = (props) => {
 	};
 
 	return (
-		// <>
-		// 	{currentLaneNum === 0 ? (
-		<Table columns={columns} dataSource={Data} size="small" bordered />
-		// 	) : null}
-		// </>
+		<>
+			{isLoadingData ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Table columns={columns} dataSource={Data} size="small" bordered />
+			)}
+		</>
 	);
 };
 const mapStateToProps = (state) => {

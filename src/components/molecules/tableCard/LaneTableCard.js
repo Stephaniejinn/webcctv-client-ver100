@@ -41,9 +41,19 @@ const LaneTableCard = (props) => {
 					timeClassification={timeClassification}
 				/>
 			) : period === "WEEK" ? (
-				<h1>WEEK 1차 데이터 테이블</h1>
+				<DLFirstTable
+					currentLaneNum={parseInt(currentLaneNum)}
+					startDate={startDate}
+					endTime={endTime}
+					timeClassification={timeClassification}
+				/>
 			) : (
-				<h1>Month 1차 데이터 테이블</h1>
+				<DLFirstTable
+					currentLaneNum={parseInt(currentLaneNum)}
+					startDate={startDate}
+					endTime={endTime}
+					timeClassification={timeClassification}
+				/>
 			)}
 		</div>
 	);

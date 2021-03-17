@@ -16,6 +16,7 @@ const LaneVisualization = (props) => {
 		interval,
 		cameraCode,
 		baseURL,
+		additionalFilter,
 	} = props;
 
 	const [activeVisualKey, setActiveVisualKey] = useState("1");

@@ -23,17 +23,6 @@ const SingleRadio = (props) => {
 				<Radio value={3} disabled={multiSelected}>
 					주말
 				</Radio>
-				{page === "MONTH" && (
-					<>
-						<Radio value={4}>월</Radio>
-						<Radio value={5}>화</Radio>
-						<Radio value={6}>수</Radio>
-						<Radio value={7}>목</Radio>
-						<Radio value={8}>금</Radio>
-						<Radio value={9}>토</Radio>
-						<Radio value={10}>일</Radio>
-					</>
-				)}
 			</Radio.Group>
 		</>
 	);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
@@ -16,6 +16,8 @@ const WeekStatPage = () => {
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
+	const [additionalFilter, setAddFilter] = useState("ALL");
+	const [count, setCount] = useState(false);
 
 	const { Content } = Layout;
 
@@ -34,36 +36,51 @@ const WeekStatPage = () => {
 							setStartDate={setStartDate}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
+							setAddFilter={setAddFilter}
+							setCount={setCount}
 						/>
-						{console.log(timeClassification)}
 						{firstFilter ? (
-							<>
-								<div className="statistic-general-visualization">
-									<GeneralVisualization
-										startDate={startDate}
-										endTime={endTime}
-										timeClassification={timeClassification}
-										interval="1D"
-									/>
+							count ? (
+								<>
+									<div className="statistic-general-visualization">
+										<GeneralVisualization
+											startDate={startDate}
+											endTime={endTime}
+											timeClassification={timeClassification}
+										/>
+									</div>
+									{timeClassification ? (
+										<TimeStatistic
+											period="WEEK"
+											startDate={startDate}
+											endTime={endTime}
+											timeClassification={timeClassification}
+											interval="1D"
+										/>
+									) : (
+										<LaneStatistic
+											period="WEEK"
+											startDate={startDate}
+											endTime={endTime}
+											timeClassification={timeClassification}
+											interval="1D"
+											additionalFilter={additionalFilter}
+										/>
+									)}
+								</>
+							) : (
+								<div
+									style={{
+										marginTop: 20,
+										marginBottom: 20,
+										textAlign: "center",
+										paddingTop: 30,
+										paddingBottom: 30,
+									}}
+								>
+									<Spin size="large" />
 								</div>
-								{timeClassification ? (
-									<TimeStatistic
-										period="WEEK"
-										startDate={startDate}
-										endTime={endTime}
-										timeClassification={timeClassification}
-										interval="1D"
-									/>
-								) : (
-									<LaneStatistic
-										period="WEEK"
-										startDate={startDate}
-										endTime={endTime}
-										timeClassification={timeClassification}
-										interval="1D"
-									/>
-								)}
-							</>
+							)
 						) : null}
 					</Content>
 				</Layout>

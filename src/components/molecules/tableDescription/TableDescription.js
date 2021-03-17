@@ -31,6 +31,10 @@ const TableDescription = (props) => {
 		<div className="table-description">
 			{page === "REALSTATISTIC" ? (
 				<Title level={5}> 실시간 통계 데이터</Title>
+			) : tableKey === "overSpeed" ? (
+				<Title level={5}>
+					{periodText} {dataTypeText} 데이터
+				</Title>
 			) : (
 				<Title level={5}>
 					{periodText} 누적 통계 {dataTypeText} 데이터 분석
@@ -47,14 +51,14 @@ const TableDescription = (props) => {
 						</>
 					) : (
 						<>
-							{dataTypeText} 분석 <Divider type="vertical" /> {camera}
+							{dataTypeText} 데이터 <Divider type="vertical" /> {camera}
 							<Divider type="vertical" />
 							{moment(startDate).format("YYYY년 MM월 DD일")}
 						</>
 					)
 				) : (
 					<>
-						{dataTypeText} 분석 <Divider type="vertical" /> {camera}
+						{dataTypeText} 데이터 <Divider type="vertical" /> {camera}
 						<Divider type="vertical" />
 						{moment(startDate).format("YYYY년 MM월 DD일")} ~{" "}
 						{moment(endTime).format("YYYY년 MM월 DD일")}

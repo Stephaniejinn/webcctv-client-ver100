@@ -42,7 +42,7 @@ const Video = ({ source }) => {
 			src={source}
 			onClick={handleClick}
 			muted
-			autoPlay
+			// autoPlay
 			controls={isMobile}
 			preload="auto"
 		/>
