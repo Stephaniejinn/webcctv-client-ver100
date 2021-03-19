@@ -1,26 +1,51 @@
-import React from "react";
-import { Collapse, Typography, Divider, Button } from "antd";
+import React, { useEffect } from "react";
+import { Collapse, Typography, Divider } from "antd";
 import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
+import moment from "moment";
+import axios from "axios";
+import { connect } from "react-redux";
+import * as actions from "../../../redux/actions";
 
 import "./style.less";
 
-const SearchCollapsedTable = () => {
+const SearchCollapsedTable = (props) => {
+	const { startDate, endTime, camera, cameraCode, baseURL } = props;
 	const { Panel } = Collapse;
 	const { Title } = Typography;
 
-	const collapseHeader = (
+	const collapseHeaderFirst = (
 		<div className="table-collapse-header">
 			1차 데이터
+			{/* <Divider type="vertical" />
+			{camera} */}
 			<Divider type="vertical" />
-			수인사거리1[하행]
+			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
 			<Divider type="vertical" />
-			2020년 1월 1월 ~ 2020년 1월 12일
-			<Divider type="vertical" />
-			구간 전체 시간별 데이터 <Divider type="vertical" />
+			전체 및 특정 차선 데이터 <Divider type="vertical" />
 			15분 단위
 		</div>
 	);
 
+	const collapseHeaderSecond = (
+		<div className="table-collapse-header">
+			2차 데이터
+			<Divider type="vertical" />
+			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
+			<Divider type="vertical" />
+			전체 데이터 <Divider type="vertical" />
+			15분 단위
+		</div>
+	);
+	const collapseHeaderOverSpeed = (
+		<div className="table-collapse-header">
+			과속 데이터
+			<Divider type="vertical" />
+			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
+			<Divider type="vertical" />
+			전체 데이터 <Divider type="vertical" />
+			15분 단위
+		</div>
+	);
 	const genExtra = () => (
 		<div
 			onClick={(event) => {
@@ -32,13 +57,11 @@ const SearchCollapsedTable = () => {
 			다운로드
 		</div>
 	);
-	// var expandButton = <Button type="text" icon={<EyeOutlined />}> 미리보기</Button>;
-	// console.log(typeof expandButton);
 
 	return (
 		<div className="table-collapse">
 			<Title level={5} style={{ marginTop: 10 }}>
-				데이터 조회 결과
+				{camera} 데이터 조회 결과
 			</Title>
 			<Divider />
 			<Collapse
@@ -52,13 +75,13 @@ const SearchCollapsedTable = () => {
 					</div>
 				)}
 			>
-				<Panel header={collapseHeader} key="1" extra={genExtra()}>
+				<Panel header={collapseHeaderFirst} key="1" extra={genExtra()}>
 					<p>text</p>
 				</Panel>
-				<Panel header={collapseHeader} key="2" extra={genExtra()}>
+				<Panel header={collapseHeaderSecond} key="2" extra={genExtra()}>
 					<p>text</p>
 				</Panel>
-				<Panel header={collapseHeader} key="3" extra={genExtra()}>
+				<Panel header={collapseHeaderOverSpeed} key="3" extra={genExtra()}>
 					<p>text</p>
 				</Panel>
 			</Collapse>
@@ -66,4 +89,24 @@ const SearchCollapsedTable = () => {
 	);
 };
 
-export default SearchCollapsedTable;
+const mapStateToProps = (state) => {
+	return {
+		cameraCode: state.locationCode.cameraCode,
+		baseURL: state.baseURL.baseURL,
+		camera: state.location.camera,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		// getLocationCodeInfo: () => {
+		// 	dispatch(actions.getLocationCode());
+		// },
+		// getBaseURL: () => {
+		// 	dispatch(actions.getURL());
+		// },
+	};
+};
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(SearchCollapsedTable);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Layout, Spin } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";

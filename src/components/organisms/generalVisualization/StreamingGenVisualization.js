@@ -11,14 +11,13 @@ import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
 
 import "./style.less";
 
-const GeneralVisualization = (props) => {
+const StreamingGeneralVisualization = (props) => {
 	const {
 		page = "DEFAULT",
 		startDate,
 		endTime,
-		cameraCode,
-		currentTime = "23:59:59",
-		realtimeCamCode = "",
+		currentTime,
+		realtimeCamCode,
 		baseURL,
 	} = props;
 
@@ -31,20 +30,15 @@ const GeneralVisualization = (props) => {
 	const [trafficData, setTrafficData] = useState([]);
 	const [violationData, setViolationData] = useState([]);
 
-	var camCode = page === "STREAMING" ? realtimeCamCode : cameraCode;
-	if (cameraCode === "") {
-		camCode = "0001";
-	}
-
 	useEffect(() => {
 		getTrafficData();
 		getViolationData();
-	}, [camCode, startDate, endTime]);
+	}, [realtimeCamCode, startDate, endTime]);
 
 	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}&camCode=0004&startDate=${startDate}&endTime=${endTime} ${currentTime}&interval=15M&limit=0&offset=0`,
+				`${baseURL}${trafficURL}&camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&interval=15M&limit=0&offset=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -63,7 +57,7 @@ const GeneralVisualization = (props) => {
 	const getViolationData = () => {
 		axios
 			.get(
-				`${baseURL}${violationURL}&camCode=0004&startDate=${startDate}&endTime=${startDate} ${currentTime}`,
+				`${baseURL}${violationURL}&camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${startDate} ${currentTime}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -82,12 +76,12 @@ const GeneralVisualization = (props) => {
 	const TrafficPieChart = (
 		<TrafficPie isLoading={isLoadingTraffic} trafficData={trafficData} />
 	);
-	const GaugeChart = (
-		<AvgSpeedGauge isLoading={isLoadingTraffic} trafficData={trafficData} />
-	);
-	var AvgSpeedTinyBarChart = (
-		<AvgSpeedTinyBar isLoading={isLoadingTraffic} trafficData={trafficData} />
-	);
+	// const GaugeChart = (
+	// 	<AvgSpeedGauge isLoading={isLoadingTraffic} trafficData={trafficData} />
+	// );
+	// var AvgSpeedTinyBarChart = (
+	// 	<AvgSpeedTinyBar isLoading={isLoadingTraffic} trafficData={trafficData} />
+	// );
 
 	var OverSpeedTinyBarChart = (
 		<OverSpeedTinyBar
@@ -98,15 +92,15 @@ const GeneralVisualization = (props) => {
 
 	return (
 		<div className="general-graph-layout">
-			{page === "STREAMING" ? (
-				<div className="general-graph-card">
-					<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-					<VisualizationCard
-						title="차종별 과속차량"
-						chart={OverSpeedTinyBarChart}
-					/>
-				</div>
-			) : (
+			{/* {page === "STREAMING" ? ( */}
+			<div className="general-graph-card">
+				<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
+				<VisualizationCard
+					title="차종별 과속차량"
+					chart={OverSpeedTinyBarChart}
+				/>
+			</div>
+			{/* ) : (
 				<>
 					<div className="general-graph-card">
 						<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
@@ -123,7 +117,7 @@ const GeneralVisualization = (props) => {
 						/>
 					</div>
 				</>
-			)}
+			)} */}
 		</div>
 	);
 };
@@ -146,4 +140,4 @@ const mapDispatchToProps = (dispatch) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(GeneralVisualization);
+)(StreamingGeneralVisualization);

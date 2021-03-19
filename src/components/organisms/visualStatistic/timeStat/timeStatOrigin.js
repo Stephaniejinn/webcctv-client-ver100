@@ -71,6 +71,8 @@ const TimeVisualization = (props) => {
 			tabLaneNum.push(`${idx} 차선`);
 		}
 		setTotalLaneArr(tabLaneNum);
+
+		getLaneNum();
 	}, [cameraCode]);
 
 	useEffect(() => {

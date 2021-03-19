@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Typography, Button, Radio } from "antd";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import Cascader from "../../atoms/cascader/Cascader";
 import DatePicker from "../../atoms/datePicker/DatePicker";

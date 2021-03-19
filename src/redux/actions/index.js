@@ -1,6 +1,11 @@
-export const userInfo = () => ({
-	type: "USER_INFO",
-	payload: "",
+// export const userInfo = () => ({
+// 	type: "USER_INFO",
+// 	payload: "",
+// });
+
+export const setUserInfo = (payload) => ({
+	type: "USER_INFO_SET",
+	payload,
 });
 
 export const getLocation = () => ({

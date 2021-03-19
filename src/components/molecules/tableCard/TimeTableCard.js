@@ -25,7 +25,7 @@ const TimeTableCard = (props) => {
 		currentLaneNum,
 		startDate,
 		endTime,
-		currentTime = "23:59:59",
+		currentTime,
 		interval,
 		page = "",
 	} = props;

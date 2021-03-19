@@ -4,7 +4,7 @@ import moment from "moment";
 
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../../actions";
+import * as actions from "../../../../redux/actions";
 
 import "../style.less";
 
@@ -13,12 +13,18 @@ const DTFisrtTable = (props) => {
 		currentLaneNum,
 		startDate,
 		endTime,
-		currentTime = "23:59:59",
+		currentTime,
 		interval,
 		cameraCode,
 		baseURL,
 	} = props;
 
+	var curTime;
+	if (currentTime) {
+		curTime = currentTime.format("HH:mm:ss");
+	} else {
+		curTime = "23:59:59";
+	}
 	const [Data, setData] = useState([]);
 	var FirstRow = {
 		key: 0,
@@ -389,7 +395,7 @@ const DTFisrtTable = (props) => {
 	const axiosData = () => {
 		axios
 			.get(
-				`${baseURL}/statistics/traffic/first?groupBy=time&interval=${interval}&camCode=0004&startDate=${startDate}&endTime=${endTime} ${currentTime}&laneNumber=${currentLaneNum}`,
+				`${baseURL}/statistics/traffic/first?groupBy=time&interval=${interval}&camCode=0004&startDate=${startDate}&endTime=${endTime} ${curTime}&laneNumber=${currentLaneNum}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,

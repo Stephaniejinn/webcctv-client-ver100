@@ -1,69 +1,40 @@
 import React from "react";
-import axios from "axios";
 import { Form, Input, Button, message, Card, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { connect } from "react-redux";
+import * as actions from "../../../redux/actions";
 
-// import { isLoginState } from "../../../states/app";
-// import { userInfoState } from "../../../states/ui";
-// import { LOGIN_API_URL } from "../../../constants";
-
-const { Title } = Typography;
-
-const LoginCard = () => {
-	// const setIsLoggedIn = useSetRecoilState(isLoginState);
-	// const setUserInfo = useSetRecoilState(userInfoState);
-	// const apiURL = LOGIN_API_URL;
+const LoginCard = (props) => {
+	const { baseURL, setUserInfo } = props;
+	const { Title } = Typography;
 
 	const login = (values) => {
-		// axios
-		// 	.get("http://119.197.240.186:3002/api/locations/cities", {
-		// 		headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-		// 	})
-		// 	.then((res) => {
-		// 		res.data.map((cityInfo) => {
-		// 			const { cityCode, cityName } = cityInfo;
-		// 			console.log(cityCode, cityName);
-		// 		});
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
-		// const { username, password } = values;
-		// axios
-		// 	.post(
-		// 		apiURL,
-		// 		JSON.stringify({
-		// 			username,
-		// 			password,
-		// 		}),
-		// 		{ headers: { "Content-Type": "application/json" } }
-		// 	)
-		// 	.then((res) => {
-		// 		const {
-		// 			success,
-		// 			username,
-		// 			avatarAbbr,
-		// 			affiliation,
-		// 			permission,
-		// 		} = res.data;
-		// 		if (success) {
-		// 			setUserInfo({
-		// 				username,
-		// 				avatarAbbr,
-		// 				affiliation,
-		// 				permission,
-		// 			});
-		// 			window.localStorage.setItem("username", username);
-		// 			window.localStorage.setItem("avatarAbbr", avatarAbbr);
-		// 			window.localStorage.setItem("affiliation", affiliation);
-		// 			// window.localStorage.setItem('permission', JSON.stringify(permission));
-		// 			setIsLoggedIn(success);
-		// 		}
-		// 	})
-		// 	.catch((err) => {
-		// 		setIsLoggedIn(false);
-		// 		message.error("로그인 실패");
-		// 	});
+		const { username, password } = values;
+		console.log(username, password);
+
+		axios
+			.post(
+				`${baseURL}/auth/tokens`,
+				JSON.stringify({
+					username,
+					password,
+				}),
+				{ headers: { "Content-Type": "application/json" } }
+			)
+			.then((res) => {
+				console.log(res);
+				const { jwt } = res.data;
+				window.localStorage.setItem("token", jwt);
+				let userInfo = {};
+				userInfo["username"] = username;
+				userInfo["isloggedIn"] = true;
+				setUserInfo(userInfo);
+			})
+			.catch((err) => {
+				console.log(err);
+				message.error("로그인 실패");
+			});
 	};
 
 	return (
@@ -122,4 +93,19 @@ const LoginCard = () => {
 	);
 };
 
-export default LoginCard;
+const mapStateToProps = (state) => {
+	return {
+		baseURL: state.baseURL.baseURL,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getBaseURL: () => {
+			dispatch(actions.getURL());
+		},
+		setUserInfo: (userInfo) => {
+			dispatch(actions.setUserInfo(userInfo));
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(LoginCard);

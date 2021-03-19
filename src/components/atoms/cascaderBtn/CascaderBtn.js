@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Button } from "antd";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import MyCascader from "../cascader/Cascader";
 

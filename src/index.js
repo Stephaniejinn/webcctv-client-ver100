@@ -1,28 +1,21 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/lib/integration/react";
+import configStore from "./redux/store";
+import { persistor } from "./redux/store";
 
-import reducers from "./reducers";
-import * as actions from "./actions";
 import App from "./App";
 
 import "./index.less";
 
-const store = createStore(reducers);
-console.log(store.getState());
-store.subscribe(() => console.log(store.getState()));
-
 ReactDOM.render(
-	// <Provider store={createStore(reducers)}>
-	<Provider store={store}>
-		<App />
+	<Provider store={configStore}>
+		<PersistGate loading={null} persistor={persistor}>
+			<App />
+		</PersistGate>
 	</Provider>,
-	// <React.StrictMode>
-	// 	<App />
-	// </React.StrictMode>,
-
 	document.getElementById("root")
 );
 

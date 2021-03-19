@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../../actions";
+import * as actions from "../../../../redux/actions";
 
 import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";

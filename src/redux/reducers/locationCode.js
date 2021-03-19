@@ -1,10 +1,11 @@
 const initialState = {
-	cityCode: "ICN",
-	districtCode: "28110",
-	roadCode: "2008001",
-	spotCode: "001",
-	cameraCode: "0001",
-	camAddress: "http://globalbridge3.iptime.org:4000/videos/output.m3u8",
+	cityCode: "",
+	districtCode: "",
+	roadCode: "",
+	spotCode: "",
+	cameraCode: "",
+	camAddress: "",
+	camLanes: "",
 };
 export default function location(state = initialState, action) {
 	switch (action.type) {
@@ -19,6 +20,7 @@ export default function location(state = initialState, action) {
 				spotCode,
 				cameraCode,
 				camAddress,
+				camLanes,
 			} = action.payload;
 
 			return {
@@ -28,6 +30,7 @@ export default function location(state = initialState, action) {
 				spotCode,
 				cameraCode,
 				camAddress,
+				camLanes,
 			};
 		default:
 			return state;

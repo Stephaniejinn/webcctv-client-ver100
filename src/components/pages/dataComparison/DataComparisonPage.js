@@ -25,7 +25,7 @@ const DataComparisonPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb pageHierarchy={["데시보드", "데이터 비교"]} />
+						<Breadcrumb pageHierarchy={["대시보드", "데이터 비교"]} />
 						<SearchComparison
 							period={period}
 							setPeriod={setPeriod}

@@ -3,7 +3,7 @@ import { Line } from "@ant-design/charts";
 
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 const LaneAvgSpeedLine = (props) => {
 	const {

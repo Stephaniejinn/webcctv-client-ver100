@@ -3,10 +3,10 @@ import { Card, Typography } from "antd";
 
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import Video from "../../molecules/video/Video";
-import GeneralVisualization from "../generalVisualization/GeneralVisualization";
+import GeneralVisualization from "../generalVisualization/StreamingGenVisualization";
 
 import "./style.less";
 
@@ -18,7 +18,7 @@ const VideoContainer = ({
 	httpAddress,
 	date = "",
 	currentTime = "",
-	realtimeCamCode = "",
+	realtimeCamCode = "0004",
 }) => {
 	return (
 		<div className="video-container">
@@ -33,6 +33,7 @@ const VideoContainer = ({
 						startDate={date}
 						endTime={date}
 						currentTime={currentTime}
+						// realtimeCamCode={realtimeCamCode}
 						realtimeCamCode="0004"
 					/>
 				</div>

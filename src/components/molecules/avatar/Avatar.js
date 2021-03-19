@@ -1,29 +1,32 @@
 import React from "react";
 import { HashLink as Link } from "react-router-hash-link";
-import { Menu, Dropdown, Typography, Divider, Avatar } from "antd";
+import { Menu, Dropdown, Typography, Divider, Avatar, Button } from "antd";
 import {
 	IdcardOutlined,
 	UserOutlined,
 	ExportOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import "./style.less";
 
-var userInfo = { userName: "", userAffiliation: "", userAvatarAbbr: "" };
-
-const MyAvatar = () => {
+const MyAvatar = (props) => {
+	const { username, affiliation, setUserInfo } = props;
 	const { Text } = Typography;
-
+	const HandleLogout = () => {
+		// console.log("logout");
+		let lougout = { isloggedIn: false };
+		setUserInfo(lougout);
+	};
 	const dropdownContent = (
 		<Menu style={{ width: 190 }}>
 			<Menu.Item>
 				<Text type="secondary" strong style={{ marginBottom: 6 }}>
-					접속 계정:{userInfo.userName}
+					접속 계정:{username}
 				</Text>
 				<Text type="secondary" strong>
-					소속: {userInfo.userAffiliation}
+					소속: {affiliation}
 				</Text>
 			</Menu.Item>
 			<Divider />
@@ -41,10 +44,15 @@ const MyAvatar = () => {
 			</Menu.Item>
 			<Divider />
 			<Menu.Item>
-				<Link to="/" style={{ color: "#595c97" }}>
+				<Button
+					size="small"
+					type="link"
+					style={{ color: "#595c97" }}
+					onClick={HandleLogout}
+				>
 					<ExportOutlined />
 					로그아웃
-				</Link>
+				</Button>
 			</Menu.Item>
 		</Menu>
 	);
@@ -63,25 +71,24 @@ const MyAvatar = () => {
 				}}
 				size="large"
 			>
-				{userInfo.userAvatarAbbr}
+				{username.slice(0, 1)}
 			</Avatar>
 		</Dropdown>
 	);
 };
 const mapStateToProps = (state) => {
-	userInfo.userName = state.userInfo.username;
-	userInfo.userAffiliation = state.userInfo.affiliation;
-	userInfo.userAvatarAbbr = userInfo.userName.slice(0, 1);
 	return {
-		username: userInfo.userName,
-		affiliation: userInfo.userAffiliation,
-		// avatarAbbr: userInfo.userAvatarAbbr,
+		username: state.userInfo.username,
+		affiliation: state.userInfo.affiliation,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getUserInfo: () => {
-			dispatch(actions.userInfo());
+		// getUserInfo: () => {
+		// 	dispatch(actions.userInfo());
+		// },
+		setUserInfo: (userInfo) => {
+			dispatch(actions.setUserInfo(userInfo));
 		},
 	};
 };

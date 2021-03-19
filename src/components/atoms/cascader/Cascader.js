@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Cascader } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 const MyCascader = (props) => {
 	const {
@@ -14,14 +14,14 @@ const MyCascader = (props) => {
 		baseURL,
 	} = props;
 
-	// const [visible, setVisible] = useState(true);
 	const [parsedOptions, setParsedOptions] = useState([]);
 	const [camAddress, setCamAddress] = useState({});
+	const [camLanes, setCamLanes] = useState({});
 
-	// const baseURL = "http://119.197.240.186:3003/api";
 	const currentURL = "/locations";
 	var locationOptionsParse = [];
 	var cameraAddress = {};
+	var cameraLanes = {};
 
 	if (props.city === "" || displayLocation === false) {
 		var defaultOption = [];
@@ -39,8 +39,6 @@ const MyCascader = (props) => {
 	}, []);
 
 	const getOptions = () => {
-		// setVisible(!visible);
-		// if (visible) {
 		axios
 			.get(`${baseURL}${currentURL}/cities`, {
 				headers: {
@@ -57,9 +55,9 @@ const MyCascader = (props) => {
 					cityTemp["children"] = [];
 					locationOptionsParse.push(cityTemp);
 					getDisricts(cityCode);
-					// console.log("options test: ", locationOptionsParse);
 					setParsedOptions(locationOptionsParse);
 					setCamAddress(cameraAddress);
+					setCamLanes(cameraLanes);
 				});
 			})
 			.catch((err) => {
@@ -212,7 +210,13 @@ const MyCascader = (props) => {
 			)
 			.then((res) => {
 				res.data.forEach((cameraInfo) => {
-					const { camCode, camName, upboundFlag, httpStreamAddr } = cameraInfo;
+					const {
+						camCode,
+						camName,
+						upboundFlag,
+						httpStreamAddr,
+						lanesTotal,
+					} = cameraInfo;
 					const cameraTemp = {};
 					cameraTemp["value"] = camCode;
 					upboundFlag
@@ -221,6 +225,7 @@ const MyCascader = (props) => {
 
 					currentCameras.push(cameraTemp);
 					cameraAddress[camCode] = httpStreamAddr;
+					cameraLanes[camCode] = lanesTotal;
 				});
 			})
 			.catch((err) => {
@@ -248,6 +253,8 @@ const MyCascader = (props) => {
 			return obj;
 		}, {});
 		selectedLocationCode["camAddress"] = camAddress[value[4]];
+		selectedLocationCode["camLanes"] = camLanes[value[4]];
+
 		setSelectedLocation(selectedLocation);
 		setSelectedLocationCode(selectedLocationCode);
 		if (setLocationChange) {

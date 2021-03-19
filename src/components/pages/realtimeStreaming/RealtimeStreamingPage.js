@@ -33,7 +33,7 @@ const RealtimeStreamingPage = () => {
 							<VideoContainer
 								page="STREAMING"
 								camName="수인사거리-1 [하행]"
-								httpAddress="http://globalbridge3.iptime.org:4000/videos/output.m3u8"
+								httpAddress="https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
 								realtimeCamCode="0001"
@@ -41,7 +41,7 @@ const RealtimeStreamingPage = () => {
 							<VideoContainer
 								page="STREAMING"
 								camName="수인사거리-2 [하행]"
-								httpAddress="http://globalbridge3.iptime.org:4001/videos/output.m3u8"
+								httpAddress="https://globalbridge.synology.me:4001/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
 								realtimeCamCode="0002"
@@ -49,7 +49,7 @@ const RealtimeStreamingPage = () => {
 							<VideoContainer
 								page="STREAMING"
 								camName="수인사거리-3 [하행]"
-								httpAddress="http://globalbridge3.iptime.org:4002/videos/output.m3u8"
+								httpAddress="https://globalbridge.synology.me:4002/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
 								realtimeCamCode="0003"

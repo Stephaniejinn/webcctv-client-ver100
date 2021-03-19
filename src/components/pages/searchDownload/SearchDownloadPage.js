@@ -6,6 +6,7 @@ import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import SearchResultTab from "../../organisms/searchResultTab/SearchResultTab";
+import SearchCollapsedTable from "../../molecules/searchCollapsedTable/SearchCollapsedTable";
 
 import "../style.less";
 
@@ -39,7 +40,7 @@ const SearchDownloadPage = () => {
 						/>
 						{firstFilter ? (
 							count ? (
-								<SearchResultTab classification={timeClassification} />
+								<SearchCollapsedTable startDate={startDate} endTime={endTime} />
 							) : (
 								<div
 									style={{

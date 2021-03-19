@@ -4,7 +4,7 @@ import moment from "moment";
 import "moment-timezone";
 
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import "./style.less";
 
@@ -27,6 +27,18 @@ const TableDescription = (props) => {
 		period === "DAY" ? "일간" : period === "WEEK" ? "주간" : "월간";
 	const dataTypeText =
 		tableKey === "first" ? "1차" : tableKey === "second" ? "2차" : "과속 ";
+
+	var timeCalc;
+	if (page === "REALSTATISTIC") {
+		let curTime = moment(new Date()).format("YYYY-MM-DD HH");
+		console.log(curTime);
+		let nearest15 = Math.floor(currentTime.minute() / 15) * 15;
+		timeCalc = moment(
+			curTime + `:${nearest15 === 0 ? "00" : nearest15}:00`
+		).format("HH:mm:ss");
+		console.log(timeCalc);
+	}
+
 	return (
 		<div className="table-description">
 			{page === "REALSTATISTIC" ? (
@@ -45,9 +57,11 @@ const TableDescription = (props) => {
 				{period === "DAY" ? (
 					page === "REALSTATISTIC" ? (
 						<>
-							{camera}
+							{camera.length === 0 ? "수인사거리-1 [하행]" : camera}
 							<Divider type="vertical" />
-							{moment(startDate).format("YYYY년 MM월 DD일")} {currentTime}
+							{moment(startDate).format("YYYY년 MM월 DD일")}{" "}
+							<Divider type="vertical" />
+							00:00:00 ~ {timeCalc}
 						</>
 					) : (
 						<>

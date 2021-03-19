@@ -2,7 +2,7 @@ import React from "react";
 import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
 import { Collapse, Typography, Divider, Button } from "antd";
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import DLFirstTable from "../StatisticsTable/dayTable/DLFirstTable";
 // import DTFirstTable from "../timeStatisticsTable/dayTable/DTFirstTable";

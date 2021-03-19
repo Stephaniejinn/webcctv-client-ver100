@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout, Typography, Divider } from "antd";
+import React from "react";
+import { Layout, Typography } from "antd";
 
 import Header from "../../organisms/header";
 import LoginCard from "../../organisms/loginCard/LoginCard";

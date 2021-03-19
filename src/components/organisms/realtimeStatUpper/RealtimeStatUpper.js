@@ -1,25 +1,75 @@
 import React from "react";
-import { Typography } from "antd";
+import { Typography, Button, message } from "antd";
+import moment from "moment";
+
 import { connect } from "react-redux";
-import * as actions from "../../../actions";
+import * as actions from "../../../redux/actions";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchDrawer from "../../molecules/searchDrawer/SearchDrawer";
 
 const RealtimeStatUpper = (props) => {
 	const { Title } = Typography;
-	const { city, district, road, spot, camera } = props;
+	const {
+		city,
+		district,
+		road,
+		spot,
+		camera,
+		currTime,
+		setCurrTime,
+		setRefresh,
+	} = props;
+	var locationHierarchy = [];
+	var camName = "";
 
+	const defaultLocationHierarchy = [
+		"인천광역시",
+		"중구",
+		"서해대로",
+		"수인사거리",
+	];
+	if (
+		(city.length === 0 ||
+			district.length === 0 ||
+			road.length === 0 ||
+			spot.length === 0,
+		camera.length === 0)
+	) {
+		locationHierarchy = defaultLocationHierarchy;
+		camName = "수인사거리-1 [하행]";
+	} else {
+		locationHierarchy = [city, district, road, spot];
+		camName = camera;
+	}
+	const handleRefresh = () => {
+		if (
+			Math.floor(currTime.minute() / 15) * 15 ===
+			Math.floor(moment(new Date()).minute() / 15) * 15
+		) {
+			message.success("Refresh 성공");
+			// console.log("not changed");
+		} else {
+			// console.log("changed");
+			setCurrTime(moment(new Date()));
+			setRefresh(true);
+		}
+	};
 	return (
 		<>
 			<Breadcrumb
 				pageHierarchy={["대시보드", "실시간 데이터"]}
-				locationHierarchy={[city, district, road, spot]}
+				locationHierarchy={locationHierarchy}
 			/>
 			<div className="page-title-and-search-input">
-				<Title level={3} style={{ minWidth: 285 }}>
-					실시간 통계 | {camera}
-				</Title>
+				<div className="page-title-and-search-input-refresh-button">
+					<Title level={3} style={{ minWidth: 360 }}>
+						실시간 통계 | {camName}
+					</Title>
+					<Button onClick={handleRefresh} style={{ marginTop: 2 }}>
+						Refresh
+					</Button>
+				</div>
 				<div className="search-input-drawer">
 					<SearchDrawer />
 				</div>

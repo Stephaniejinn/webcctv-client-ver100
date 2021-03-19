@@ -5,7 +5,8 @@ import SearchCollapsedTable from "../../molecules/searchCollapsedTable/SearchCol
 
 import "./style.less";
 
-const SearchResultTab = ({ classification }) => {
+const SearchResultTab = (props) => {
+	const { startDate, endTime } = props;
 	const { TabPane } = Tabs;
 
 	const callback = (key) => {
@@ -14,14 +15,7 @@ const SearchResultTab = ({ classification }) => {
 
 	return (
 		<div className="search-result-tab">
-			<Tabs defaultActiveKey="1" onChange={callback}>
-				<TabPane tab="구간 전체" key="1">
-					<SearchCollapsedTable />
-				</TabPane>
-				<TabPane tab="1 차선" key="2">
-					result
-				</TabPane>
-			</Tabs>
+			<SearchCollapsedTable />
 		</div>
 	);
 };
