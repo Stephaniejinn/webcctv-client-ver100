@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Column } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const VehicleRatio = (props) => {
-	const {
-		activeVisualKey,
-		isLoadingTrafficTotal,
-		trafficTotalData,
-		totalData,
-		setTotalData,
-		timeClassification,
-	} = props;
-
+	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	var carRatio = [];
 	var busRatio = [];
@@ -20,72 +14,54 @@ const VehicleRatio = (props) => {
 	var RatioTotalData = [];
 
 	useEffect(() => {
-		if (isLoadingTrafficTotal === false) {
-			setTotalData([]);
+		if (activeVisualKey === "3") {
+			setLoading(true);
 			parseTotalData();
 		}
-	}, [trafficTotalData]);
-
-	useEffect(() => {
-		if (activeVisualKey === "3") {
-			if (isLoadingTrafficTotal === false) {
-				parseTotalData();
-			}
-		}
-	}, [isLoadingTrafficTotal, activeVisualKey]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("count total has data");
-			setData(totalData);
-		} else {
-			console.log("count count parse");
-			trafficTotalData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
+		console.log("count 일간 차선별 차종비율 parse");
+		trafficTotalData.slice(1).forEach((TrafficData) => {
+			const {
+				laneNumber,
+				carVehicleRatio,
+				mBusVehicleRatio,
+				mTruckVehicleRatio,
+				motorVehicleRatio,
+			} = TrafficData;
 
-				const tempCar = {};
-				const tempBus = {};
-				const tempTruck = {};
-				const tempMotor = {};
+			const tempCar = {};
+			const tempBus = {};
+			const tempTruck = {};
+			const tempMotor = {};
 
-				tempCar["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
-				tempCar["type"] = "승용차";
+			tempCar["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempCar["value"] = parseFloat((carVehicleRatio * 100).toFixed(2));
+			tempCar["type"] = "승용차";
 
-				tempBus["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
-				tempBus["type"] = "버스";
+			tempBus["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempBus["value"] = parseFloat((mBusVehicleRatio * 100).toFixed(2));
+			tempBus["type"] = "버스";
 
-				tempTruck["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempTruck["value"] = parseFloat(
-					((mTruckCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempTruck["type"] = "화물차";
+			tempTruck["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempTruck["value"] = parseFloat((mTruckVehicleRatio * 100).toFixed(2));
+			tempTruck["type"] = "화물차";
 
-				tempMotor["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempMotor["value"] = parseFloat(
-					((motorCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempMotor["type"] = "오토바이";
+			tempMotor["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempMotor["value"] = parseFloat((motorVehicleRatio * 100).toFixed(2));
+			tempMotor["type"] = "오토바이";
 
-				carRatio.push(tempCar);
-				busRatio.push(tempBus);
-				truckRatio.push(tempTruck);
-				motorRatio.push(tempMotor);
-			});
-			RatioTotalData = carRatio.concat(
-				busRatio.concat(truckRatio.concat(motorRatio))
-			);
-			setTotalData(RatioTotalData);
-			setData(RatioTotalData);
-		}
+			carRatio.push(tempCar);
+			busRatio.push(tempBus);
+			truckRatio.push(tempTruck);
+			motorRatio.push(tempMotor);
+		});
+		RatioTotalData = carRatio.concat(
+			busRatio.concat(truckRatio.concat(motorRatio))
+		);
+		setData(RatioTotalData);
+		setLoading(false);
 	};
 
 	var config = {
@@ -103,6 +79,24 @@ const VehicleRatio = (props) => {
 			],
 		},
 	};
-	return <Column {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Column {...config} />
+			)}
+		</>
+	);
 };
 export default VehicleRatio;

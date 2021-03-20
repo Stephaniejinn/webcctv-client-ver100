@@ -3,35 +3,18 @@ import { Gauge } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const AvgSpeedGauge = (props) => {
-	const { isLoading, trafficData } = props;
+	const { trafficData } = props;
 
-	const [Data, setavgSpeed] = useState([]);
+	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
-		if (!isLoading) {
-			setLoadingData(true);
-			parseAvgData();
-		}
-	}, [isLoading, trafficData]);
+		setLoadingData(true);
+		parseData();
+	}, [trafficData]);
 
-	const parseAvgData = () => {
-		var speedData = [0, 0, 0, 0];
-
-		trafficData.forEach((data) => {
-			const { carAvgSpeed, mBusAvgSpeed, mTruckAvgSpeed, motorAvgSpeed } = data;
-			speedData[0] += parseFloat(carAvgSpeed);
-			speedData[1] += parseFloat(mBusAvgSpeed);
-			speedData[2] += parseFloat(mTruckAvgSpeed);
-			speedData[3] += parseFloat(motorAvgSpeed);
-		});
-
-		const avgSpeedData = speedData.map((item) => item / trafficData.length);
-		const GeneralAvgSpeed =
-			(avgSpeedData[0] + avgSpeedData[1] + avgSpeedData[2] + avgSpeedData[3]) /
-			4 /
-			100;
-		setavgSpeed(GeneralAvgSpeed);
+	const parseData = () => {
+		setData(trafficData[0]["totalVehicleAvgSpeed"] / 100);
 		setLoadingData(false);
 	};
 
@@ -58,7 +41,7 @@ const AvgSpeedGauge = (props) => {
 		statistic: {
 			content: {
 				formatter: function formatter(_ref) {
-					return (_ref.percent * 100).toFixed(2) + "km/h";
+					return (_ref.percent * 100).toFixed(2) + " km/h";
 				},
 				style: {
 					fontSize: "14px",

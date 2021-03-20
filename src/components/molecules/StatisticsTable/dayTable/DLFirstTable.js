@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "antd";
-
-import axios from "axios";
-import { connect } from "react-redux";
-import * as actions from "../../../../redux/actions";
+import { Table, Spin } from "antd";
 
 import "../style.less";
 
 const DLFisrtTable = (props) => {
-	const { startDate, endTime, timeClassification, cameraCode, baseURL } = props;
+	const { trafficTotalData } = props;
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
+
+	var FristRow;
+	var TotalData = [];
+
+	useEffect(() => {
+		FristRow = true;
+		setLoading(true);
+		axiosData();
+	}, [trafficTotalData]);
 
 	const columns = [
 		{
@@ -165,219 +171,98 @@ const DLFisrtTable = (props) => {
 		},
 	];
 
-	var FirstRow = {
-		key: 0,
-		lane: "전체",
-		totalCount: 0,
-		totalAvgSpeed: 0,
-		totalpcu: 0,
-		totalOverSpeed: 0,
-
-		carCount: 0,
-		carAvgSpeed: 0,
-		carpcu: 0,
-		carRatio: 0,
-		carOverSpeed: 0,
-
-		busCount: 0,
-		busAvgSpeed: 0,
-		buspcu: 0,
-		busRatio: 0,
-		busOverSpeed: 0,
-
-		truckCount: 0,
-		truckAvgSpeed: 0,
-		truckpcu: 0,
-		truckRatio: 0,
-		truckOverSpeed: 0,
-
-		motorCount: 0,
-		motorAvgSpeed: 0,
-		motorpcu: 0,
-		motorRatio: 0,
-		motorOverSpeed: 0,
-
-		person: 0,
-		jaywalk: 0,
-	};
-
-	var TotalData = [];
-
-	useEffect(() => {
-		axiosData();
-	}, []);
 	const axiosData = () => {
-		axios
-			.get(
-				`${baseURL}/statistics/traffic/first?groupBy=lane&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				console.log("count table axios");
-				res.data.forEach((eachData, index) => {
-					const {
-						laneNumber,
-						carCnt,
-						carAvgSpeed,
-						carPCU,
-						carRatio,
-						carSpdCnt,
-						mBusCnt,
-						mBusAvgSpeed,
-						mBusPCU,
-						mBusRatio,
-						mBusSpdCnt,
-						mTruckCnt,
-						mTruckAvgSpeed,
-						mTruckPCU,
-						mTruckRatio,
-						mTruckSpdCnt,
-						motorCnt,
-						motorAvgSpeed,
-						motorPCU,
-						motorRatio,
-						motorSpdCnt,
-					} = eachData;
-					let dataTemp = {};
-					let totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
+		console.log("count 일간 차선별 1차데이블 parse");
+		trafficTotalData.forEach((eachData, index) => {
+			const {
+				laneNumber,
+				totalVehicleVolume,
+				totalVehicleAvgSpeed,
+				totalVehiclePassengerCarUnit,
+				totalVehicleSpdVolume,
+				carVolume,
+				carAvgSpeed,
+				carPassengerCarUnit,
+				carVehicleRatio,
+				carSpdVolume,
+				mBusVolume,
+				mBusAvgSpeed,
+				mBusPassengerCarUnit,
+				mBusVehicleRatio,
+				mBusSpdVolume,
+				mTruckVolume,
+				mTruckAvgSpeed,
+				mTruckPassengerCarUnit,
+				mTruckVehicleRatio,
+				mTruckSpdVolume,
+				motorVolume,
+				motorAvgSpeed,
+				motorPassengerCarUnit,
+				motorVehicleRatio,
+				motorSpdVolume,
+			} = eachData;
+			let dataTemp = {};
 
-					let carAvgSpeedNum = parseFloat(carAvgSpeed);
-					let mBusAvgSpeedNum = parseFloat(mBusAvgSpeed);
-					let mTruckAvgSpeedNum = parseFloat(mTruckAvgSpeed);
-					let motorAvgSpeedNum = parseFloat(motorAvgSpeed);
+			dataTemp["key"] = index + 1;
+			if (FristRow) {
+				dataTemp["lane"] = "전체";
+				FristRow = false;
+			} else {
+				dataTemp["lane"] = `${laneNumber} 차선`;
+			}
+			dataTemp["totalCount"] = totalVehicleVolume;
+			dataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
+			dataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
+			dataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
 
-					let carPCUNum = parseFloat(carPCU);
-					let mBusPCUNum = parseFloat(mBusPCU);
-					let mTruckPCUNum = parseFloat(mTruckPCU);
-					let motorPCUNum = parseFloat(motorPCU);
+			dataTemp["carCount"] = carVolume;
+			dataTemp["carAvgSpeed"] = carAvgSpeed;
+			dataTemp["carpcu"] = carPassengerCarUnit;
+			dataTemp["carRatio"] = carVehicleRatio;
+			dataTemp["carOverSpeed"] = carSpdVolume;
 
-					let totalAvgSpeed = parseFloat(
-						(
-							(carAvgSpeedNum +
-								mBusAvgSpeedNum +
-								mTruckAvgSpeedNum +
-								motorAvgSpeedNum) /
-							4
-						).toFixed(2)
-					);
-					let totalpcu = parseFloat(
-						(carPCUNum + mBusPCUNum + mTruckPCUNum + motorPCUNum).toFixed(1)
-					);
-					let totalOverSpeed =
-						carSpdCnt + mBusSpdCnt + mTruckSpdCnt + motorSpdCnt;
-					dataTemp["key"] = index + 1;
-					dataTemp["lane"] = `${laneNumber} 차선`;
-					dataTemp["totalCount"] = totalCnt;
-					dataTemp["totalAvgSpeed"] = totalAvgSpeed;
-					dataTemp["totalpcu"] = totalpcu;
-					dataTemp["totalOverSpeed"] = totalOverSpeed;
+			dataTemp["busCount"] = mBusVolume;
+			dataTemp["busAvgSpeed"] = mBusAvgSpeed;
+			dataTemp["buspcu"] = mBusPassengerCarUnit;
+			dataTemp["busRatio"] = mBusVehicleRatio;
+			dataTemp["busOverSpeed"] = mBusSpdVolume;
 
-					dataTemp["carCount"] = carCnt;
-					dataTemp["carAvgSpeed"] = carAvgSpeedNum;
-					dataTemp["carpcu"] = carPCU;
-					dataTemp["carRatio"] = carRatio;
-					dataTemp["carOverSpeed"] = carSpdCnt;
+			dataTemp["truckCount"] = mTruckVolume;
+			dataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
+			dataTemp["truckpcu"] = mTruckPassengerCarUnit;
+			dataTemp["truckRatio"] = mTruckVehicleRatio;
+			dataTemp["truckOverSpeed"] = mTruckSpdVolume;
 
-					dataTemp["busCount"] = mBusCnt;
-					dataTemp["busAvgSpeed"] = mBusAvgSpeedNum;
-					dataTemp["buspcu"] = mBusPCU;
-					dataTemp["busRatio"] = mBusRatio;
-					dataTemp["busOverSpeed"] = mBusSpdCnt;
-
-					dataTemp["truckCount"] = mTruckCnt;
-					dataTemp["truckAvgSpeed"] = mTruckAvgSpeedNum;
-					dataTemp["truckpcu"] = mTruckPCU;
-					dataTemp["truckRatio"] = mTruckRatio;
-					dataTemp["truckOverSpeed"] = mTruckSpdCnt;
-
-					dataTemp["motorCount"] = motorCnt;
-					dataTemp["motorAvgSpeed"] = motorAvgSpeedNum;
-					dataTemp["motorpcu"] = motorPCU;
-					dataTemp["motorRatio"] = motorRatio;
-					dataTemp["motorOverSpeed"] = motorSpdCnt;
-
-					TotalData.push(dataTemp);
-					FirstRow["totalCount"] += totalCnt;
-					FirstRow["totalAvgSpeed"] += totalAvgSpeed;
-					FirstRow["totalpcu"] += totalpcu;
-					FirstRow["totalOverSpeed"] += totalOverSpeed;
-
-					FirstRow["carCount"] += carCnt;
-					FirstRow["carAvgSpeed"] += carAvgSpeedNum;
-					FirstRow["carpcu"] += carPCUNum;
-					FirstRow["carOverSpeed"] += carSpdCnt;
-
-					FirstRow["busCount"] += mBusCnt;
-					FirstRow["busAvgSpeed"] += mBusAvgSpeedNum;
-					FirstRow["buspcu"] += mBusPCUNum;
-					FirstRow["busOverSpeed"] += mBusSpdCnt;
-
-					FirstRow["truckCount"] += mTruckCnt;
-					FirstRow["truckAvgSpeed"] += mTruckAvgSpeedNum;
-					FirstRow["truckpcu"] += mTruckPCUNum;
-					FirstRow["truckOverSpeed"] += mTruckSpdCnt;
-
-					FirstRow["motorCount"] += motorCnt;
-					FirstRow["motorAvgSpeed"] += motorAvgSpeedNum;
-					FirstRow["motorpcu"] += motorPCUNum;
-					FirstRow["motorOverSpeed"] += motorSpdCnt;
-				});
-				FirstRow["totalAvgSpeed"] = (FirstRow["totalAvgSpeed"] / 96).toFixed(2);
-				FirstRow["carAvgSpeed"] = (FirstRow["carAvgSpeed"] / 96).toFixed(2);
-				FirstRow["busAvgSpeed"] = (FirstRow["busAvgSpeed"] / 96).toFixed(2);
-				FirstRow["truckAvgSpeed"] = (FirstRow["truckAvgSpeed"] / 96).toFixed(2);
-				FirstRow["motorAvgSpeed"] = (FirstRow["motorAvgSpeed"] / 96).toFixed(2);
-
-				FirstRow["carRatio"] = (
-					FirstRow["carCount"] / FirstRow["totalCount"]
-				).toFixed(2);
-				FirstRow["busRatio"] = (
-					FirstRow["busCount"] / FirstRow["totalCount"]
-				).toFixed(2);
-				FirstRow["truckRatio"] = (
-					FirstRow["truckCount"] / FirstRow["totalCount"]
-				).toFixed(2);
-				FirstRow["motorRatio"] = (
-					FirstRow["motorCount"] / FirstRow["totalCount"]
-				).toFixed(2);
-
-				FirstRow["totalpcu"] = FirstRow["totalpcu"].toFixed(1);
-				FirstRow["carpcu"] = FirstRow["carpcu"].toFixed(1);
-				FirstRow["buspcu"] = FirstRow["buspcu"].toFixed(1);
-				FirstRow["truckpcu"] = FirstRow["truckpcu"].toFixed(1);
-				FirstRow["motorpcu"] = FirstRow["motorpcu"].toFixed(1);
-
-				const arr = [FirstRow];
-				const dataWithTotal = arr.concat(TotalData);
-				// console.log(dataWithTotal);
-				setData(dataWithTotal);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+			dataTemp["motorCount"] = motorVolume;
+			dataTemp["motorAvgSpeed"] = motorAvgSpeed;
+			dataTemp["motorpcu"] = motorPassengerCarUnit;
+			dataTemp["motorRatio"] = motorVehicleRatio;
+			dataTemp["motorOverSpeed"] = motorSpdVolume;
+			TotalData.push(dataTemp);
+		});
+		setData(TotalData);
+		setLoading(false);
 	};
 
-	return <Table columns={columns} dataSource={Data} size="small" bordered />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Table columns={columns} dataSource={Data} size="small" bordered />
+			)}
+		</>
+	);
 };
-const mapStateToProps = (state) => {
-	return {
-		cameraCode: state.locationCode.cameraCode,
-		baseURL: state.baseURL.baseURL,
-	};
-};
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationCodeInfo: () => {
-			dispatch(actions.getLocationCode());
-		},
-		getBaseURL: () => {
-			dispatch(actions.getURL());
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(DLFisrtTable);
+
+export default DLFisrtTable;

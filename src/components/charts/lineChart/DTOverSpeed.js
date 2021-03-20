@@ -1,152 +1,68 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
 import moment from "moment";
-// import axios from "axios";
-// import { connect } from "react-redux";
-// import * as actions from "../../../actions";
+import { Spin } from "antd";
 
 const OverSpeedCnt = (props) => {
-	const {
-		currentLaneNumber,
-		totalLaneNumber,
-		activeVisualKey,
-		isLoadingOverSpeedTotal,
-		isLoadingOverSpeedLane,
-		overSpeedTotalData,
-		overSpeedLaneData,
-
-		totalData,
-		setTotalData,
-		laneData,
-		setLaneData,
-
-		timeClassification,
-	} = props;
+	const { activeVisualKey, trafficTotalData } = props;
 
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	var cntTotalData = [];
-	var cntLaneData = {};
-	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		cntLaneData[idx.toString()] = [];
-	}
-
-	useEffect(() => {
-		if (isLoadingOverSpeedTotal === false && isLoadingOverSpeedLane === false) {
-			console.log("trafficTotalData,1", overSpeedTotalData);
-			setTotalData([]);
-			setLaneData({});
-			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-		}
-	}, [
-		overSpeedTotalData,
-		overSpeedLaneData,
-		isLoadingOverSpeedTotal,
-		isLoadingOverSpeedLane,
-	]);
 
 	useEffect(() => {
 		if (activeVisualKey === "5") {
-			if (
-				isLoadingOverSpeedTotal === false &&
-				isLoadingOverSpeedLane === false
-			) {
-				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-			}
+			setLoading(true);
+			parseTotalData();
 		}
-	}, [
-		currentLaneNumber,
-		activeVisualKey,
-		// isLoadingOverSpeedTotal,
-		// isLoadingOverSpeedLane,
-	]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("count total has data");
-			setData(totalData);
-		} else {
-			console.log("count count parse");
-			overSpeedTotalData.forEach((TrafficData) => {
-				const {
-					recordTime,
-					carSpdCnt,
-					mBusSpdCnt,
-					mTruckSpdCnt,
-					motorSpdCnt,
-				} = TrafficData;
-				const tempCar = {};
-				const tempBus = {};
-				const tempTruck = {};
-				const tempMotor = {};
-				tempCar["time"] = moment(recordTime).format("HH:mm");
-				tempCar["value"] = carSpdCnt;
-				tempCar["category"] = "승용차";
+		console.log("count 일간 과속 parse");
+		trafficTotalData.slice(1).forEach((TrafficData) => {
+			const {
+				recordTime,
+				totalVehicleSpdVolume,
+				carSpdVolume,
+				mBusSpdVolume,
+				mTruckSpdVolume,
+				motorSpdVolume,
+			} = TrafficData;
+			const tempCar = {};
+			const tempBus = {};
+			const tempTruck = {};
+			const tempMotor = {};
+			const tempTotal = {};
+			const Time = moment(recordTime).format("HH:mm");
+			tempCar["time"] = Time;
+			tempCar["value"] = carSpdVolume;
+			tempCar["category"] = "승용차";
 
-				tempBus["time"] = moment(recordTime).format("HH:mm");
-				tempBus["value"] = mBusSpdCnt;
-				tempBus["category"] = "버스";
+			tempBus["time"] = Time;
+			tempBus["value"] = mBusSpdVolume;
+			tempBus["category"] = "버스";
 
-				tempTruck["time"] = moment(recordTime).format("HH:mm");
-				tempTruck["value"] = mTruckSpdCnt;
-				tempTruck["category"] = "화물차";
+			tempTruck["time"] = Time;
+			tempTruck["value"] = mTruckSpdVolume;
+			tempTruck["category"] = "화물차";
 
-				tempMotor["time"] = moment(recordTime).format("HH:mm");
-				tempMotor["value"] = motorSpdCnt;
-				tempMotor["category"] = "오토바이";
-				cntTotalData.push(tempCar);
-				cntTotalData.push(tempBus);
-				cntTotalData.push(tempTruck);
-				cntTotalData.push(tempMotor);
-			});
-			setTotalData(cntTotalData);
-			setData(cntTotalData);
-		}
-	};
+			tempMotor["time"] = Time;
+			tempMotor["value"] = motorSpdVolume;
+			tempMotor["category"] = "오토바이";
 
-	const parseLaneData = () => {
-		if (Object.keys(laneData).length !== 0) {
-			console.log("count lane has data");
-			setData(laneData[currentLaneNumber.toString()]);
-		} else {
-			console.log("count count parse lane");
-			overSpeedLaneData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					recordTime,
-					carSpdCnt,
-					mBusSpdCnt,
-					mTruckSpdCnt,
-					motorSpdCnt,
-				} = TrafficData;
-				const tempCar = {};
-				const tempBus = {};
-				const tempTruck = {};
-				const tempMotor = {};
-				tempCar["time"] = moment(recordTime).format("HH:mm");
-				tempCar["value"] = carSpdCnt;
-				tempCar["category"] = "승용차";
+			tempTotal["time"] = Time;
+			tempTotal["value"] = totalVehicleSpdVolume;
+			tempTotal["category"] = "전체";
 
-				tempBus["time"] = moment(recordTime).format("HH:mm");
-				tempBus["value"] = mBusSpdCnt;
-				tempBus["category"] = "버스";
-
-				tempTruck["time"] = moment(recordTime).format("HH:mm");
-				tempTruck["value"] = mTruckSpdCnt;
-				tempTruck["category"] = "화물차";
-
-				tempMotor["time"] = moment(recordTime).format("HH:mm");
-				tempMotor["value"] = motorSpdCnt;
-				tempMotor["category"] = "오토바이";
-
-				cntLaneData[laneNumber.toString()].push(tempCar);
-				cntLaneData[laneNumber.toString()].push(tempBus);
-				cntLaneData[laneNumber.toString()].push(tempTruck);
-				cntLaneData[laneNumber.toString()].push(tempMotor);
-			});
-			setLaneData(cntLaneData);
-			setData(cntLaneData[currentLaneNumber.toString()]);
-		}
+			cntTotalData.push(tempCar);
+			cntTotalData.push(tempBus);
+			cntTotalData.push(tempTruck);
+			cntTotalData.push(tempMotor);
+			cntTotalData.push(tempTotal);
+		});
+		setData(cntTotalData);
+		setLoading(false);
 	};
 
 	var config = {
@@ -158,14 +74,32 @@ const OverSpeedCnt = (props) => {
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
-					return "".concat(v).replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
 						return "".concat(s, ",");
 					});
 				},
 			},
 		},
 	};
-	return <Line {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Line {...config} />
+			)}
+		</>
+	);
 };
 
 export default OverSpeedCnt;

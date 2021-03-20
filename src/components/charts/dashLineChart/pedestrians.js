@@ -1,44 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
+import { Spin } from "antd";
+
 import moment from "moment";
 
-import axios from "axios";
-import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
+const Pedestrians = (props) => {
+	const { activeVisualKey, trafficTotalData } = props;
+	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
-const DashLine = (props) => {
-	const {
-		currentLaneNumber,
-		activeVisualKey,
-		isLoadingPedestrians,
-		pedestriansData,
-		timeClassification,
-	} = props;
-
-	const [DTPedestriansData, setDTPedestriansData] = useState([]);
 	var DTPedestrians = [];
-
-	// const group = timeClassification ? "time" : "lane";
 
 	useEffect(() => {
 		if (activeVisualKey === "11") {
-			if (!isLoadingPedestrians) {
-				Parse();
-			}
-		}
-	}, [isLoadingPedestrians, pedestriansData, activeVisualKey]);
+			setLoading(true);
 
-	const Parse = () => {
-		pedestriansData.forEach((pedestrianData) => {
-			const { recordTime, pedestrianCnt, jaywalkCnt } = pedestrianData;
+			parseTotalData();
+		}
+	}, [trafficTotalData, activeVisualKey]);
+
+	const parseTotalData = () => {
+		trafficTotalData.slice(1).forEach((pedestrianData) => {
+			const { recordTime, pedestrianVolume, jaywalkVolume } = pedestrianData;
+
 			const totalTemp = {};
 			const personTemp = {};
 			const jaywalkTemp = {};
+
 			const timeTemp = moment(recordTime).format("HH:mm");
-			const personCnt = pedestrianCnt - jaywalkCnt;
+			const personCnt = pedestrianVolume - jaywalkVolume;
+
 			totalTemp["date"] = timeTemp;
 			totalTemp["type"] = "총 보행자";
-			totalTemp["value"] = pedestrianCnt;
+			totalTemp["value"] = pedestrianVolume;
 
 			personTemp["date"] = timeTemp;
 			personTemp["type"] = "보행자";
@@ -46,16 +40,17 @@ const DashLine = (props) => {
 
 			jaywalkTemp["date"] = timeTemp;
 			jaywalkTemp["type"] = "무단횡단";
-			jaywalkTemp["value"] = jaywalkCnt;
+			jaywalkTemp["value"] = jaywalkVolume;
+
 			DTPedestrians.push(personTemp);
 			DTPedestrians.push(totalTemp);
 			DTPedestrians.push(jaywalkTemp);
 		});
-		// console.log(vehicleRatioData);
-		setDTPedestriansData(DTPedestrians);
+		setData(DTPedestrians);
+		setLoading(false);
 	};
 	var config = {
-		data: DTPedestriansData,
+		data: Data,
 		xField: "date",
 		yField: "value",
 		yAxis: {
@@ -87,10 +82,24 @@ const DashLine = (props) => {
 			return { opacity: 0.5 };
 		},
 	};
-	return currentLaneNumber === 0 ? (
-		<Line {...config} />
-	) : (
-		<h1>차선별 데이터 없습니다</h1>
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Line {...config} />
+			)}
+		</>
 	);
 };
-export default DashLine;
+export default Pedestrians;

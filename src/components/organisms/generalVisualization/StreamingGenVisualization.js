@@ -1,44 +1,38 @@
 import React, { useEffect, useState } from "react";
+import { Spin } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
-import TrafficPie from "../../charts/doughnutChart/Traffic";
-import AvgSpeedGauge from "../../charts/gaugeChart/AvgSpeed";
-import AvgSpeedTinyBar from "../../charts/tinyBarChart/AvgSpeed";
+import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
 import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
 
 import "./style.less";
 
 const StreamingGeneralVisualization = (props) => {
 	const {
-		page = "DEFAULT",
 		startDate,
 		endTime,
 		currentTime,
 		realtimeCamCode,
 		baseURL,
+		trafficURL,
 	} = props;
 
-	const trafficURL = "/statistics/traffic?groupBy=time";
-	const violationURL = "/violations/speeding?groupBy=lane";
-	// const group = timeClassification ? "time" : "lane";
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
-	const [isLoadingViolation, setLoadingViolation] = useState(true);
-
 	const [trafficData, setTrafficData] = useState([]);
-	const [violationData, setViolationData] = useState([]);
 
 	useEffect(() => {
 		getTrafficData();
-		getViolationData();
 	}, [realtimeCamCode, startDate, endTime]);
 
 	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}&camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&interval=15M&limit=0&offset=0`,
+				`${baseURL}${trafficURL}/daily?&camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&axis=time&laneNumber=0`,
+				// `${baseURL}/statistics/road-traffic/daily?camCode=0004&startDate=2020-03-15&endTime=2020-03-15 23:59:59&axis=time&laneNumber=0`,
+
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -48,76 +42,40 @@ const StreamingGeneralVisualization = (props) => {
 			)
 			.then((res) => {
 				setTrafficData(res.data);
+				console.log(res.data);
 				setLoadingTraffic(false);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
-	const getViolationData = () => {
-		axios
-			.get(
-				`${baseURL}${violationURL}&camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${startDate} ${currentTime}`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setViolationData(res.data);
-				setLoadingViolation(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	const TrafficPieChart = (
-		<TrafficPie isLoading={isLoadingTraffic} trafficData={trafficData} />
-	);
-	// const GaugeChart = (
-	// 	<AvgSpeedGauge isLoading={isLoadingTraffic} trafficData={trafficData} />
-	// );
-	// var AvgSpeedTinyBarChart = (
-	// 	<AvgSpeedTinyBar isLoading={isLoadingTraffic} trafficData={trafficData} />
-	// );
 
-	var OverSpeedTinyBarChart = (
-		<OverSpeedTinyBar
-			isLoading={isLoadingViolation}
-			violationData={violationData}
-		/>
-	);
+	var TrafficPieChart = <VehicleRatio trafficData={trafficData} />;
+	var OverSpeedTinyBarChart = <OverSpeedTinyBar trafficData={trafficData} />;
 
 	return (
 		<div className="general-graph-layout">
-			{/* {page === "STREAMING" ? ( */}
-			<div className="general-graph-card">
-				<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-				<VisualizationCard
-					title="차종별 과속차량"
-					chart={OverSpeedTinyBarChart}
-				/>
-			</div>
-			{/* ) : (
-				<>
-					<div className="general-graph-card">
-						<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
-						<VisualizationCard
-							title="차종별 과속차량"
-							chart={OverSpeedTinyBarChart}
-						/>
-					</div>
-					<div className="general-graph-card">
-						<VisualizationCard title="평균속도" chart={GaugeChart} />
-						<VisualizationCard
-							title="차종별 평균속도"
-							chart={AvgSpeedTinyBarChart}
-						/>
-					</div>
-				</>
-			)} */}
+			{isLoadingTraffic ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<div className="general-graph-card">
+					<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
+					<VisualizationCard
+						title="차종별 과속차량"
+						chart={OverSpeedTinyBarChart}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
@@ -125,6 +83,7 @@ const mapStateToProps = (state) => {
 	return {
 		cameraCode: state.locationCode.cameraCode,
 		baseURL: state.baseURL.baseURL,
+		trafficURL: state.baseURL.trafficURL,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

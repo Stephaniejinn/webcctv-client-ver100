@@ -3,28 +3,23 @@ import { TinyColumn } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const OverSpeedTinyColumn = (props) => {
-	const { violationData, isLoading } = props;
+	const { trafficData } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
-		if (!isLoading) {
-			setLoadingData(true);
-			parseViolationData();
-		}
-	}, [isLoading, violationData]);
+		setLoadingData(true);
+		parseViolationData();
+	}, [trafficData]);
 
 	const parseViolationData = () => {
 		var overSpeedData = [0, 0, 0, 0];
-		violationData.forEach((data) => {
-			const { carSpdCnt, mBusSpdCnt, mTruckSpdCnt, motorSpdCnt } = data;
-			overSpeedData[0] += carSpdCnt;
-			overSpeedData[1] += mBusSpdCnt;
-			overSpeedData[2] += mTruckSpdCnt;
-			overSpeedData[3] += motorSpdCnt;
-		});
 
+		overSpeedData[0] = trafficData[0]["carSpdVolume"];
+		overSpeedData[1] = trafficData[0]["mBusSpdVolume"];
+		overSpeedData[2] = trafficData[0]["mTruckSpdVolume"];
+		overSpeedData[3] = trafficData[0]["motorSpdVolume"];
 		setData(overSpeedData);
 		setLoadingData(false);
 	};

@@ -23,6 +23,7 @@ const TimeTableCard = (props) => {
 		period,
 		tableKey,
 		currentLaneNum,
+		trafficTotalData,
 		startDate,
 		endTime,
 		currentTime,
@@ -47,10 +48,7 @@ const TimeTableCard = (props) => {
 						/>
 						<DTFirstTable
 							currentLaneNum={parseInt(currentLaneNum)}
-							startDate={startDate}
-							endTime={endTime}
-							interval={interval}
-							currentTime={currentTime}
+							trafficTotalData={trafficTotalData}
 						/>
 					</>
 				) : parseInt(currentLaneNum) === 0 ? (
@@ -66,9 +64,8 @@ const TimeTableCard = (props) => {
 							<OverSpeedTable startDate={startDate} endTime={endTime} />
 						) : (
 							<DTSecondTable
-								startDate={startDate}
-								endTime={endTime}
-								interval={interval}
+								currentLaneNum={parseInt(currentLaneNum)}
+								trafficTotalData={trafficTotalData}
 							/>
 						)}
 					</>

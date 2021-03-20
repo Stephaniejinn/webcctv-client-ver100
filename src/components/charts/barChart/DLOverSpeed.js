@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Column } from "@ant-design/charts";
+import { Spin } from "antd";
 import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
 const DLOverSpeed = (props) => {
-	const {
-		activeVisualKey,
-		isLoadingOverSpeed,
-		overSpeedData,
-
-		totalData,
-		setTotalData,
-	} = props;
+	const { activeVisualKey, trafficTotalData } = props;
 
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	var cntCar = [];
 	var cntBus = [];
@@ -21,64 +16,51 @@ const DLOverSpeed = (props) => {
 	var cntTotalData = [];
 
 	useEffect(() => {
-		if (isLoadingOverSpeed === false) {
-			setTotalData([]);
+		if (activeVisualKey === "5") {
+			setLoading(true);
 			parseTotalData();
 		}
-	}, [overSpeedData]);
-
-	useEffect(() => {
-		if (activeVisualKey === "5") {
-			if (isLoadingOverSpeed === false) {
-				parseTotalData();
-			}
-		}
-	}, [isLoadingOverSpeed, activeVisualKey]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("count total has data");
-			setData(totalData);
-		} else {
-			console.log("count count parse");
-			overSpeedData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					carSpdCnt,
-					mBusSpdCnt,
-					mTruckSpdCnt,
-					motorSpdCnt,
-				} = TrafficData;
+		console.log("count 일간 차선별 과속 parse");
+		trafficTotalData.slice(1).forEach((TrafficData) => {
+			const {
+				laneNumber,
+				carSpdVolume,
+				mBusSpdVolume,
+				mTruckSpdVolume,
+				motorSpdVolume,
+			} = TrafficData;
 
-				const tempCar = {};
-				const tempBus = {};
-				const tempTruck = {};
-				const tempMotor = {};
+			const tempCar = {};
+			const tempBus = {};
+			const tempTruck = {};
+			const tempMotor = {};
 
-				tempCar["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempCar["value"] = carSpdCnt;
-				tempCar["type"] = "승용차";
+			tempCar["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempCar["value"] = carSpdVolume;
+			tempCar["type"] = "승용차";
 
-				tempBus["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempBus["value"] = mBusSpdCnt;
-				tempBus["type"] = "버스";
+			tempBus["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempBus["value"] = mBusSpdVolume;
+			tempBus["type"] = "버스";
 
-				tempTruck["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempTruck["value"] = mTruckSpdCnt;
-				tempTruck["type"] = "화물차";
+			tempTruck["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempTruck["value"] = mTruckSpdVolume;
+			tempTruck["type"] = "화물차";
 
-				tempMotor["laneNum"] = `${laneNumber.toString()} 차선`;
-				tempMotor["value"] = motorSpdCnt;
-				tempMotor["type"] = "오토바이";
-				cntCar.push(tempCar);
-				cntBus.push(tempBus);
-				cntTruck.push(tempTruck);
-				cntMotor.push(tempMotor);
-			});
-			cntTotalData = cntCar.concat(cntBus.concat(cntTruck.concat(cntMotor)));
-			setTotalData(cntTotalData);
-			setData(cntTotalData);
-		}
+			tempMotor["laneNum"] = `${laneNumber.toString()} 차선`;
+			tempMotor["value"] = motorSpdVolume;
+			tempMotor["type"] = "오토바이";
+			cntCar.push(tempCar);
+			cntBus.push(tempBus);
+			cntTruck.push(tempTruck);
+			cntMotor.push(tempMotor);
+		});
+		cntTotalData = cntCar.concat(cntBus.concat(cntTruck.concat(cntMotor)));
+		setData(cntTotalData);
+		setLoading(false);
 	};
 
 	var config = {
@@ -96,6 +78,24 @@ const DLOverSpeed = (props) => {
 			],
 		},
 	};
-	return <Column {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Column {...config} />
+			)}
+		</>
+	);
 };
 export default DLOverSpeed;

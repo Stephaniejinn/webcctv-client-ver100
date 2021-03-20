@@ -3,30 +3,25 @@ import { TinyColumn } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const AvgSpeedTinyColumn = (props) => {
-	const { trafficData, isLoading } = props;
+	const { trafficData } = props;
 
-	const [avgSpeed, setAvgSpeed] = useState([]);
+	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
-		if (!isLoading) {
-			setLoadingData(true);
-			parseTrafficData();
-		}
-	}, [isLoading, trafficData]);
+		setLoadingData(true);
+		parseTrafficData();
+	}, [trafficData]);
 
 	const parseTrafficData = () => {
 		var speedData = [0, 0, 0, 0];
-		trafficData.forEach((data) => {
-			const { carAvgSpeed, mBusAvgSpeed, mTruckAvgSpeed, motorAvgSpeed } = data;
-			speedData[0] += parseFloat(carAvgSpeed);
-			speedData[1] += parseFloat(mBusAvgSpeed);
-			speedData[2] += parseFloat(mTruckAvgSpeed);
-			speedData[3] += parseFloat(motorAvgSpeed);
-		});
 
-		const avgSpeedData = speedData.map((item) => item / trafficData.length);
-		setAvgSpeed(avgSpeedData);
+		speedData[0] = trafficData[0]["carAvgSpeed"];
+		speedData[1] = trafficData[0]["mBusAvgSpeed"];
+		speedData[2] = trafficData[0]["mTruckAvgSpeed"];
+		speedData[3] = trafficData[0]["motorAvgSpeed"];
+
+		setData(speedData);
 		setLoadingData(false);
 	};
 
@@ -34,7 +29,7 @@ const AvgSpeedTinyColumn = (props) => {
 
 	var config = {
 		autoFit: true,
-		data: avgSpeed,
+		data: Data,
 		tooltip: {
 			customContent: function customContent(x, data) {
 				var label = "car";

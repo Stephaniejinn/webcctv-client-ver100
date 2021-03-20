@@ -2,17 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Pie } from "@ant-design/charts";
 import { Spin } from "antd";
 
-const TrafficPie = (props) => {
-	const { trafficData, isLoading } = props;
-	const [Data, setVehicleRatio] = useState([]);
+const VehicleRatio = (props) => {
+	const { trafficData } = props;
+	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
-		if (!isLoading) {
-			setLoadingData(true);
-			parseTraffic();
-		}
-	}, [isLoading, trafficData]);
+		setLoadingData(true);
+		parseTraffic();
+	}, [trafficData]);
 
 	const parseTraffic = () => {
 		var vehicleRatioData = [
@@ -33,16 +31,12 @@ const TrafficPie = (props) => {
 				value: 0,
 			},
 		];
-
-		trafficData.forEach((data) => {
-			const { carCnt, mBusCnt, mTruckCnt, motorCnt } = data;
-			vehicleRatioData[0].value += carCnt;
-			vehicleRatioData[1].value += mBusCnt;
-			vehicleRatioData[2].value += mTruckCnt;
-			vehicleRatioData[3].value += motorCnt;
-		});
+		vehicleRatioData[0].value = trafficData[0]["carVolume"];
+		vehicleRatioData[1].value = trafficData[0]["mBusVolume"];
+		vehicleRatioData[2].value = trafficData[0]["mTruckVolume"];
+		vehicleRatioData[3].value = trafficData[0]["motorVolume"];
 		// console.log("vehicleRatioData", vehicleRatioData);
-		setVehicleRatio(vehicleRatioData);
+		setData(vehicleRatioData);
 		setLoadingData(false);
 	};
 	var config = {
@@ -103,4 +97,4 @@ const TrafficPie = (props) => {
 	);
 };
 
-export default TrafficPie;
+export default VehicleRatio;

@@ -2,24 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Liquid } from "@ant-design/charts";
 
 const PeakRatio = (props) => {
-	const {
-		currentLaneNumber,
-		activeVisualKey,
-		isLoadingPeak,
-		peakData,
-		timeClassification,
-	} = props;
+	const { activeVisualKey, trafficTotalData } = props;
 	const [peakRatio, setPeakRatio] = useState(0);
-
 	useEffect(() => {
-		if (isLoadingPeak === false) {
-			var peakRatioVal =
-				peakData[0]["peak15MinuteTotal"] / peakData[0]["total"];
-
-			setPeakRatio(peakRatioVal.toFixed(2));
-			console.log(peakRatioVal.toFixed(2));
+		if (activeVisualKey === "9") {
+			setPeakRatio(
+				trafficTotalData[0]["totalVehiclePeakHourConcentrationRatio"]
+			);
 		}
-	}, [isLoadingPeak, peakData]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	var config = {
 		percent: peakRatio,
@@ -37,11 +28,7 @@ const PeakRatio = (props) => {
 			},
 		},
 	};
-	return currentLaneNumber === 0 ? (
-		<Liquid {...config} />
-	) : (
-		<h1>차선별 데이터 없습니다</h1>
-	);
+	return <Liquid {...config} />;
 };
 
 export default PeakRatio;

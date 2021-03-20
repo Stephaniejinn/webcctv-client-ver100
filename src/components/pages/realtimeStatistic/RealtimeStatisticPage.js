@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Layout, message } from "antd";
 import moment from "moment";
+import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
 import RealtimeStatUpper from "../../organisms/realtimeStatUpper/RealtimeStatUpper";
-import VideoContainer from "../../organisms/videoStreaming/VideoContainer";
+import StatContainer from "../../organisms/videoContainer/StatContainer";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
 import TimeTableCard from "../../molecules/tableCard/TimeTableCard";
 
 import "./style.less";
 
 const RealtimeStatisticPage = (props) => {
-	const { camAddress, camera } = props;
+	const { camAddress, camera, cameraCode, baseURL, trafficURL } = props;
 	const { Content } = Layout;
+
+	const [trafficTotalData, setTrafficTotalData] = useState([]);
+
 	const [currTime, setCurrTime] = useState(moment(new Date()));
 	const [refresh, setRefresh] = useState(false);
 	// const date = moment(new Date()).format("YYYY-MM-DD");
-	// const currentTime = moment(new Date()).format("HH:mm:ss");
-
-	const date = "2020-03-11";
+	// const date = moment("2020-03-11 00:00:00").format("YYYY-MM-DD");
+	const date = "2020-03-12";
 
 	var cameraAddress = "";
 	var camName = "";
@@ -33,15 +36,42 @@ const RealtimeStatisticPage = (props) => {
 		cameraAddress = camAddress;
 		camName = camera;
 	}
+	// var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
+	var camCode = cameraCode.length === 0 ? "0004" : cameraCode;
+	var currTimeStr = currTime.format("HH:mm:ss");
+	// console.log(typeof currTimeStr);
+	useEffect(() => {
+		axiosAsync();
+	}, []);
 
 	useEffect(() => {
 		console.log("refresh", refresh);
 		if (refresh) {
-			message.success("Refresh 성공");
-			setRefresh(false);
+			axiosAsync();
 		}
 	}, [refresh]);
 
+	const axiosAsync = () => {
+		axios
+			.get(
+				`${baseURL}${trafficURL}/daily?&camCode=${camCode}&startDate=${date}&endTime=${date} ${currTimeStr}&&axis=time&laneNumber=0`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Cache: "No-cache",
+					},
+				}
+			)
+			.then((res) => {
+				setTrafficTotalData(res.data);
+				console.log(res.data);
+				message.success("Refresh 성공");
+				setRefresh(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 	return (
 		<div className="realtime-statistic-page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -55,13 +85,14 @@ const RealtimeStatisticPage = (props) => {
 							setRefresh={setRefresh}
 						/>
 						<div className="realtime-statistic-video-and-graph">
-							<VideoContainer camName={camName} httpAddress={cameraAddress} />
+							<StatContainer camName={camName} httpAddress={cameraAddress} />
 							<div className="realtime-statistic-graph">
 								<GeneralVisualization
 									page="REALSTATISTIC"
+									period="DAY"
 									startDate={date}
 									endTime={date}
-									currentTime={currTime.format("HH:mm:ss")}
+									currentTime={currTimeStr}
 								/>
 							</div>
 						</div>
@@ -70,6 +101,7 @@ const RealtimeStatisticPage = (props) => {
 							page="REALSTATISTIC"
 							tableKey="first"
 							currentLaneNum="0"
+							trafficTotalData={trafficTotalData}
 							startDate={date}
 							endTime={date}
 							currentTime={currTime}
@@ -86,6 +118,9 @@ const mapStateToProps = (state) => {
 	return {
 		camAddress: state.locationCode.camAddress,
 		camera: state.location.camera,
+		cameraCode: state.locationCode.cameraCode,
+		baseURL: state.baseURL.baseURL,
+		trafficURL: state.baseURL.trafficURL,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

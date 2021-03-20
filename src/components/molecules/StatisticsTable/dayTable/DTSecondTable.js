@@ -1,10 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "antd";
 
 import "../style.less";
 
 const DTSecondTable = (props) => {
-	const { startDate, endTime, interval } = props;
+	const { currentLaneNum, trafficTotalData } = props;
+	const [Data, setData] = useState([]);
+
+	var FristRow;
+	var TotalData = [];
+
+	useEffect(() => {
+		if (currentLaneNum === 0) {
+			parseData();
+			console.log(trafficTotalData);
+		}
+	}, [trafficTotalData]);
 
 	const columns = [
 		{
@@ -13,7 +24,7 @@ const DTSecondTable = (props) => {
 		},
 		{
 			title: "전체",
-			dataIndex: "Total",
+			dataIndex: "total",
 		},
 		{
 			title: "승용차",
@@ -33,26 +44,104 @@ const DTSecondTable = (props) => {
 		},
 	];
 
-	const data = [
+	var data = [
 		{
 			key: "0",
 			item: "주간",
-			total: "total",
-			car: "3대",
-			bus: "3대",
-			truck: "3대",
-			motor: "3대",
+			total: 0,
+			car: 0,
+			bus: 0,
+			truck: 0,
+			motor: 0,
 		},
 		{
 			key: "1",
 			item: "야간",
-			total: "total",
-			car: "3대",
-			bus: "3대",
-			truck: "3대",
-			motor: "3대",
+			total: 0,
+			car: 0,
+			bus: 0,
+			truck: 0,
+			motor: 0,
+		},
+		{
+			key: "3",
+			item: "주야율",
+			total: 0,
+			car: 0,
+			bus: 0,
+			truck: 0,
+			motor: 0,
+		},
+		{
+			key: "4",
+			item: "PHF",
+			total: 0,
+			car: "/",
+			bus: "/",
+			truck: "/",
+			motor: "/",
+		},
+		{
+			key: "5",
+			item: "첨두시간",
+			total: "",
+			car: "/",
+			bus: "/",
+			truck: "/",
+			motor: "/",
+		},
+		{
+			key: "6",
+			item: "첨두유율",
+			total: 0,
+			car: "/",
+			bus: "/",
+			truck: "/",
+			motor: "/",
+		},
+		{
+			key: "7",
+			item: "집중율",
+			total: 0,
+			car: "/",
+			bus: "/",
+			truck: "/",
+			motor: "/",
 		},
 	];
-	return <Table columns={columns} dataSource={data} size="small" bordered />;
+
+	const parseData = () => {
+		console.log("count 일간 2차 axios");
+		const trafficData = trafficTotalData[0];
+		data[0]["total"] = trafficData["totalVehicleDaytimeVolume"];
+		data[0]["car"] = trafficData["carDaytimeVolume"];
+		data[0]["bus"] = trafficData["mBusDaytimeVolume"];
+		data[0]["truck"] = trafficData["mTruckDaytimeVolume"];
+		data[0]["motor"] = trafficData["motorDaytimeVolume"];
+
+		data[1]["total"] = trafficData["totalVehicleNighttimeVolume"];
+		data[1]["car"] = trafficData["carNighttimeVolume"];
+		data[1]["bus"] = trafficData["mBusNighttimeVolume"];
+		data[1]["truck"] = trafficData["mTruckNighttimeVolume"];
+		data[1]["motor"] = trafficData["motorNighttimeVolume"];
+
+		data[2]["total"] = trafficData["totalVehicleDayNightRatio"];
+		data[2]["car"] = trafficData["carDayNightRatio"];
+		data[2]["bus"] = trafficData["mBusDayNightRatio"];
+		data[2]["truck"] = trafficData["mTruckDayNightRatio"];
+		data[2]["motor"] = trafficData["motorDayNightRatio"];
+
+		data[3]["total"] = trafficData["totalVehiclePeakHourFactor"];
+
+		data[4]["total"] = trafficData["totalVehiclePeak15MinuteTime"];
+
+		data[5]["total"] = trafficData["totalVehiclePeakHourConcentrationRatio"];
+
+		data[6]["total"] = trafficData["totalVehiclePeakHourFlowRate"];
+
+		setData(data);
+	};
+
+	return <Table columns={columns} dataSource={Data} size="small" bordered />;
 };
 export default DTSecondTable;

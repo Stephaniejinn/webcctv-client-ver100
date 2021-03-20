@@ -1,154 +1,69 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
+import { Spin } from "antd";
 import moment from "moment";
 
-// import axios from "axios";
-// import { connect } from "react-redux";
-// import * as actions from "../../../actions";
-
 const PCULine = (props) => {
-	const {
-		currentLaneNumber,
-		totalLaneNumber,
-		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-		trafficTotalData,
-		trafficLaneData,
-
-		totalData,
-		setTotalData,
-		laneData,
-		setLaneData,
-
-		timeClassification,
-	} = props;
-
+	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	var PCUTotalData = [];
-	var PCULaneData = {};
-	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		PCULaneData[idx.toString()] = [];
-	}
-
-	useEffect(() => {
-		if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
-			console.log("trafficTotalData,1");
-
-			setTotalData([]);
-			setLaneData({});
-			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-		}
-	}, [
-		trafficLaneData,
-		trafficTotalData,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-	]);
 
 	useEffect(() => {
 		if (activeVisualKey === "2") {
-			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
-				console.log("activeVisualKey", activeVisualKey);
-				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-			}
+			setLoading(true);
+			parseTotalData();
 		}
-	}, [
-		currentLaneNumber,
-		activeVisualKey,
-		// isLoadingTrafficTotal,
-		// isLoadingTrafficLane,
-	]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("count total has data");
-			setData(totalData);
-		} else {
-			console.log("count count parse");
-			trafficTotalData.forEach((TrafficData) => {
-				const {
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				let tempCar = {};
-				let tempBus = {};
-				let tempTruck = {};
-				let tempMotor = {};
+		console.log("count 일간 PCU parse");
+		trafficTotalData.slice(1).forEach((TrafficData) => {
+			const {
+				recordTime,
+				totalVehiclePassengerCarUnit,
+				carPassengerCarUnit,
+				mBusPassengerCarUnit,
+				mTruckPassengerCarUnit,
+				motorPassengerCarUnit,
+			} = TrafficData;
 
-				tempCar["time"] = moment(recordTime).format("HH:mm");
-				tempCar["value"] = carCnt;
-				tempCar["category"] = "승용차";
+			let tempCar = {};
+			let tempBus = {};
+			let tempTruck = {};
+			let tempMotor = {};
+			let tempTotal = {};
+			const Time = moment(recordTime).format("HH:mm");
 
-				tempBus["time"] = moment(recordTime).format("HH:mm");
-				tempBus["value"] = parseFloat((mBusCnt * 1.8).toFixed(1));
-				tempBus["category"] = "버스";
+			tempCar["time"] = Time;
+			tempCar["value"] = carPassengerCarUnit;
+			tempCar["category"] = "승용차";
 
-				tempTruck["time"] = moment(recordTime).format("HH:mm");
-				tempTruck["value"] = parseFloat((mTruckCnt * 1.8).toFixed(1));
-				tempTruck["category"] = "화물차";
+			tempBus["time"] = Time;
+			tempBus["value"] = mBusPassengerCarUnit;
+			tempBus["category"] = "버스";
 
-				tempMotor["time"] = moment(recordTime).format("HH:mm");
-				tempMotor["value"] = motorCnt;
-				tempMotor["category"] = "오토바이";
-				PCUTotalData.push(tempCar);
-				PCUTotalData.push(tempBus);
-				PCUTotalData.push(tempTruck);
-				PCUTotalData.push(tempMotor);
-			});
-			setTotalData(PCUTotalData);
-			setData(PCUTotalData);
-		}
-	};
+			tempTruck["time"] = Time;
+			tempTruck["value"] = mTruckPassengerCarUnit;
+			tempTruck["category"] = "화물차";
 
-	const parseLaneData = () => {
-		if (Object.keys(laneData).length !== 0) {
-			console.log("count lane has data");
-			setData(laneData[currentLaneNumber.toString()]);
-		} else {
-			console.log("count count parse lane");
-			trafficLaneData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				let tempCar = {};
-				let tempBus = {};
-				let tempTruck = {};
-				let tempMotor = {};
+			tempMotor["time"] = Time;
+			tempMotor["value"] = motorPassengerCarUnit;
+			tempMotor["category"] = "오토바이";
 
-				tempCar["time"] = moment(recordTime).format("HH:mm");
-				tempCar["value"] = carCnt;
-				tempCar["category"] = "승용차";
+			tempTotal["time"] = Time;
+			tempTotal["value"] = totalVehiclePassengerCarUnit;
+			tempTotal["category"] = "전체";
 
-				tempBus["time"] = moment(recordTime).format("HH:mm");
-				tempBus["value"] = (mBusCnt * 1.8).toFixed(1);
-				tempBus["category"] = "버스";
-
-				tempTruck["time"] = moment(recordTime).format("HH:mm");
-				tempTruck["value"] = (mTruckCnt * 1.8).toFixed(1);
-				tempTruck["category"] = "화물차";
-
-				tempMotor["time"] = moment(recordTime).format("HH:mm");
-				tempMotor["value"] = motorCnt;
-				tempMotor["category"] = "오토바이";
-
-				PCULaneData[laneNumber.toString()].push(tempCar);
-				PCULaneData[laneNumber.toString()].push(tempBus);
-				PCULaneData[laneNumber.toString()].push(tempTruck);
-				PCULaneData[laneNumber.toString()].push(tempMotor);
-			});
-			setLaneData(PCULaneData);
-			setData(PCULaneData[currentLaneNumber.toString()]);
-		}
+			PCUTotalData.push(tempCar);
+			PCUTotalData.push(tempBus);
+			PCUTotalData.push(tempTruck);
+			PCUTotalData.push(tempMotor);
+			PCUTotalData.push(tempTotal);
+		});
+		setData(PCUTotalData);
+		setLoading(false);
 	};
 
 	var config = {
@@ -167,7 +82,25 @@ const PCULine = (props) => {
 			},
 		},
 	};
-	return <Line {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Line {...config} />
+			)}
+		</>
+	);
 };
 
 export default PCULine;

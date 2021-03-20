@@ -5,7 +5,7 @@ import moment from "moment";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
-import VideoContainer from "../../organisms/videoStreaming/VideoContainer";
+import VideoContainer from "../../organisms/videoContainer/StreamingContainer";
 import SearchInput from "../../atoms/cascaderBtn/CascaderBtn";
 
 import "./style.less";
@@ -31,28 +31,25 @@ const RealtimeStreamingPage = () => {
 						</div>
 						<div className="video-container-4">
 							<VideoContainer
-								page="STREAMING"
 								camName="수인사거리-1 [하행]"
 								httpAddress="https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0001"
+								realtimeCamCode="0004"
 							/>
 							<VideoContainer
-								page="STREAMING"
 								camName="수인사거리-2 [하행]"
 								httpAddress="https://globalbridge.synology.me:4001/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0002"
+								realtimeCamCode="0004"
 							/>
 							<VideoContainer
-								page="STREAMING"
 								camName="수인사거리-3 [하행]"
 								httpAddress="https://globalbridge.synology.me:4002/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0003"
+								realtimeCamCode="0004"
 							/>
 						</div>
 					</Content>

@@ -1,27 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { BidirectionalBar } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const MyBidirectionalBar = (props) => {
-	const {
-		currentLaneNumber,
-		totalLaneNumber,
-		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-		trafficTotalData,
-		trafficLaneData,
-
-		totalData,
-		setTotalData,
-		laneData,
-		setLaneData,
-
-		timeClassification,
-	} = props;
-	const [Data, setData] = useState([{}, {}, {}, {}]);
-	var flag = false;
-
-	// const group = timeClassification ? "time" : "lane";
+	const { activeVisualKey, trafficTotalData } = props;
+	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	var dataSample = [
 		{
@@ -46,132 +30,28 @@ const MyBidirectionalBar = (props) => {
 		},
 	];
 
-	var dayNightLaneData = {};
-
-	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		dayNightLaneData[idx.toString()] = dataSample;
-	}
-
-	useEffect(() => {
-		// console.log("trafficTotalData,1", trafficTotalData);
-		if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
-			setTotalData([]);
-			setLaneData({});
-			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-		}
-	}, [
-		trafficLaneData,
-		trafficTotalData,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-	]);
-
 	useEffect(() => {
 		if (activeVisualKey === "6") {
-			if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
-				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-			}
+			setLoading(true);
+			parseTotalData();
+			console.log(trafficTotalData);
 		}
-	}, [
-		currentLaneNumber,
-		activeVisualKey,
-		// isLoadingTrafficTotal,
-		// isLoadingTrafficLane,
-	]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("bi total has data");
-			setData(totalData);
-		} else {
-			console.log("count bi total parse");
-			trafficTotalData.forEach((TrafficData) => {
-				const {
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
+		var trafficData = trafficTotalData[0];
 
-				if (!flag) {
-					dataSample[0]["야간 12시간 교통량"] += carCnt;
-					dataSample[1]["야간 12시간 교통량"] += mBusCnt;
-					dataSample[2]["야간 12시간 교통량"] += mTruckCnt;
-					dataSample[3]["야간 12시간 교통량"] += motorCnt;
+		dataSample[0]["야간 12시간 교통량"] = trafficData["carNighttimeVolume"];
+		dataSample[1]["야간 12시간 교통량"] = trafficData["mBusNighttimeVolume"];
+		dataSample[2]["야간 12시간 교통량"] = trafficData["mTruckNighttimeVolume"];
+		dataSample[3]["야간 12시간 교통량"] = trafficData["motorNighttimeVolume"];
 
-					if (recordTime.substring(11, 16) === "06:45") {
-						flag = true;
-					}
-				} else {
-					console.log("isDay", flag);
-
-					dataSample[0]["주간 12시간 교통량"] += carCnt;
-					dataSample[1]["주간 12시간 교통량"] += mBusCnt;
-					dataSample[2]["주간 12시간 교통량"] += mTruckCnt;
-					dataSample[3]["주간 12시간 교통량"] += motorCnt;
-					if (recordTime.substring(11, 16) === "18:45") {
-						flag = false;
-					}
-				}
-			});
-			setTotalData(dataSample);
-			setData(dataSample);
-		}
-	};
-
-	const parseLaneData = () => {
-		if (Object.keys(laneData).length !== 0) {
-			console.log("bi lane has data");
-			setData(laneData[currentLaneNumber.toString()]);
-		} else {
-			console.log("count bi lane parse");
-			trafficLaneData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				if (!flag) {
-					dayNightLaneData[laneNumber.toString()][0][
-						"야간 12시간 교통량"
-					] += carCnt;
-					dayNightLaneData[laneNumber.toString()][1][
-						"야간 12시간 교통량"
-					] += mBusCnt;
-					dayNightLaneData[laneNumber.toString()][2][
-						"야간 12시간 교통량"
-					] += mTruckCnt;
-					dayNightLaneData[laneNumber.toString()][3][
-						"야간 12시간 교통량"
-					] += motorCnt;
-					if (recordTime.substring(11, 16) === "06:45") {
-						flag = true;
-					}
-				} else {
-					dayNightLaneData[laneNumber.toString()][0][
-						"주간 12시간 교통량"
-					] += carCnt;
-					dayNightLaneData[laneNumber.toString()][1][
-						"주간 12시간 교통량"
-					] += mBusCnt;
-					dayNightLaneData[laneNumber.toString()][2][
-						"주간 12시간 교통량"
-					] += mTruckCnt;
-					dayNightLaneData[laneNumber.toString()][3][
-						"주간 12시간 교통량"
-					] += motorCnt;
-					if (recordTime.substring(11, 16) === "18:45") {
-						flag = false;
-					}
-				}
-			});
-			setLaneData(dayNightLaneData);
-			setData(dayNightLaneData[currentLaneNumber.toString()]);
-		}
+		dataSample[0]["주간 12시간 교통량"] = trafficData["carDaytimeVolume"];
+		dataSample[1]["주간 12시간 교통량"] = trafficData["mBusDaytimeVolume"];
+		dataSample[2]["주간 12시간 교통량"] = trafficData["mTruckDaytimeVolume"];
+		dataSample[3]["주간 12시간 교통량"] = trafficData["motorDaytimeVolume"];
+		setData(dataSample);
+		setLoading(false);
 	};
 
 	var config = {
@@ -187,7 +67,25 @@ const MyBidirectionalBar = (props) => {
 			showMarkers: false,
 		},
 	};
-	return <BidirectionalBar {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<BidirectionalBar {...config} />
+			)}
+		</>
+	);
 };
 
 export default MyBidirectionalBar;

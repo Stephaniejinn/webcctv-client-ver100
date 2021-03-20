@@ -16,7 +16,6 @@ const TableDescription = (props) => {
 		endTime,
 		camera,
 		currentTime,
-		timeClassification,
 		page = "",
 	} = props;
 

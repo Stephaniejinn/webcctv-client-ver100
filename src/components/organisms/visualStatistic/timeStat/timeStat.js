@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Spin, Space } from "antd";
+import { Tabs } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../redux/actions";
@@ -18,28 +18,17 @@ const TimeVisualization = (props) => {
 		cameraCode,
 		camLanes,
 		baseURL,
+		trafficURL,
 	} = props;
 	const { TabPane } = Tabs;
 
-	const [isLoadingLane, setLoadingLane] = useState(true);
 	const [isLoadingTrafficTotal, setLoadingTrafficTotal] = useState(true);
-	const [isLoadingTrafficLane, setLoadingTrafficLane] = useState(true);
-	const [isLoadingOverSpeedTotal, setLoadingOverSpeedTotal] = useState(true);
-	const [isLoadingOverSpeedLane, setLoadingOverSpeedLane] = useState(true);
-	const [isLoadingPeak, setLoadingPeak] = useState([]);
-	const [isLoadingPedestrians, setLoadingPedestrians] = useState([]);
 
 	const [totalLaneArr, setTotalLaneArr] = useState([]);
 	const [currentLaneNum, setCurrentLaneNum] = useState("0");
-	const [laneNum, setLaneNum] = useState(0);
 	const [activeVisualKey, setActiveVisualKey] = useState("1");
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
-	const [trafficLaneData, setTrafficLaneData] = useState([]);
-	const [overSpeedTotalData, setOverSpeedTotalData] = useState([]);
-	const [overSpeedLaneData, setOverSpeedLaneData] = useState([]);
-	const [peakData, setPeakData] = useState([]);
-	const [pedestriansData, setPedestriansData] = useState([]);
 
 	const [cntTotalData, setCntTotalData] = useState([]);
 	const [cntLaneData, setCntLaneData] = useState({});
@@ -59,57 +48,26 @@ const TimeVisualization = (props) => {
 	const [dayNightTotalData, setDayNightTotalData] = useState([]);
 	const [dayNightLaneData, setDayNightLaneData] = useState({});
 
-	const trafficURL = "/statistics/traffic";
-	const pedestriansURL = "/statistics/pedestrians";
-	const violationURL = "/violations/speeding";
-
-	const group = timeClassification ? "time" : "lane";
+	const periodURL =
+		period === "DAY" ? "/daily" : period === "WEEK" ? "/Weekly" : "/Monthly";
 
 	useEffect(() => {
 		var tabLaneNum = ["구간 전체"];
 		for (let idx = 1; idx <= camLanes; idx++) {
 			tabLaneNum.push(`${idx} 차선`);
 		}
+		console.log(tabLaneNum);
 		setTotalLaneArr(tabLaneNum);
-	}, [cameraCode]);
+	}, [camLanes]);
 
 	useEffect(() => {
-		getTrafficTotalData();
-		getTrafficLaneData();
-		getOverSpeedTotalData();
-		getOverSpeedLaneData();
-		getPeakData();
-		getPedestriansData();
-	}, [cameraCode, startDate, endTime]);
+		axiosAsync();
+	}, [cameraCode, startDate, endTime, currentLaneNum]);
 
-	const getLaneNum = () => {
+	const axiosAsync = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}?groupBy=lane&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setLaneNum(res.data.length);
-				res.data.forEach((lane) => {
-					const { laneNumber } = lane;
-					tabLaneNum.push(`${laneNumber} 차선`);
-				});
-				setTotalLaneArr(tabLaneNum);
-				setLoadingLane(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	const getTrafficTotalData = () => {
-		axios
-			.get(
-				`${baseURL}${trafficURL}?groupBy=${group}&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=${interval}&limit=0&offset=0`,
+				`${baseURL}${trafficURL}${periodURL}?&camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&&axis=time&laneNumber=${currentLaneNum}`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -119,115 +77,21 @@ const TimeVisualization = (props) => {
 			)
 			.then((res) => {
 				setTrafficTotalData(res.data);
+				console.log(res.data);
 				setLoadingTrafficTotal(false);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
-	const getTrafficLaneData = () => {
-		axios
-			.get(
-				`${baseURL}${trafficURL}?groupBy=none&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=${interval}&limit=0&offset=0`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setTrafficLaneData(res.data);
-				setLoadingTrafficLane(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	const getOverSpeedTotalData = () => {
-		axios
-			.get(
-				`${baseURL}${violationURL}?groupBy=time&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=${interval}&limit=0&offset=0`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setOverSpeedTotalData(res.data);
-				setLoadingOverSpeedTotal(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	const getOverSpeedLaneData = () => {
-		axios
-			.get(
-				`${baseURL}${violationURL}?groupBy=none&camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=${interval}&limit=0&offset=0`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setOverSpeedLaneData(res.data);
-				setLoadingOverSpeedLane(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	const getPeakData = () => {
-		axios
-			.get(
-				`${baseURL}${trafficURL}/peak?camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setPeakData(res.data);
-				setLoadingPeak(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
 
-	const getPedestriansData = () => {
-		axios
-			.get(
-				`${baseURL}${pedestriansURL}?camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&interval=${interval}&limit=0&offset=0`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				setPedestriansData(res.data);
-				setLoadingPedestrians(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
 	function callback(key) {
 		setCurrentLaneNum(key);
 		console.log("key", key);
 	}
 	return (
 		<Tabs defaultActiveKey="0" activeKey={currentLaneNum} onChange={callback}>
-			{!isLoadingLane
+			{!isLoadingTrafficTotal
 				? totalLaneArr.map((tabName, index) => {
 						return (
 							<TabPane tab={tabName} key={index.toString()}>
@@ -235,23 +99,13 @@ const TimeVisualization = (props) => {
 								<TimeDataVisualization
 									period={period}
 									timeClassification={timeClassification}
-									totalLaneNumber={laneNum}
+									totalLaneNumber={camLanes}
 									currentLaneNum={currentLaneNum}
 									setCurrentLaneNum={setCurrentLaneNum}
 									activeVisualKey={activeVisualKey}
 									setActiveVisualKey={setActiveVisualKey}
 									isLoadingTrafficTotal={isLoadingTrafficTotal}
-									isLoadingTrafficLane={isLoadingTrafficLane}
-									isLoadingOverSpeedTotal={isLoadingOverSpeedTotal}
-									isLoadingOverSpeedLane={isLoadingOverSpeedLane}
-									isLoadingPedestrians={isLoadingPedestrians}
-									isLoadingPeak={isLoadingPeak}
 									trafficTotalData={trafficTotalData}
-									trafficLaneData={trafficLaneData}
-									overSpeedTotalData={overSpeedTotalData}
-									overSpeedLaneData={overSpeedLaneData}
-									peakData={peakData}
-									pedestriansData={pedestriansData}
 									cntTotalData={cntTotalData}
 									setCntTotalData={setCntTotalData}
 									cntLaneData={cntLaneData}
@@ -281,7 +135,7 @@ const TimeVisualization = (props) => {
 									period={period}
 									tableKey="first"
 									currentLaneNum={currentLaneNum}
-									timeClassification={timeClassification}
+									trafficTotalData={trafficTotalData}
 									startDate={startDate}
 									endTime={endTime}
 									interval={interval}
@@ -290,18 +144,18 @@ const TimeVisualization = (props) => {
 									period={period}
 									tableKey="overSpeed"
 									currentLaneNum={currentLaneNum}
+									trafficTotalData={trafficTotalData}
 									startDate={startDate}
 									endTime={endTime}
-									timeClassification={timeClassification}
 									interval="15M"
 								/>
 								<TimeTableCard
 									period={period}
 									tableKey="second"
 									currentLaneNum={currentLaneNum}
+									trafficTotalData={trafficTotalData}
 									startDate={startDate}
 									endTime={endTime}
-									timeClassification={timeClassification}
 									interval="15M"
 								/>
 							</TabPane>
@@ -317,6 +171,7 @@ const mapStateToProps = (state) => {
 		cameraCode: state.locationCode.cameraCode,
 		camLanes: state.locationCode.camLanes,
 		baseURL: state.baseURL.baseURL,
+		trafficURL: state.baseURL.trafficURL,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

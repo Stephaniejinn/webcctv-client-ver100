@@ -45,6 +45,7 @@ const DayStatPage = () => {
 								<>
 									<div className="statistic-general-visualization">
 										<GeneralVisualization
+											period="DAY"
 											startDate={startDate}
 											endTime={endTime}
 										/>

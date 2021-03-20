@@ -47,7 +47,7 @@ const RealtimeStatUpper = (props) => {
 			Math.floor(currTime.minute() / 15) * 15 ===
 			Math.floor(moment(new Date()).minute() / 15) * 15
 		) {
-			message.success("Refresh 성공");
+			message.success("새로운 데이터가 없습니다");
 			// console.log("not changed");
 		} else {
 			// console.log("changed");

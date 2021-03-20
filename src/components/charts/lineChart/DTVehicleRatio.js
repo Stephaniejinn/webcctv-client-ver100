@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
+import { Spin } from "antd";
+
 import moment from "moment";
 
 // import axios from "axios";
@@ -7,158 +9,59 @@ import moment from "moment";
 // import * as actions from "../../../actions";
 
 const VehicleRatio = (props) => {
-	const {
-		currentLaneNumber,
-		totalLaneNumber,
-		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-		trafficTotalData,
-		trafficLaneData,
-
-		totalData,
-		setTotalData,
-		laneData,
-		setLaneData,
-	} = props;
+	const { activeVisualKey, trafficTotalData } = props;
 
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
 	var TotalData = [];
-	var LaneData = {};
-	for (let idx = 1; idx <= totalLaneNumber; idx++) {
-		LaneData[idx.toString()] = [];
-	}
-
-	useEffect(() => {
-		console.log("trafficTotalData,1", trafficTotalData);
-		if (isLoadingTrafficTotal === false && isLoadingTrafficLane === false) {
-			setTotalData([]);
-			setLaneData({});
-			currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-		}
-	}, [
-		trafficLaneData,
-		trafficTotalData,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-	]);
 
 	useEffect(() => {
 		if (activeVisualKey === "3") {
-			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
-				console.log("trafficTotalData,2");
-
-				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-			}
+			setLoading(true);
+			parseTotalData();
 		}
-	}, [
-		currentLaneNumber,
-		activeVisualKey,
-		// isLoadingTrafficTotal,
-		// isLoadingTrafficLane,
-	]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("count total has data");
-			setData(totalData);
-		} else {
-			console.log("count count parse");
-			trafficTotalData.forEach((TrafficData) => {
-				const {
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				let tempCar = {};
-				let tempBus = {};
-				let tempTruck = {};
-				let tempMotor = {};
+		console.log("count 일간 차종비율 parse");
+		trafficTotalData.slice(1).forEach((TrafficData) => {
+			const {
+				recordTime,
+				carVehicleRatio,
+				mBusVehicleRatio,
+				mTruckVehicleRatio,
+				motorVehicleRatio,
+			} = TrafficData;
+			let tempCar = {};
+			let tempBus = {};
+			let tempTruck = {};
+			let tempMotor = {};
+			const Time = moment(recordTime).format("HH:mm");
 
-				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
+			tempCar["time"] = Time;
+			tempCar["value"] = parseFloat((carVehicleRatio * 100).toFixed(2));
 
-				tempCar["time"] = moment(recordTime).format("HH:mm");
-				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
-				tempCar["category"] = "승용차";
+			tempCar["category"] = "승용차";
 
-				tempBus["time"] = moment(recordTime).format("HH:mm");
-				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
-				tempBus["category"] = "버스";
+			tempBus["time"] = Time;
+			tempBus["value"] = parseFloat((mBusVehicleRatio * 100).toFixed(2));
+			tempBus["category"] = "버스";
 
-				tempTruck["time"] = moment(recordTime).format("HH:mm");
-				tempTruck["value"] = parseFloat(
-					((mTruckCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempTruck["category"] = "화물차";
+			tempTruck["time"] = Time;
+			tempTruck["value"] = parseFloat((mTruckVehicleRatio * 100).toFixed(2));
+			tempTruck["category"] = "화물차";
 
-				tempMotor["time"] = moment(recordTime).format("HH:mm");
-				tempMotor["value"] = parseFloat(
-					((motorCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempMotor["category"] = "오토바이";
-				TotalData.push(tempCar);
-				TotalData.push(tempBus);
-				TotalData.push(tempTruck);
-				TotalData.push(tempMotor);
-			});
-			setTotalData(TotalData);
-			setData(TotalData);
-		}
-	};
-
-	const parseLaneData = () => {
-		if (Object.keys(laneData).length !== 0) {
-			console.log("count lane has data");
-			setData(laneData[currentLaneNumber.toString()]);
-		} else {
-			console.log("count count parse lane");
-			trafficLaneData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				let tempCar = {};
-				let tempBus = {};
-				let tempTruck = {};
-				let tempMotor = {};
-
-				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
-
-				tempCar["time"] = moment(recordTime).format("HH:mm");
-				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
-				tempCar["category"] = "승용차";
-
-				tempBus["time"] = moment(recordTime).format("HH:mm");
-				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
-				tempBus["category"] = "버스";
-
-				tempTruck["time"] = moment(recordTime).format("HH:mm");
-				tempTruck["value"] = parseFloat(
-					((mTruckCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempTruck["category"] = "화물차";
-
-				tempMotor["time"] = moment(recordTime).format("HH:mm");
-				tempMotor["value"] = parseFloat(
-					((motorCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempMotor["category"] = "오토바이";
-
-				LaneData[laneNumber.toString()].push(tempCar);
-				LaneData[laneNumber.toString()].push(tempBus);
-				LaneData[laneNumber.toString()].push(tempTruck);
-				LaneData[laneNumber.toString()].push(tempMotor);
-			});
-			setLaneData(LaneData);
-			setData(LaneData[currentLaneNumber.toString()]);
-		}
+			tempMotor["time"] = Time;
+			tempMotor["value"] = parseFloat((motorVehicleRatio * 100).toFixed(2));
+			tempMotor["category"] = "오토바이";
+			TotalData.push(tempCar);
+			TotalData.push(tempBus);
+			TotalData.push(tempTruck);
+			TotalData.push(tempMotor);
+		});
+		setData(TotalData);
+		setLoading(false);
 	};
 
 	var config = {
@@ -170,14 +73,32 @@ const VehicleRatio = (props) => {
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
-					return "".concat(v).replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+					return v.concat("%").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
 						return "".concat(s, ",");
 					});
 				},
 			},
 		},
 	};
-	return <Line {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Line {...config} />
+			)}
+		</>
+	);
 };
 
 export default VehicleRatio;
