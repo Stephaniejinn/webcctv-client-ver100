@@ -26,7 +26,7 @@ const SearchDownloadPage = () => {
 				<Layout className="site-layout">
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
-						<Breadcrumb pageHierarchy={["데시보드", "기간 별 데이터 조회"]} />
+						<Breadcrumb pageHierarchy={["대시보드", "기간 별 데이터 조회"]} />
 						<SearchData
 							period="SEARCH"
 							classification={timeClassification}
@@ -38,6 +38,8 @@ const SearchDownloadPage = () => {
 							setFirstFilter={setFirstFilter}
 							setCount={setCount}
 						/>
+						{console.log("startDate", startDate)}
+						{console.log("endTime", endTime)}
 						{firstFilter ? (
 							count ? (
 								<SearchCollapsedTable startDate={startDate} endTime={endTime} />

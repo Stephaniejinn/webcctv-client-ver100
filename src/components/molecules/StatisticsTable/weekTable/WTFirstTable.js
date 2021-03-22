@@ -1,303 +1,463 @@
-import React from "react";
-import { Table } from "antd";
-
+import React, { useEffect, useState } from "react";
+import { Table, Spin } from "antd";
 import "../style.less";
 
 const WTFirstTable = (props) => {
-	const { startDate, endTime, interval } = props;
+	const { currentLaneNum, trafficTotalData } = props;
 
-	const columns = [
-		{
-			title: "시간",
-			dataIndex: "time",
-			// render: (value, row, index) => {
-			// 	const obj = {
-			// 		children: value,
-			// 		props: {},
-			// 	};
-			// 	if (index === 0) {
-			// 		obj.props.rowSpan = 6;
-			// 	}
-			// 	if (index > 0 && index < 6) {
-			// 		obj.props.rowSpan = 0;
-			// 	}
+	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
+	const WeekKey = {
+		SUN: "일요일",
+		MON: "월요일",
+		TUE: "화요일",
+		WED: "수요일",
+		THU: "목요일",
+		FRI: "금요일",
+		SAT: "토요일",
+		ALL: "전체",
+		DAY: "평일전체",
+		END: "주말전체",
+	};
+	var TotalData = [];
 
-			// 	if (index === 6) {
-			// 		obj.props.rowSpan = 5;
-			// 	}
-			// 	// These two are merged into above cell
-			// 	if (index > 6 && index < 11) {
-			// 		obj.props.rowSpan = 0;
-			// 	}
-			// 	return obj;
-			// },
-		},
-		{
-			title: "전체",
-			dataIndex: "Total",
-			children: [
-				{
-					title: "통행량",
-					dataIndex: "totalCount",
-					key: "count",
-					// width: 50,
-				},
-				{
-					title: "평균속도",
-					dataIndex: "totalAvgSpeed",
-					key: "avgSpeed",
-					// width: 50,
-				},
-				{
-					title: "PCU",
-					dataIndex: "totalpcu",
-					key: "pcu",
-					// width: 50,
-				},
-				{
-					title: "과속",
-					dataIndex: "totalOverSpeed",
-					key: "overSpeed",
-					// width: 50,
-				},
-			],
-		},
-		{
-			title: "승용차",
-			// dataIndex: "car",
-			children: [
-				{
-					title: "통행량",
-					dataIndex: "carCount",
-					key: "carCount",
-					// width: 50,
-				},
-				{
-					title: "평균속도",
-					dataIndex: "carAvgSpeed",
-					key: "avgSpeed",
-					// width: 50,
-				},
-				{
-					title: "PCU",
-					dataIndex: "carpcu",
-					key: "pcu",
-					// width: 50,
-				},
-				{
-					title: "비율",
-					dataIndex: "carRatio",
-					key: "ratio",
-					// width: 50,
-				},
-				{
-					title: "과속",
-					dataIndex: "carOverSpeed",
-					key: "overSpeed",
-					// width: 50,
-				},
-			],
-		},
-		{
-			title: "버스",
-			// dataIndex: "car",
-			children: [
-				{
-					title: "통행량",
-					dataIndex: "busCount",
-					key: "carCount",
-					// width: 50,
-				},
-				{
-					title: "평균속도",
-					dataIndex: "busAvgSpeed",
-					key: "avgSpeed",
-					// width: 50,
-				},
-				{
-					title: "PCU",
-					dataIndex: "buspcu",
-					key: "pcu",
-					// width: 50,
-				},
-				{
-					title: "비율",
-					dataIndex: "busRatio",
-					key: "ratio",
-					// width: 50,
-				},
-				{
-					title: "과속",
-					dataIndex: "busOverSpeed",
-					key: "overSpeed",
-					// width: 50,
-				},
-			],
-		},
-		{
-			title: "화물차",
-			// dataIndex: "car",
-			children: [
-				{
-					title: "통행량",
-					dataIndex: "truckCount",
-					key: "carCount",
-					// width: 50,
-				},
-				{
-					title: "평균속도",
-					dataIndex: "truckAvgSpeed",
-					key: "avgSpeed",
-					// width: 50,
-				},
-				{
-					title: "PCU",
-					dataIndex: "truckpcu",
-					key: "pcu",
-					// width: 50,
-				},
-				{
-					title: "비율",
-					dataIndex: "truckRatio",
-					key: "ratio",
-					// width: 50,
-				},
-				{
-					title: "과속",
-					dataIndex: "truckOverSpeed",
-					key: "overSpeed",
-					// width: 50,
-				},
-			],
-		},
-		{
-			title: "이륜차",
-			// dataIndex: "car",
-			children: [
-				{
-					title: "통행량",
-					dataIndex: "motorCount",
-					key: "carCount",
-					// width: 50,
-				},
-				{
-					title: "평균속도",
-					dataIndex: "motorAvgSpeed",
-					key: "avgSpeed",
-					// width: 50,
-				},
-				{
-					title: "PCU",
-					dataIndex: "motorpcu",
-					key: "pcu",
-					// width: 50,
-				},
-				{
-					title: "비율",
-					dataIndex: "motorRatio",
-					key: "ratio",
-					// width: 50,
-				},
-				{
-					title: "과속",
-					dataIndex: "motorOverSpeed",
-					key: "overSpeed",
-					// width: 50,
-				},
-			],
-		},
-		{
-			title: "보행자",
-			// dataIndex: "car",
-			children: [
-				{
-					title: "수",
-					dataIndex: "person",
-					key: "carCount",
-					// width: 50,
-				},
-				{
-					title: "무단횡단",
-					dataIndex: "jaywalk",
-					key: "avgSpeed",
-					// width: 50,
-				},
-			],
-		},
-	];
+	useEffect(() => {
+		setLoading(true);
+		axiosData();
+	}, [trafficTotalData]);
 
-	const data = [
-		{
-			key: "0",
-			time: "전체",
-			totalCount: "3대",
-			totalAvgSpeed: "50km/h",
-			totalpcu: "3",
-			totalOverSpeed: "3대",
+	var columns;
+	if (currentLaneNum === 0) {
+		columns = [
+			{
+				title: "시간",
+				dataIndex: "time",
+				key: "time",
+				width: 70,
+			},
+			{
+				title: "전체",
+				dataIndex: "Total",
+				key: "Total",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "totalCount",
+						key: "totalCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "totalAvgSpeed",
+						key: "totalAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "totalpcu",
+						key: "totalpcu",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "totalOverSpeed",
+						key: "totalOverSpeed",
+					},
+				],
+			},
+			{
+				title: "승용차",
+				key: "car",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "carCount",
+						key: "carCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "carAvgSpeed",
+						key: "carAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "carpcu",
+						key: "carpcu",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "carRatio",
+						key: "carRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "carOverSpeed",
+						key: "carOverSpeed",
+					},
+				],
+			},
+			{
+				title: "버스",
+				key: "bus",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "busCount",
+						key: "busCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "busAvgSpeed",
+						key: "busAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "buspcu",
+						key: "buspcu",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "busRatio",
+						key: "busRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "busOverSpeed",
+						key: "busOverSpeed",
+					},
+				],
+			},
+			{
+				title: "화물차",
+				key: "truck",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "truckCount",
+						key: "truckCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "truckAvgSpeed",
+						key: "truckAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "truckpcu",
+						key: "truckpcu",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "truckRatio",
+						key: "truckRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "truckOverSpeed",
+						key: "truckOverSpeed",
+					},
+				],
+			},
+			{
+				title: "이륜차",
+				key: "motor",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "motorCount",
+						key: "motorCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "motorAvgSpeed",
+						key: "motorAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "motorAvgSpeed",
+						key: "motorAvgSpeed",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "motorRatio",
+						key: "motorRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "motorOverSpeed",
+						key: "motorOverSpeed",
+					},
+				],
+			},
+			{
+				title: "보행자",
+				key: "personTotal",
+				children: [
+					{
+						title: "수(명)",
+						dataIndex: "person",
+						key: "person",
+					},
+					{
+						title: "무단횡단(명)",
+						dataIndex: "jaywalk",
+						key: "jaywalk",
+					},
+				],
+			},
+		];
+	} else {
+		columns = [
+			{
+				title: "시간",
+				dataIndex: "time",
+				key: "time",
+				width: 70,
+			},
+			{
+				title: "전체",
+				dataIndex: "Total",
+				key: "Total",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "totalCount",
+						key: "totalCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "totalAvgSpeed",
+						key: "totalAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "totalpcu",
+						key: "totalpcu",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "totalOverSpeed",
+						key: "totalOverSpeed",
+					},
+				],
+			},
+			{
+				title: "승용차",
+				key: "car",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "carCount",
+						key: "carCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "carAvgSpeed",
+						key: "carAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "carpcu",
+						key: "carpcu",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "carRatio",
+						key: "carRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "carOverSpeed",
+						key: "carOverSpeed",
+					},
+				],
+			},
+			{
+				title: "버스",
+				key: "bus",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "busCount",
+						key: "busCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "busAvgSpeed",
+						key: "busAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "buspcu",
+						key: "buspcu",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "busRatio",
+						key: "busRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "busOverSpeed",
+						key: "busOverSpeed",
+					},
+				],
+			},
+			{
+				title: "화물차",
+				key: "truck",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "truckCount",
+						key: "truckCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "truckAvgSpeed",
+						key: "truckAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "truckpcu",
+						key: "truckpcu",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "truckRatio",
+						key: "truckRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "truckOverSpeed",
+						key: "truckOverSpeed",
+					},
+				],
+			},
+			{
+				title: "이륜차",
+				key: "motor",
+				children: [
+					{
+						title: "통행량(대)",
+						dataIndex: "motorCount",
+						key: "motorCount",
+					},
+					{
+						title: "평균속도(km/h)",
+						dataIndex: "motorAvgSpeed",
+						key: "motorAvgSpeed",
+					},
+					{
+						title: "PCU",
+						dataIndex: "motorAvgSpeed",
+						key: "motorAvgSpeed",
+					},
+					{
+						title: "비율(%)",
+						dataIndex: "motorRatio",
+						key: "motorRatio",
+					},
+					{
+						title: "과속(대)",
+						dataIndex: "motorOverSpeed",
+						key: "motorOverSpeed",
+					},
+				],
+			},
+		];
+	}
+	const axiosData = () => {
+		console.log("count table axios");
+		trafficTotalData.forEach((eachData, index) => {
+			const {
+				weekOption,
+				totalVehicleVolume,
+				totalVehicleAvgSpeed,
+				totalVehiclePassengerCarUnit,
+				totalVehicleSpdVolume,
+				carVolume,
+				carAvgSpeed,
+				carPassengerCarUnit,
+				carVehicleRatio,
+				carSpdVolume,
+				mBusVolume,
+				mBusAvgSpeed,
+				mBusPassengerCarUnit,
+				mBusVehicleRatio,
+				mBusSpdVolume,
+				mTruckVolume,
+				mTruckAvgSpeed,
+				mTruckPassengerCarUnit,
+				mTruckVehicleRatio,
+				mTruckSpdVolume,
+				motorVolume,
+				motorAvgSpeed,
+				motorPassengerCarUnit,
+				motorVehicleRatio,
+				motorSpdVolume,
+				pedestrianVolume,
+				jaywalkVolume,
+			} = eachData;
+			let dataTemp = {};
 
-			carCount: "3대",
-			carAvgSpeed: "50km/h",
-			carpcu: "3",
-			carRatio: "25%",
-			carOverSpeed: "3대",
+			dataTemp["key"] = index + 1;
+			dataTemp["time"] = WeekKey[weekOption];
 
-			busCount: "3대",
-			busAvgSpeed: "50km/h",
-			buspcu: "3",
-			busRatio: "25%",
-			busOverSpeed: "3대",
+			dataTemp["totalCount"] = totalVehicleVolume;
+			dataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
+			dataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
+			dataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
 
-			truckCount: "3대",
-			truckAvgSpeed: "50km/h",
-			truckpcu: "3",
-			truckRatio: "25%",
-			truckOverSpeed: "3대",
+			dataTemp["carCount"] = carVolume;
+			dataTemp["carAvgSpeed"] = carAvgSpeed;
+			dataTemp["carpcu"] = carPassengerCarUnit;
+			dataTemp["carRatio"] = carVehicleRatio;
+			dataTemp["carOverSpeed"] = carSpdVolume;
 
-			motorCount: "3대",
-			motorAvgSpeed: "50km/h",
-			motorpcu: "3",
-			motorRatio: "25%",
-			motorOverSpeed: "3대",
+			dataTemp["busCount"] = mBusVolume;
+			dataTemp["busAvgSpeed"] = mBusAvgSpeed;
+			dataTemp["buspcu"] = mBusPassengerCarUnit;
+			dataTemp["busRatio"] = mBusVehicleRatio;
+			dataTemp["busOverSpeed"] = mBusSpdVolume;
 
-			person: "1명",
-			jaywalk: "1명",
-		},
-		{
-			key: "1",
-			time: "평일 전체",
-			totalCount: "3대",
-			totalAvgSpeed: "50km/h",
-			totalpcu: "3",
-			totalOverSpeed: "3대",
+			dataTemp["truckCount"] = mTruckVolume;
+			dataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
+			dataTemp["truckpcu"] = mTruckPassengerCarUnit;
+			dataTemp["truckRatio"] = mTruckVehicleRatio;
+			dataTemp["truckOverSpeed"] = mTruckSpdVolume;
 
-			carCount: "3대",
-			carAvgSpeed: "50km/h",
-			carpcu: "3",
-			carRatio: "25%",
-			carOverSpeed: "3대",
+			dataTemp["motorCount"] = motorVolume;
+			dataTemp["motorAvgSpeed"] = motorAvgSpeed;
+			dataTemp["motorpcu"] = motorPassengerCarUnit;
+			dataTemp["motorRatio"] = motorVehicleRatio;
+			dataTemp["motorOverSpeed"] = motorSpdVolume;
+			if (currentLaneNum === 0) {
+				dataTemp["person"] = pedestrianVolume;
+				dataTemp["jaywalk"] = jaywalkVolume;
+			}
 
-			busCount: "3대",
-			busAvgSpeed: "50km/h",
-			buspcu: "3",
-			busRatio: "25%",
-			busOverSpeed: "3대",
+			TotalData.push(dataTemp);
+		});
+		setData(TotalData);
+		setLoading(false);
+	};
 
-			truckCount: "3대",
-			truckAvgSpeed: "50km/h",
-			truckpcu: "3",
-			truckRatio: "25%",
-			truckOverSpeed: "3대",
-
-			motorCount: "3대",
-			motorAvgSpeed: "50km/h",
-			motorpcu: "3",
-			motorRatio: "25%",
-			motorOverSpeed: "3대",
-
-			person: "1명",
-			jaywalk: "1명",
-		},
-	];
-	return <Table columns={columns} dataSource={data} size="small" bordered />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Table columns={columns} dataSource={Data} size="small" bordered />
+			)}
+		</>
+	);
 };
 export default WTFirstTable;

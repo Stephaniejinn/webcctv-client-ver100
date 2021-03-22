@@ -1,21 +1,16 @@
 import React from "react";
 import { Tabs } from "antd";
 
-import DayCnt from "../../charts/barChart/DLCnt";
-import PCUBar from "../../charts/barChart/DLPCU";
-import VehicleRatio from "../../charts/barChart/DLVehicleRatio";
-import DayAvgSpeedLine from "../../charts/lineChart/DLAvgSpeed";
-import DayOverSpeed from "../../charts/barChart/DLOverSpeed";
+import VehicleVolume from "../../charts/barChart/LaneVehicleCnt";
+import PCUBar from "../../charts/barChart/LanePCU";
+import VehicleRatio from "../../charts/barChart/LaneVehicleRatio";
+import AvgSpeed from "../../charts/lineChart/LaneAvgSpeed";
+import OverSpeedVolume from "../../charts/barChart/LaneOverSpeedCnt";
 
 import "./style.less";
 
 const LaneDataVisualization = (props) => {
-	const {
-		period,
-		activeVisualKey,
-		setActiveVisualKey,
-		trafficTotalData,
-	} = props;
+	const { activeVisualKey, setActiveVisualKey, trafficTotalData } = props;
 
 	const { TabPane } = Tabs;
 
@@ -31,27 +26,10 @@ const LaneDataVisualization = (props) => {
 			tabPosition="right"
 		>
 			<TabPane tab="교통량" key="1">
-				{period === "DAY" ? (
-					<DayCnt
-						activeVisualKey={activeVisualKey}
-						trafficTotalData={trafficTotalData}
-					/>
-				) : (
-					// <CntLineChart
-					// 	currentLaneNumber={parseInt(currentLaneNum)}
-					// 	totalLaneNumber={totalLaneNumber}
-					// 	activeVisualKey={activeVisualKey}
-					// 	isLoadingTrafficTotal={isLoadingTrafficTotal}
-					// 	isLoadingTrafficLane={isLoadingTrafficLane}
-					// 	trafficTotalData={trafficTotalData}
-					// 	trafficLaneData={trafficLaneData}
-					// 	totalData={cntTotalData}
-					// 	setTotalData={setCntTotalData}
-					// 	laneData={cntLaneData}
-					// 	setLaneData={setCntLaneData}
-					// />
-					<button />
-				)}
+				<VehicleVolume
+					activeVisualKey={activeVisualKey}
+					trafficTotalData={trafficTotalData}
+				/>
 			</TabPane>
 			<TabPane tab="PCU" key="2">
 				<PCUBar
@@ -66,13 +44,13 @@ const LaneDataVisualization = (props) => {
 				/>
 			</TabPane>
 			<TabPane tab="평균속도" key="4">
-				<DayAvgSpeedLine
+				<AvgSpeed
 					activeVisualKey={activeVisualKey}
 					trafficTotalData={trafficTotalData}
 				/>
 			</TabPane>
 			<TabPane tab="과속차량" key="5">
-				<DayOverSpeed
+				<OverSpeedVolume
 					activeVisualKey={activeVisualKey}
 					trafficTotalData={trafficTotalData}
 				/>

@@ -3,7 +3,7 @@ import { Column } from "@ant-design/charts";
 import { Spin } from "antd";
 import { act } from "react-dom/cjs/react-dom-test-utils.production.min";
 
-const DLOverSpeed = (props) => {
+const OverSpeedCnt = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
 
 	const [Data, setData] = useState([]);
@@ -69,6 +69,15 @@ const DLOverSpeed = (props) => {
 		xField: "laneNum",
 		yField: "value",
 		seriesField: "type",
+		yAxis: {
+			label: {
+				formatter: function formatter(v) {
+					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+						return "".concat(s, ",");
+					});
+				},
+			},
+		},
 		label: {
 			position: "middle",
 			layout: [
@@ -98,4 +107,4 @@ const DLOverSpeed = (props) => {
 		</>
 	);
 };
-export default DLOverSpeed;
+export default OverSpeedCnt;

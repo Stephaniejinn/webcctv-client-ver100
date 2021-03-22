@@ -30,7 +30,7 @@ const StreamingGeneralVisualization = (props) => {
 	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}/daily?&camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&axis=time&laneNumber=0`,
+				`${baseURL}${trafficURL}/daily?camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&axis=time&laneNumber=0`,
 				// `${baseURL}/statistics/road-traffic/daily?camCode=0004&startDate=2020-03-15&endTime=2020-03-15 23:59:59&axis=time&laneNumber=0`,
 
 				{

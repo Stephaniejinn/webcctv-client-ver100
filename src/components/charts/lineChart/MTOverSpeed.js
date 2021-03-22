@@ -20,9 +20,9 @@ const OverSpeedCnt = (props) => {
 
 	const parseTotalData = () => {
 		console.log("count 일간 과속 parse");
-		trafficTotalData.slice(1).forEach((TrafficData) => {
+		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
-				recordTime,
+				recordDate,
 				totalVehicleSpdVolume,
 				carSpdVolume,
 				mBusSpdVolume,
@@ -34,7 +34,7 @@ const OverSpeedCnt = (props) => {
 			const tempTruck = {};
 			const tempMotor = {};
 			const tempTotal = {};
-			const Time = moment(recordTime).format("HH:mm");
+			const Time = moment(recordDate).format("MM-DD");
 			tempCar["time"] = Time;
 			tempCar["value"] = carSpdVolume;
 			tempCar["category"] = "승용차";

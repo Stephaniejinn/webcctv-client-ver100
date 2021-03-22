@@ -1,164 +1,95 @@
 import React, { useState, useEffect } from "react";
 import { Column } from "@ant-design/charts";
+import { Spin } from "antd";
 
 const VehicleRatio = (props) => {
-	const {
-		currentLaneNumber,
-		totalLaneNumber,
-		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-		trafficTotalData,
-		trafficLaneData,
-
-		totalData,
-		setTotalData,
-		laneData,
-		setLaneData,
-	} = props;
-
+	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
+	const WeekKey = {
+		SUN: "일요일",
+		MON: "월요일",
+		TUE: "화요일",
+		WED: "수요일",
+		THU: "목요일",
+		FRI: "금요일",
+		SAT: "토요일",
+		ALL: "전체",
+		DAY: "평일전체",
+		END: "주말전체",
+	};
 
 	var carRatio = [];
 	var busRatio = [];
 	var truckRatio = [];
 	var motorRatio = [];
-	var TotalData = [];
-	var LaneData = {};
+	var RatioTotalData = [];
 
 	useEffect(() => {
 		if (activeVisualKey === "3") {
-			if (isLoadingTrafficLane === false && isLoadingTrafficLane === false) {
-				console.log("activeVisualKey", activeVisualKey);
-				currentLaneNumber === 0 ? parseTotalData() : parseLaneData();
-			}
+			setLoading(true);
+			parseTotalData();
 		}
-	}, [
-		currentLaneNumber,
-		activeVisualKey,
-		isLoadingTrafficTotal,
-		isLoadingTrafficLane,
-	]);
+	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		if (totalData.length !== 0) {
-			console.log("count total has data");
-			setData(totalData);
-		} else {
-			console.log("count count parse");
-			trafficTotalData.forEach((TrafficData) => {
-				const {
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				let tempCar = {};
-				let tempBus = {};
-				let tempTruck = {};
-				let tempMotor = {};
+		console.log("count count parse");
+		trafficTotalData.slice(3).forEach((TrafficData) => {
+			const {
+				weekOption,
+				carVehicleRatio,
+				mBusVehicleRatio,
+				mTruckVehicleRatio,
+				motorVehicleRatio,
+			} = TrafficData;
+			let tempCar = {};
+			let tempBus = {};
+			let tempTruck = {};
+			let tempMotor = {};
 
-				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
+			tempCar["time"] = WeekKey[weekOption];
+			tempCar["value"] = parseFloat((carVehicleRatio * 100).toFixed(2));
+			tempCar["type"] = "승용차";
 
-				tempCar["time"] = recordTime.substring(11, 16);
-				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
-				tempCar["type"] = "승용차";
+			tempBus["time"] = WeekKey[weekOption];
+			tempBus["value"] = parseFloat((mBusVehicleRatio * 100).toFixed(2));
+			tempBus["type"] = "버스";
 
-				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
-				tempBus["type"] = "버스";
+			tempTruck["time"] = WeekKey[weekOption];
+			tempTruck["value"] = parseFloat((mTruckVehicleRatio * 100).toFixed(2));
+			tempTruck["type"] = "화물차";
 
-				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = parseFloat(
-					((mTruckCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempTruck["type"] = "화물차";
+			tempMotor["time"] = WeekKey[weekOption];
+			tempMotor["value"] = parseFloat((motorVehicleRatio * 100).toFixed(2));
+			tempMotor["type"] = "오토바이";
 
-				tempMotor["time"] = recordTime.substring(11, 16);
-				tempMotor["value"] = parseFloat(
-					((motorCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempMotor["type"] = "오토바이";
-
-				carRatio.push(tempCar);
-				busRatio.push(tempBus);
-				truckRatio.push(tempTruck);
-				motorRatio.push(tempMotor);
-			});
-			TotalData = carRatio.concat(
-				busRatio.concat(truckRatio.concat(motorRatio))
-			);
-			setTotalData(TotalData);
-			setData(TotalData);
-		}
+			carRatio.push(tempCar);
+			busRatio.push(tempBus);
+			truckRatio.push(tempTruck);
+			motorRatio.push(tempMotor);
+		});
+		RatioTotalData = carRatio.concat(
+			busRatio.concat(truckRatio.concat(motorRatio))
+		);
+		setData(RatioTotalData);
+		setLoading(false);
 	};
-	const parseLaneData = () => {
-		if (Object.keys(laneData).length !== 0) {
-			console.log("count lane has data");
-			setData(laneData[currentLaneNumber.toString()]);
-		} else {
-			console.log("count count parse lane");
-			trafficLaneData.forEach((TrafficData) => {
-				const {
-					laneNumber,
-					recordTime,
-					carCnt,
-					mBusCnt,
-					mTruckCnt,
-					motorCnt,
-				} = TrafficData;
-				let tempCar = {};
-				let tempBus = {};
-				let tempTruck = {};
-				let tempMotor = {};
 
-				const totalCnt = carCnt + mBusCnt + mTruckCnt + motorCnt;
-
-				tempCar["time"] = recordTime.substring(11, 16);
-				tempCar["value"] = parseFloat(((carCnt / totalCnt) * 100).toFixed(2));
-				tempCar["category"] = "승용차";
-
-				tempBus["time"] = recordTime.substring(11, 16);
-				tempBus["value"] = parseFloat(((mBusCnt / totalCnt) * 100).toFixed(2));
-				tempBus["category"] = "버스";
-
-				tempTruck["time"] = recordTime.substring(11, 16);
-				tempTruck["value"] = parseFloat(
-					((mTruckCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempTruck["category"] = "화물차";
-
-				tempMotor["time"] = recordTime.substring(11, 16);
-				tempMotor["value"] = parseFloat(
-					((motorCnt / totalCnt) * 100).toFixed(2)
-				);
-				tempMotor["category"] = "오토바이";
-
-				carRatio.push(tempCar);
-				busRatio.push(tempBus);
-				truckRatio.push(tempTruck);
-				motorRatio.push(tempMotor);
-				// TotalData = carRatio.concat(
-				//   busRatio.concat(truckRatio.concat(motorRatio))
-				// );
-				// LaneData[laneNumber.toString()].push(carRatio.concat(
-				//     busRatio.concat(truckRatio.concat(motorRatio))
-				//   ));
-				// LaneData[laneNumber.toString()].push(tempBus);
-				// LaneData[laneNumber.toString()].push(tempTruck);
-				// LaneData[laneNumber.toString()].push(tempMotor);
-			});
-			setLaneData(LaneData);
-			setData(LaneData[currentLaneNumber.toString()]);
-		}
-	};
 	var config = {
 		data: Data,
 		isStack: true,
 		xField: "time",
 		yField: "value",
 		seriesField: "type",
+		yAxis: {
+			label: {
+				formatter: function formatter(v) {
+					return v.concat("%").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+						return "".concat(s, ",");
+					});
+				},
+			},
+		},
 		label: {
 			position: "middle",
 			layout: [
@@ -168,6 +99,24 @@ const VehicleRatio = (props) => {
 			],
 		},
 	};
-	return <Column {...config} />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Column {...config} />
+			)}
+		</>
+	);
 };
 export default VehicleRatio;

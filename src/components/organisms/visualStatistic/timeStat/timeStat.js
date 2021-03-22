@@ -13,8 +13,6 @@ const TimeVisualization = (props) => {
 		period,
 		startDate,
 		endTime,
-		timeClassification,
-		interval,
 		cameraCode,
 		camLanes,
 		baseURL,
@@ -30,33 +28,19 @@ const TimeVisualization = (props) => {
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
 
-	const [cntTotalData, setCntTotalData] = useState([]);
-	const [cntLaneData, setCntLaneData] = useState({});
-
-	const [PCUTotalData, setPCUTotalData] = useState([]);
-	const [PCULaneData, setPCULaneData] = useState({});
-
-	const [ratioTotalData, setRatioTotalData] = useState([]);
-	const [ratioLaneData, setRatioLaneData] = useState({});
-
-	const [avgSpeedTotalData, setAvgSpeedTotalData] = useState([]);
-	const [avgSpeedLaneData, setAvgSpeedLaneData] = useState({});
-
-	const [overSpeedCntTotalData, setOverSpeedCntTotalData] = useState([]);
-	const [overSpeedCntLaneData, setOverSpeedCntLaneData] = useState({});
-
-	const [dayNightTotalData, setDayNightTotalData] = useState([]);
-	const [dayNightLaneData, setDayNightLaneData] = useState({});
-
 	const periodURL =
-		period === "DAY" ? "/daily" : period === "WEEK" ? "/Weekly" : "/Monthly";
+		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
+
+	const currentURL =
+		period === "DAY"
+			? `${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=${currentLaneNum}`
+			: `${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=${currentLaneNum}&weekOption=ALL`;
 
 	useEffect(() => {
 		var tabLaneNum = ["구간 전체"];
 		for (let idx = 1; idx <= camLanes; idx++) {
 			tabLaneNum.push(`${idx} 차선`);
 		}
-		console.log(tabLaneNum);
 		setTotalLaneArr(tabLaneNum);
 	}, [camLanes]);
 
@@ -66,19 +50,18 @@ const TimeVisualization = (props) => {
 
 	const axiosAsync = () => {
 		axios
-			.get(
-				`${baseURL}${trafficURL}${periodURL}?&camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&&axis=time&laneNumber=${currentLaneNum}`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
+			.get(`${currentURL}`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
 			.then((res) => {
 				setTrafficTotalData(res.data);
 				console.log(res.data);
-				setLoadingTrafficTotal(false);
+				if (res.data.length !== 0) {
+					setLoadingTrafficTotal(false);
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -98,38 +81,11 @@ const TimeVisualization = (props) => {
 								{/* <TabPane tab="{tabName}" key="0"> */}
 								<TimeDataVisualization
 									period={period}
-									timeClassification={timeClassification}
-									totalLaneNumber={camLanes}
 									currentLaneNum={currentLaneNum}
 									setCurrentLaneNum={setCurrentLaneNum}
 									activeVisualKey={activeVisualKey}
 									setActiveVisualKey={setActiveVisualKey}
-									isLoadingTrafficTotal={isLoadingTrafficTotal}
 									trafficTotalData={trafficTotalData}
-									cntTotalData={cntTotalData}
-									setCntTotalData={setCntTotalData}
-									cntLaneData={cntLaneData}
-									setCntLaneData={setCntLaneData}
-									PCUTotalData={PCUTotalData}
-									setPCUTotalData={setPCUTotalData}
-									PCULaneData={PCULaneData}
-									setPCULaneData={setPCULaneData}
-									ratioTotalData={ratioTotalData}
-									setRatioTotalData={setRatioTotalData}
-									ratioLaneData={ratioLaneData}
-									setRatioLaneData={setRatioLaneData}
-									avgSpeedTotalData={avgSpeedTotalData}
-									setAvgSpeedTotalData={setAvgSpeedTotalData}
-									avgSpeedLaneData={avgSpeedLaneData}
-									setAvgSpeedLaneData={setAvgSpeedLaneData}
-									overSpeedCntTotalData={overSpeedCntTotalData}
-									setOverSpeedCntTotalData={setOverSpeedCntTotalData}
-									overSpeedCntLaneData={overSpeedCntLaneData}
-									setOverSpeedCntLaneData={setOverSpeedCntLaneData}
-									dayNightTotalData={dayNightTotalData}
-									setDayNightTotalData={setDayNightTotalData}
-									dayNightLaneData={dayNightLaneData}
-									setDayNightLaneData={setDayNightLaneData}
 								/>
 								<TimeTableCard
 									period={period}
@@ -138,7 +94,6 @@ const TimeVisualization = (props) => {
 									trafficTotalData={trafficTotalData}
 									startDate={startDate}
 									endTime={endTime}
-									interval={interval}
 								/>
 								<TimeTableCard
 									period={period}
@@ -147,7 +102,6 @@ const TimeVisualization = (props) => {
 									trafficTotalData={trafficTotalData}
 									startDate={startDate}
 									endTime={endTime}
-									interval="15M"
 								/>
 								<TimeTableCard
 									period={period}
@@ -156,7 +110,6 @@ const TimeVisualization = (props) => {
 									trafficTotalData={trafficTotalData}
 									startDate={startDate}
 									endTime={endTime}
-									interval="15M"
 								/>
 							</TabPane>
 						);

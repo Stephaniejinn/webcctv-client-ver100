@@ -44,9 +44,9 @@ const WeekStatPage = () => {
 								<>
 									<div className="statistic-general-visualization">
 										<GeneralVisualization
+											period="WEEK"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
 										/>
 									</div>
 									{timeClassification ? (
@@ -54,16 +54,12 @@ const WeekStatPage = () => {
 											period="WEEK"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
-											interval="1D"
 										/>
 									) : (
 										<LaneStatistic
 											period="WEEK"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
-											interval="1D"
 											additionalFilter={additionalFilter}
 										/>
 									)}

@@ -44,9 +44,9 @@ const MonthStatPage = () => {
 								<>
 									<div className="statistic-general-visualization">
 										<GeneralVisualization
+											period="MONTH"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
 										/>
 									</div>
 									{timeClassification ? (
@@ -54,16 +54,12 @@ const MonthStatPage = () => {
 											period="MONTH"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
-											interval="1W"
 										/>
 									) : (
 										<LaneStatistic
 											period="MONTH"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
-											interval="1W"
 											additionalFilter={additionalFilter}
 										/>
 									)}

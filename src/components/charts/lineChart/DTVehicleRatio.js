@@ -69,7 +69,6 @@ const VehicleRatio = (props) => {
 		xField: "time",
 		yField: "value",
 		seriesField: "category",
-		// xAxis: { type: "time" },
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {

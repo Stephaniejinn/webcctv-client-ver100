@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
 import { Spin } from "antd";
 
-const LaneAvgSpeedLine = (props) => {
-	const { activeVisualKey, trafficTotalData } = props;
+import moment from "moment";
 
+const MTAvgSpeed = (props) => {
+	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
@@ -18,41 +19,48 @@ const LaneAvgSpeedLine = (props) => {
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		console.log("count 일간 차선별 평균속도 parse");
-		trafficTotalData.slice(1).forEach((TrafficData) => {
+		console.log("count 일간 평균속도 parse");
+		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
-				laneNumber,
+				recordDate,
+				totalVehicleAvgSpeed,
 				carAvgSpeed,
 				mBusAvgSpeed,
 				mTruckAvgSpeed,
 				motorAvgSpeed,
 			} = TrafficData;
+			const tempCar = {};
+			const tempBus = {};
+			const tempTruck = {};
+			const tempMotor = {};
+			const tempTotal = {};
+			const Time = moment(recordDate).format("MM-DD");
 
-			let tempCar = {};
-			let tempBus = {};
-			let tempTruck = {};
-			let tempMotor = {};
-
-			tempCar["lane"] = `${laneNumber.toString()} 차선`;
+			tempCar["time"] = Time;
 			tempCar["value"] = carAvgSpeed;
 			tempCar["category"] = "승용차";
 
-			tempBus["lane"] = `${laneNumber.toString()} 차선`;
+			tempBus["time"] = Time;
 			tempBus["value"] = mBusAvgSpeed;
 			tempBus["category"] = "버스";
 
-			tempTruck["lane"] = `${laneNumber.toString()} 차선`;
+			tempTruck["time"] = Time;
 			tempTruck["value"] = mTruckAvgSpeed;
 			tempTruck["category"] = "화물차";
 
-			tempMotor["lane"] = `${laneNumber.toString()} 차선`;
+			tempMotor["time"] = Time;
 			tempMotor["value"] = motorAvgSpeed;
 			tempMotor["category"] = "오토바이";
+
+			tempTotal["time"] = Time;
+			tempTotal["value"] = totalVehicleAvgSpeed;
+			tempTotal["category"] = "천제";
 
 			avgSpeedTotalData.push(tempCar);
 			avgSpeedTotalData.push(tempBus);
 			avgSpeedTotalData.push(tempTruck);
 			avgSpeedTotalData.push(tempMotor);
+			avgSpeedTotalData.push(tempTotal);
 		});
 		setData(avgSpeedTotalData);
 		setLoading(false);
@@ -60,15 +68,18 @@ const LaneAvgSpeedLine = (props) => {
 
 	var config = {
 		data: Data,
-		xField: "lane",
+		xField: "time",
 		yField: "value",
 		seriesField: "category",
+		legend: true,
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
-					return "".concat(v).replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
-						return "".concat(s, ",");
-					});
+					return v
+						.concat("km/h")
+						.replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+							return "".concat(s, ",");
+						});
 				},
 			},
 		},
@@ -93,4 +104,4 @@ const LaneAvgSpeedLine = (props) => {
 		</>
 	);
 };
-export default LaneAvgSpeedLine;
+export default MTAvgSpeed;

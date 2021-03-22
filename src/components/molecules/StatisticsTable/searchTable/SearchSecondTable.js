@@ -4,21 +4,19 @@ import moment from "moment";
 
 import "../style.less";
 
-const MTSecondTable = (props) => {
-	const { currentLaneNum, trafficTotalData } = props;
+const SearchSecondTable = (props) => {
+	const { trafficTotalData } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
-	var TotalData = [];
 
+	var TotalData = [];
 	var countCol;
 
 	useEffect(() => {
-		if (currentLaneNum === 0) {
-			countCol = 0;
-			setLoading(true);
-			parseData();
-		}
+		countCol = 0;
+		setLoading(true);
+		parseData();
 	}, [trafficTotalData]);
 
 	const columns = [
@@ -59,7 +57,7 @@ const MTSecondTable = (props) => {
 				{
 					title: "주야율",
 					dataIndex: "carDayNightRatio",
-					key: "carNightRatio",
+					key: "carDayNightRatio",
 				},
 			],
 		},
@@ -70,7 +68,7 @@ const MTSecondTable = (props) => {
 				{
 					title: "주야율",
 					dataIndex: "busDayNightRatio",
-					key: "busNightRatio",
+					key: "busDayNightRatio",
 				},
 			],
 		},
@@ -81,7 +79,7 @@ const MTSecondTable = (props) => {
 				{
 					title: "주야율",
 					dataIndex: "truckDayNightRatio",
-					key: "truckNightRatio",
+					key: "truckDayNightRatio",
 				},
 			],
 		},
@@ -92,14 +90,15 @@ const MTSecondTable = (props) => {
 				{
 					title: "주야율",
 					dataIndex: "motorDayNightRatio",
-					key: "motorNightRatio",
+					key: "motorDayNightRatio",
 				},
 			],
 		},
 	];
 	const parseData = () => {
 		console.log("count table axios");
-		trafficTotalData.forEach((eachData, index) => {
+		console.log(trafficTotalData);
+		trafficTotalData.some((eachData, index) => {
 			const {
 				recordTime,
 				totalVehicleDayNightRatio,
@@ -111,21 +110,17 @@ const MTSecondTable = (props) => {
 				mTruckDayNightRatio,
 				motorDayNightRatio,
 			} = eachData;
-			let dataTemp = {};
-
-			dataTemp["key"] = index + 1;
-			if (countCol < 3) {
-				if (countCol === 0) {
-					dataTemp["time"] = "월간전체";
-				} else if (countCol === 1) {
-					dataTemp["time"] = "평일전체";
-				} else {
-					dataTemp["time"] = "주말전체";
-				}
-				countCol += 1;
-			} else {
-				dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일");
+			if (recordTime === "ALL") {
+				return false;
 			}
+			if (countCol === 6) {
+				return true;
+			}
+			countCol += 1;
+
+			let dataTemp = {};
+			dataTemp["key"] = index + 1;
+			dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일 HH:mm:ss");
 			dataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
 			dataTemp["totalPHF"] = totalVehiclePeakHourFactor;
 			dataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
@@ -137,7 +132,6 @@ const MTSecondTable = (props) => {
 			dataTemp["busDayNightRatio"] = mBusDayNightRatio;
 			dataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
 			dataTemp["motorDayNightRatio"] = motorDayNightRatio;
-
 			TotalData.push(dataTemp);
 		});
 
@@ -165,4 +159,4 @@ const MTSecondTable = (props) => {
 		</>
 	);
 };
-export default MTSecondTable;
+export default SearchSecondTable;

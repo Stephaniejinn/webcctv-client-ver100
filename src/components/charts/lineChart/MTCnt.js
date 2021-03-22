@@ -1,60 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
-import moment from "moment";
 import { Spin } from "antd";
 
-const OverSpeedCnt = (props) => {
-	const { activeVisualKey, trafficTotalData } = props;
+import moment from "moment";
 
+const MTCnt = (props) => {
+	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
-
 	var cntTotalData = [];
 
 	useEffect(() => {
-		if (activeVisualKey === "5") {
+		if (activeVisualKey === "1") {
 			setLoading(true);
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		console.log("count 일간 과속 parse");
-		trafficTotalData.slice(1).forEach((TrafficData) => {
+		console.log("count 통행량 parse");
+		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
-				recordTime,
-				totalVehicleSpdVolume,
-				carSpdVolume,
-				mBusSpdVolume,
-				mTruckSpdVolume,
-				motorSpdVolume,
+				recordDate,
+				carVolume,
+				mBusVolume,
+				mTruckVolume,
+				motorVolume,
+				totalVehicleVolume,
 			} = TrafficData;
 			const tempCar = {};
 			const tempBus = {};
 			const tempTruck = {};
 			const tempMotor = {};
 			const tempTotal = {};
-			const Time = moment(recordTime).format("HH:mm");
+			const Time = moment(recordDate).format("MM-DD");
+
 			tempCar["time"] = Time;
-			tempCar["value"] = carSpdVolume;
+			tempCar["value"] = carVolume;
 			tempCar["category"] = "승용차";
 
 			tempBus["time"] = Time;
-			tempBus["value"] = mBusSpdVolume;
+			tempBus["value"] = mBusVolume;
 			tempBus["category"] = "버스";
 
 			tempTruck["time"] = Time;
-			tempTruck["value"] = mTruckSpdVolume;
+			tempTruck["value"] = mTruckVolume;
 			tempTruck["category"] = "화물차";
 
 			tempMotor["time"] = Time;
-			tempMotor["value"] = motorSpdVolume;
+			tempMotor["value"] = motorVolume;
 			tempMotor["category"] = "오토바이";
 
 			tempTotal["time"] = Time;
-			tempTotal["value"] = totalVehicleSpdVolume;
+			tempTotal["value"] = totalVehicleVolume;
 			tempTotal["category"] = "전체";
-
 			cntTotalData.push(tempCar);
 			cntTotalData.push(tempBus);
 			cntTotalData.push(tempTruck);
@@ -70,7 +69,7 @@ const OverSpeedCnt = (props) => {
 		xField: "time",
 		yField: "value",
 		seriesField: "category",
-		legend: true,
+		// xAxis: { type: "time" },
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
@@ -102,4 +101,4 @@ const OverSpeedCnt = (props) => {
 	);
 };
 
-export default OverSpeedCnt;
+export default MTCnt;

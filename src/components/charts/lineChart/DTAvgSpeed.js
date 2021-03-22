@@ -71,6 +71,7 @@ const DTAvgSpeed = (props) => {
 		xField: "time",
 		yField: "value",
 		seriesField: "category",
+		legend: true,
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {

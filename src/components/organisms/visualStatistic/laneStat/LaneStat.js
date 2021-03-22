@@ -26,25 +26,28 @@ const LaneVisualization = (props) => {
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
 
 	const periodURL =
-		period === "DAY" ? "/daily" : period === "WEEK" ? "/Weekly" : "/Monthly";
+		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
+
+	const currentURL =
+		period === "DAY"
+			? `${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=lane`
+			: `${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=lane&weekOption=${additionalFilter}`;
 
 	useEffect(() => {
 		getTrafficTotalData();
-	}, [cameraCode, startDate, endTime]);
+	}, [cameraCode, startDate, endTime, additionalFilter]);
 
 	const getTrafficTotalData = () => {
 		axios
-			.get(
-				`${baseURL}${trafficURL}${periodURL}?&camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&&axis=lane`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
+			.get(`${currentURL}`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
 			.then((res) => {
 				setTrafficTotalData(res.data);
+				console.log(res.data);
 				setLoadingTrafficTotal(false);
 			})
 			.catch((err) => {

@@ -55,16 +55,12 @@ const DayStatPage = () => {
 											period="DAY"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
-											interval="15M"
 										/>
 									) : (
 										<LaneStatistic
 											period="DAY"
 											startDate={startDate}
 											endTime={endTime}
-											timeClassification={timeClassification}
-											interval="15M"
 										/>
 									)}
 								</>

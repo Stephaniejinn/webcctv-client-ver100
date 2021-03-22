@@ -443,21 +443,5 @@ const DTFisrtTable = (props) => {
 		</>
 	);
 };
-// const mapStateToProps = (state) => {
-// 	return {
-// 		cameraCode: state.locationCode.cameraCode,
-// 		baseURL: state.baseURL.baseURL,
-// 	};
-// };
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		getLocationCodeInfo: () => {
-// 			dispatch(actions.getLocationCode());
-// 		},
-// 		getBaseURL: () => {
-// 			dispatch(actions.getURL());
-// 		},
-// 	};
-// };
-// export default connect(mapStateToProps, mapDispatchToProps)(DTFisrtTable);
+
 export default DTFisrtTable;

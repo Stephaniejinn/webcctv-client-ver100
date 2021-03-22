@@ -27,7 +27,6 @@ const TimeTableCard = (props) => {
 		startDate,
 		endTime,
 		currentTime,
-		interval,
 		page = "",
 	} = props;
 
@@ -81,9 +80,8 @@ const TimeTableCard = (props) => {
 							tableKey={tableKey}
 						/>
 						<WTFirstTable
-							startDate={startDate}
-							endTime={endTime}
-							interval={interval}
+							currentLaneNum={parseInt(currentLaneNum)}
+							trafficTotalData={trafficTotalData}
 						/>
 					</>
 				) : parseInt(currentLaneNum) === 0 ? (
@@ -99,9 +97,8 @@ const TimeTableCard = (props) => {
 							<OverSpeedTable startDate={startDate} endTime={endTime} />
 						) : (
 							<WTSecondTable
-								startDate={startDate}
-								endTime={endTime}
-								interval={interval}
+								currentLaneNum={parseInt(currentLaneNum)}
+								trafficTotalData={trafficTotalData}
 							/>
 						)}
 					</>
@@ -116,9 +113,8 @@ const TimeTableCard = (props) => {
 						tableKey={tableKey}
 					/>
 					<MTFirstTable
-						startDate={startDate}
-						endTime={endTime}
-						interval={interval}
+						currentLaneNum={parseInt(currentLaneNum)}
+						trafficTotalData={trafficTotalData}
 					/>
 				</>
 			) : parseInt(currentLaneNum) === 0 ? (
@@ -134,9 +130,8 @@ const TimeTableCard = (props) => {
 						<OverSpeedTable startDate={startDate} endTime={endTime} />
 					) : (
 						<MTSecondTable
-							startDate={startDate}
-							endTime={endTime}
-							interval={interval}
+							currentLaneNum={parseInt(currentLaneNum)}
+							trafficTotalData={trafficTotalData}
 						/>
 					)}
 				</>

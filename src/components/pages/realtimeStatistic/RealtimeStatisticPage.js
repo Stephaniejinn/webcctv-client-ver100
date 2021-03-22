@@ -54,7 +54,7 @@ const RealtimeStatisticPage = (props) => {
 	const axiosAsync = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}/daily?&camCode=${camCode}&startDate=${date}&endTime=${date} ${currTimeStr}&&axis=time&laneNumber=0`,
+				`${baseURL}${trafficURL}/daily?camCode=${camCode}&startDate=${date}&endTime=${date} ${currTimeStr}&axis=time&laneNumber=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,

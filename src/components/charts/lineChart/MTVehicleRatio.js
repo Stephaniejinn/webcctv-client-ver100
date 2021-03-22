@@ -1,67 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
-import moment from "moment";
 import { Spin } from "antd";
 
-const OverSpeedCnt = (props) => {
+import moment from "moment";
+
+// import axios from "axios";
+// import { connect } from "react-redux";
+// import * as actions from "../../../actions";
+
+const VehicleRatio = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var cntTotalData = [];
+	var TotalData = [];
 
 	useEffect(() => {
-		if (activeVisualKey === "5") {
+		if (activeVisualKey === "3") {
 			setLoading(true);
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		console.log("count 일간 과속 parse");
-		trafficTotalData.slice(1).forEach((TrafficData) => {
+		console.log("count 일간 차종비율 parse");
+		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
-				recordTime,
-				totalVehicleSpdVolume,
-				carSpdVolume,
-				mBusSpdVolume,
-				mTruckSpdVolume,
-				motorSpdVolume,
+				recordDate,
+				carVehicleRatio,
+				mBusVehicleRatio,
+				mTruckVehicleRatio,
+				motorVehicleRatio,
 			} = TrafficData;
-			const tempCar = {};
-			const tempBus = {};
-			const tempTruck = {};
-			const tempMotor = {};
-			const tempTotal = {};
-			const Time = moment(recordTime).format("HH:mm");
+			let tempCar = {};
+			let tempBus = {};
+			let tempTruck = {};
+			let tempMotor = {};
+			const Time = moment(recordDate).format("MM-DD");
+
 			tempCar["time"] = Time;
-			tempCar["value"] = carSpdVolume;
+			tempCar["value"] = parseFloat((carVehicleRatio * 100).toFixed(2));
+
 			tempCar["category"] = "승용차";
 
 			tempBus["time"] = Time;
-			tempBus["value"] = mBusSpdVolume;
+			tempBus["value"] = parseFloat((mBusVehicleRatio * 100).toFixed(2));
 			tempBus["category"] = "버스";
 
 			tempTruck["time"] = Time;
-			tempTruck["value"] = mTruckSpdVolume;
+			tempTruck["value"] = parseFloat((mTruckVehicleRatio * 100).toFixed(2));
 			tempTruck["category"] = "화물차";
 
 			tempMotor["time"] = Time;
-			tempMotor["value"] = motorSpdVolume;
+			tempMotor["value"] = parseFloat((motorVehicleRatio * 100).toFixed(2));
 			tempMotor["category"] = "오토바이";
-
-			tempTotal["time"] = Time;
-			tempTotal["value"] = totalVehicleSpdVolume;
-			tempTotal["category"] = "전체";
-
-			cntTotalData.push(tempCar);
-			cntTotalData.push(tempBus);
-			cntTotalData.push(tempTruck);
-			cntTotalData.push(tempMotor);
-			cntTotalData.push(tempTotal);
+			TotalData.push(tempCar);
+			TotalData.push(tempBus);
+			TotalData.push(tempTruck);
+			TotalData.push(tempMotor);
 		});
-		setData(cntTotalData);
+		setData(TotalData);
 		setLoading(false);
 	};
 
@@ -70,11 +69,10 @@ const OverSpeedCnt = (props) => {
 		xField: "time",
 		yField: "value",
 		seriesField: "category",
-		legend: true,
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
-					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+					return v.concat("%").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
 						return "".concat(s, ",");
 					});
 				},
@@ -102,4 +100,4 @@ const OverSpeedCnt = (props) => {
 	);
 };
 
-export default OverSpeedCnt;
+export default VehicleRatio;

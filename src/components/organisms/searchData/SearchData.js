@@ -56,6 +56,7 @@ const SeachData = (props) => {
 			Object.keys(selectedLocation).length !== 0
 		) {
 			//if location changed
+			// console.log("location change");
 			spinTimer();
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
@@ -69,6 +70,7 @@ const SeachData = (props) => {
 			}
 		} else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
 			//if start and end date changed, location doesn't change
+			// console.log("start and end date changed, location doesn't change");
 			spinTimer();
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
@@ -147,7 +149,7 @@ const SeachData = (props) => {
 					>
 						조회
 					</Button>
-					{period === "SEARCH" && <Button>전체 다운로드</Button>}
+					{period === "SEARCH" && <Button disabled>전체 다운로드</Button>}
 				</div>
 			</div>
 		</div>

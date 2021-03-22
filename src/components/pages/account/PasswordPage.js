@@ -19,7 +19,7 @@ const PasswordPage = () => {
 					<Header />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb
-							pageHierarchy={["데시보드", "개인정보", "비밀번호 변경"]}
+							pageHierarchy={["대시보드", "개인정보", "비밀번호 변경"]}
 						/>
 						<Title level={3} style={{ minWidth: 160 }}>
 							비밀번호 변경

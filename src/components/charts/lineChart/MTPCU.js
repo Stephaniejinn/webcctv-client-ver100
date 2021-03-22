@@ -1,24 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
 import { Spin } from "antd";
+import moment from "moment";
 
-const WTPCU = (props) => {
+const MTPCULine = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
-	const WeekKey = {
-		SUN: "일요일",
-		MON: "월요일",
-		TUE: "화요일",
-		WED: "수요일",
-		THU: "목요일",
-		FRI: "금요일",
-		SAT: "토요일",
-		ALL: "전체",
-		DAY: "평일전체",
-		END: "주말전체",
-	};
-	var TotalData = [];
+
+	var PCUTotalData = [];
 
 	useEffect(() => {
 		if (activeVisualKey === "2") {
@@ -28,57 +18,60 @@ const WTPCU = (props) => {
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		console.log("count 주간 PCU 그래프 parse");
+		console.log("count 일간 PCU parse");
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
-				weekOption,
+				recordDate,
+				totalVehiclePassengerCarUnit,
 				carPassengerCarUnit,
 				mBusPassengerCarUnit,
 				mTruckPassengerCarUnit,
 				motorPassengerCarUnit,
-				totalVehiclePassengerCarUnit,
 			} = TrafficData;
+
 			let tempCar = {};
 			let tempBus = {};
 			let tempTruck = {};
 			let tempMotor = {};
 			let tempTotal = {};
-			const week = WeekKey[weekOption];
+			const Time = moment(recordDate).format("MM-DD");
 
-			tempCar["time"] = week;
-			tempCar["key"] = "승용차";
+			tempCar["time"] = Time;
 			tempCar["value"] = carPassengerCarUnit;
+			tempCar["category"] = "승용차";
 
-			tempBus["time"] = week;
-			tempBus["key"] = "버스";
+			tempBus["time"] = Time;
 			tempBus["value"] = mBusPassengerCarUnit;
+			tempBus["category"] = "버스";
 
-			tempTruck["time"] = week;
-			tempTruck["key"] = "화물차";
+			tempTruck["time"] = Time;
 			tempTruck["value"] = mTruckPassengerCarUnit;
+			tempTruck["category"] = "화물차";
 
-			tempMotor["time"] = week;
-			tempMotor["key"] = "오토바이";
+			tempMotor["time"] = Time;
 			tempMotor["value"] = motorPassengerCarUnit;
+			tempMotor["category"] = "오토바이";
 
-			tempTotal["time"] = week;
+			tempTotal["time"] = Time;
 			tempTotal["value"] = totalVehiclePassengerCarUnit;
-			tempTotal["key"] = "전체";
+			tempTotal["category"] = "전체";
 
-			TotalData.push(tempCar);
-			TotalData.push(tempBus);
-			TotalData.push(tempTruck);
-			TotalData.push(tempMotor);
-			TotalData.push(tempTotal);
+			PCUTotalData.push(tempCar);
+			PCUTotalData.push(tempBus);
+			PCUTotalData.push(tempTruck);
+			PCUTotalData.push(tempMotor);
+			PCUTotalData.push(tempTotal);
 		});
-
-		setData(TotalData);
+		setData(PCUTotalData);
 		setLoading(false);
 	};
+
 	var config = {
 		data: Data,
 		xField: "time",
 		yField: "value",
+		seriesField: "category",
+		// xAxis: { type: "time" },
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
@@ -88,9 +81,6 @@ const WTPCU = (props) => {
 				},
 			},
 		},
-		legend: true,
-		seriesField: "key",
-		stepType: "hvh",
 	};
 	return (
 		<>
@@ -112,4 +102,5 @@ const WTPCU = (props) => {
 		</>
 	);
 };
-export default WTPCU;
+
+export default MTPCULine;

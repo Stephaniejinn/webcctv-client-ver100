@@ -32,7 +32,7 @@ const GeneralVisualization = (props) => {
 
 	var curTime = currentTime ? currentTime : "23:59:59";
 	const periodURL =
-		period === "DAY" ? "/daily" : period === "WEEK" ? "/Weekly" : "/Monthly";
+		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
 
 	useEffect(() => {
 		getTrafficData();
@@ -41,7 +41,7 @@ const GeneralVisualization = (props) => {
 	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}${periodURL}?&camCode=${camCode}&startDate=${startDate}&endTime=${endTime} ${curTime}&axis=time&laneNumber=0`,
+				`${baseURL}${trafficURL}${periodURL}?camCode=${camCode}&startDate=${startDate}&endTime=${endTime} ${curTime}&axis=time&laneNumber=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,

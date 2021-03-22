@@ -8,17 +8,30 @@ import * as actions from "../../../redux/actions";
 
 import "./style.less";
 
-const DTOverSpeedTable = (props) => {
-	const { startDate, endTime, cameraCode, baseURL } = props;
+const OverSpeedTable = (props) => {
+	const { startDate, endTime, cameraCode, baseURL, page } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	var TotalData = [];
+	var countCol;
 
 	useEffect(() => {
-		setLoadingData(true);
-		axiosData();
+		if (page) {
+			setLoadingData(true);
+			countCol = 0;
+			axiosSearchData();
+		} else {
+			setLoadingData(true);
+			axiosData();
+		}
+		return () => {
+			console.log("count");
+			setData(TotalData);
+		};
+		// setLoadingData(true);
+		// axiosData();
 	}, [startDate, endTime, cameraCode]);
 
 	const columns = [
@@ -122,6 +135,53 @@ const DTOverSpeedTable = (props) => {
 				console.log(err);
 			});
 	};
+	const axiosSearchData = () => {
+		axios
+			.get(
+				`${baseURL}/violations/speeding/records?camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Cache: "No-cache",
+					},
+				}
+			)
+			.then((res) => {
+				console.log("count search overspeed axios");
+				res.data.some((eachData, index) => {
+					const {
+						recordTime,
+						vehicleType,
+						licenseNumber,
+						speed,
+						imageLink,
+					} = eachData;
+					if (countCol === 5) {
+						return true;
+					}
+					countCol += 1;
+					let dataTemp = {};
+					dataTemp["key"] = index;
+					if (startDate !== endTime) {
+						dataTemp["time"] = moment(recordTime).format(
+							"YYYY년 MM월 DD일 HH:mm:ss"
+						);
+					} else {
+						dataTemp["time"] = moment(recordTime).format("HH:mm:ss");
+					}
+					dataTemp["vehicleType"] = vehicleType;
+					dataTemp["licenseNumber"] = licenseNumber;
+					dataTemp["speed"] = speed;
+					dataTemp["imageLink"] = imageLink;
+					TotalData.push(dataTemp);
+				});
+				setData(TotalData);
+				setLoadingData(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 
 	return (
 		<>
@@ -159,4 +219,4 @@ const mapDispatchToProps = (dispatch) => {
 		},
 	};
 };
-export default connect(mapStateToProps, mapDispatchToProps)(DTOverSpeedTable);
+export default connect(mapStateToProps, mapDispatchToProps)(OverSpeedTable);

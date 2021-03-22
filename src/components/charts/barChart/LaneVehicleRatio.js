@@ -2,34 +2,33 @@ import React, { useState, useEffect } from "react";
 import { Column } from "@ant-design/charts";
 import { Spin } from "antd";
 
-const LaneCnt = (props) => {
+const VehicleRatio = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
-
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var cntCar = [];
-	var cntBus = [];
-	var cntTruck = [];
-	var cntMotor = [];
-	var cntTotalData = [];
+	var carRatio = [];
+	var busRatio = [];
+	var truckRatio = [];
+	var motorRatio = [];
+	var RatioTotalData = [];
 
 	useEffect(() => {
-		if (activeVisualKey === "1") {
+		if (activeVisualKey === "3") {
 			setLoading(true);
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		console.log("count 일간 차선별 통행량 parse");
+		console.log("count 일간 차선별 차종비율 parse");
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
 				laneNumber,
-				carVolume,
-				mBusVolume,
-				mTruckVolume,
-				motorVolume,
+				carVehicleRatio,
+				mBusVehicleRatio,
+				mTruckVehicleRatio,
+				motorVehicleRatio,
 			} = TrafficData;
 
 			const tempCar = {};
@@ -38,28 +37,30 @@ const LaneCnt = (props) => {
 			const tempMotor = {};
 
 			tempCar["laneNum"] = `${laneNumber.toString()} 차선`;
-			tempCar["value"] = carVolume;
+			tempCar["value"] = parseFloat((carVehicleRatio * 100).toFixed(2));
 			tempCar["type"] = "승용차";
 
 			tempBus["laneNum"] = `${laneNumber.toString()} 차선`;
-			tempBus["value"] = mBusVolume;
+			tempBus["value"] = parseFloat((mBusVehicleRatio * 100).toFixed(2));
 			tempBus["type"] = "버스";
 
 			tempTruck["laneNum"] = `${laneNumber.toString()} 차선`;
-			tempTruck["value"] = mTruckVolume;
+			tempTruck["value"] = parseFloat((mTruckVehicleRatio * 100).toFixed(2));
 			tempTruck["type"] = "화물차";
 
 			tempMotor["laneNum"] = `${laneNumber.toString()} 차선`;
-			tempMotor["value"] = motorVolume;
+			tempMotor["value"] = parseFloat((motorVehicleRatio * 100).toFixed(2));
 			tempMotor["type"] = "오토바이";
 
-			cntCar.push(tempCar);
-			cntBus.push(tempBus);
-			cntTruck.push(tempTruck);
-			cntMotor.push(tempMotor);
+			carRatio.push(tempCar);
+			busRatio.push(tempBus);
+			truckRatio.push(tempTruck);
+			motorRatio.push(tempMotor);
 		});
-		cntTotalData = cntCar.concat(cntBus.concat(cntTruck.concat(cntMotor)));
-		setData(cntTotalData);
+		RatioTotalData = carRatio.concat(
+			busRatio.concat(truckRatio.concat(motorRatio))
+		);
+		setData(RatioTotalData);
 		setLoading(false);
 	};
 
@@ -69,6 +70,15 @@ const LaneCnt = (props) => {
 		xField: "laneNum",
 		yField: "value",
 		seriesField: "type",
+		yAxis: {
+			label: {
+				formatter: function formatter(v) {
+					return v.concat("%").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+						return "".concat(s, ",");
+					});
+				},
+			},
+		},
 		label: {
 			position: "middle",
 			layout: [
@@ -98,4 +108,4 @@ const LaneCnt = (props) => {
 		</>
 	);
 };
-export default LaneCnt;
+export default VehicleRatio;

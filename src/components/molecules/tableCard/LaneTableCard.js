@@ -1,7 +1,9 @@
 import React from "react";
 
 import TableDescription from "../tableDescription/TableDescription";
-import DLFirstTable from "../StatisticsTable/dayTable/DLFirstTable";
+import DayTable from "../StatisticsTable/dayTable/DLFirstTable";
+import WeekTable from "../StatisticsTable/weekTable/WLFirstTable";
+import MontnTable from "../StatisticsTable/monthTable/MLFirstTable";
 
 import "./style.less";
 
@@ -18,11 +20,11 @@ const LaneTableCard = (props) => {
 				tableKey={tableKey}
 			/>
 			{period === "DAY" ? (
-				<DLFirstTable trafficTotalData={trafficTotalData} />
+				<DayTable trafficTotalData={trafficTotalData} />
 			) : period === "WEEK" ? (
-				<DLFirstTable trafficTotalData={trafficTotalData} />
+				<WeekTable trafficTotalData={trafficTotalData} />
 			) : (
-				<DLFirstTable trafficTotalData={trafficTotalData} />
+				<MontnTable trafficTotalData={trafficTotalData} />
 			)}
 		</div>
 	);

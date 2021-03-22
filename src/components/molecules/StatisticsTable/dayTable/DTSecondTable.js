@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "antd";
+import { Table, Spin } from "antd";
 
 import "../style.less";
 
 const DTSecondTable = (props) => {
 	const { currentLaneNum, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
-
-	var FristRow;
-	var TotalData = [];
+	const [isLoading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (currentLaneNum === 0) {
+			setLoading(true);
 			parseData();
-			console.log(trafficTotalData);
 		}
 	}, [trafficTotalData]);
 
@@ -140,8 +138,27 @@ const DTSecondTable = (props) => {
 		data[6]["total"] = trafficData["totalVehiclePeakHourFlowRate"];
 
 		setData(data);
+		setLoading(false);
 	};
 
-	return <Table columns={columns} dataSource={Data} size="small" bordered />;
+	return (
+		<>
+			{isLoading ? (
+				<div
+					style={{
+						marginTop: 20,
+						marginBottom: 20,
+						textAlign: "center",
+						paddingTop: 30,
+						paddingBottom: 30,
+					}}
+				>
+					<Spin size="large" />
+				</div>
+			) : (
+				<Table columns={columns} dataSource={Data} size="small" bordered />
+			)}
+		</>
+	);
 };
 export default DTSecondTable;

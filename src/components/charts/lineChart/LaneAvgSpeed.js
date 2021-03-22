@@ -1,83 +1,76 @@
 import React, { useState, useEffect } from "react";
 import { Line } from "@ant-design/charts";
 import { Spin } from "antd";
-import moment from "moment";
 
-const PCULine = (props) => {
+const AvgSpeedLine = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
+
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var PCUTotalData = [];
+	var avgSpeedTotalData = [];
 
 	useEffect(() => {
-		if (activeVisualKey === "2") {
+		if (activeVisualKey === "4") {
 			setLoading(true);
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
-		console.log("count 일간 PCU parse");
+		console.log("count 일간 차선별 평균속도 parse");
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
-				recordTime,
-				totalVehiclePassengerCarUnit,
-				carPassengerCarUnit,
-				mBusPassengerCarUnit,
-				mTruckPassengerCarUnit,
-				motorPassengerCarUnit,
+				laneNumber,
+				carAvgSpeed,
+				mBusAvgSpeed,
+				mTruckAvgSpeed,
+				motorAvgSpeed,
 			} = TrafficData;
 
 			let tempCar = {};
 			let tempBus = {};
 			let tempTruck = {};
 			let tempMotor = {};
-			let tempTotal = {};
-			const Time = moment(recordTime).format("HH:mm");
 
-			tempCar["time"] = Time;
-			tempCar["value"] = carPassengerCarUnit;
+			tempCar["lane"] = `${laneNumber.toString()} 차선`;
+			tempCar["value"] = carAvgSpeed;
 			tempCar["category"] = "승용차";
 
-			tempBus["time"] = Time;
-			tempBus["value"] = mBusPassengerCarUnit;
+			tempBus["lane"] = `${laneNumber.toString()} 차선`;
+			tempBus["value"] = mBusAvgSpeed;
 			tempBus["category"] = "버스";
 
-			tempTruck["time"] = Time;
-			tempTruck["value"] = mTruckPassengerCarUnit;
+			tempTruck["lane"] = `${laneNumber.toString()} 차선`;
+			tempTruck["value"] = mTruckAvgSpeed;
 			tempTruck["category"] = "화물차";
 
-			tempMotor["time"] = Time;
-			tempMotor["value"] = motorPassengerCarUnit;
+			tempMotor["lane"] = `${laneNumber.toString()} 차선`;
+			tempMotor["value"] = motorAvgSpeed;
 			tempMotor["category"] = "오토바이";
 
-			tempTotal["time"] = Time;
-			tempTotal["value"] = totalVehiclePassengerCarUnit;
-			tempTotal["category"] = "전체";
-
-			PCUTotalData.push(tempCar);
-			PCUTotalData.push(tempBus);
-			PCUTotalData.push(tempTruck);
-			PCUTotalData.push(tempMotor);
-			PCUTotalData.push(tempTotal);
+			avgSpeedTotalData.push(tempCar);
+			avgSpeedTotalData.push(tempBus);
+			avgSpeedTotalData.push(tempTruck);
+			avgSpeedTotalData.push(tempMotor);
 		});
-		setData(PCUTotalData);
+		setData(avgSpeedTotalData);
 		setLoading(false);
 	};
 
 	var config = {
 		data: Data,
-		xField: "time",
+		xField: "lane",
 		yField: "value",
 		seriesField: "category",
-		// xAxis: { type: "time" },
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
-					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
-						return "".concat(s, ",");
-					});
+					return v
+						.concat("km/h")
+						.replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+							return "".concat(s, ",");
+						});
 				},
 			},
 		},
@@ -102,5 +95,4 @@ const PCULine = (props) => {
 		</>
 	);
 };
-
-export default PCULine;
+export default AvgSpeedLine;
