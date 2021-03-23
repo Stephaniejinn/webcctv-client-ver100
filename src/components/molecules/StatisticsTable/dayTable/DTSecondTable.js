@@ -110,35 +110,37 @@ const DTSecondTable = (props) => {
 
 	const parseData = () => {
 		console.log("count 일간 2차 axios");
-		const trafficData = trafficTotalData[0];
-		data[0]["total"] = trafficData["totalVehicleDaytimeVolume"];
-		data[0]["car"] = trafficData["carDaytimeVolume"];
-		data[0]["bus"] = trafficData["mBusDaytimeVolume"];
-		data[0]["truck"] = trafficData["mTruckDaytimeVolume"];
-		data[0]["motor"] = trafficData["motorDaytimeVolume"];
+		if (trafficTotalData.length !== 0) {
+			const trafficData = trafficTotalData[0];
+			data[0]["total"] = trafficData["totalVehicleDaytimeVolume"];
+			data[0]["car"] = trafficData["carDaytimeVolume"];
+			data[0]["bus"] = trafficData["mBusDaytimeVolume"];
+			data[0]["truck"] = trafficData["mTruckDaytimeVolume"];
+			data[0]["motor"] = trafficData["motorDaytimeVolume"];
 
-		data[1]["total"] = trafficData["totalVehicleNighttimeVolume"];
-		data[1]["car"] = trafficData["carNighttimeVolume"];
-		data[1]["bus"] = trafficData["mBusNighttimeVolume"];
-		data[1]["truck"] = trafficData["mTruckNighttimeVolume"];
-		data[1]["motor"] = trafficData["motorNighttimeVolume"];
+			data[1]["total"] = trafficData["totalVehicleNighttimeVolume"];
+			data[1]["car"] = trafficData["carNighttimeVolume"];
+			data[1]["bus"] = trafficData["mBusNighttimeVolume"];
+			data[1]["truck"] = trafficData["mTruckNighttimeVolume"];
+			data[1]["motor"] = trafficData["motorNighttimeVolume"];
 
-		data[2]["total"] = trafficData["totalVehicleDayNightRatio"];
-		data[2]["car"] = trafficData["carDayNightRatio"];
-		data[2]["bus"] = trafficData["mBusDayNightRatio"];
-		data[2]["truck"] = trafficData["mTruckDayNightRatio"];
-		data[2]["motor"] = trafficData["motorDayNightRatio"];
+			data[2]["total"] = trafficData["totalVehicleDayNightRatio"];
+			data[2]["car"] = trafficData["carDayNightRatio"];
+			data[2]["bus"] = trafficData["mBusDayNightRatio"];
+			data[2]["truck"] = trafficData["mTruckDayNightRatio"];
+			data[2]["motor"] = trafficData["motorDayNightRatio"];
 
-		data[3]["total"] = trafficData["totalVehiclePeakHourFactor"];
+			data[3]["total"] = trafficData["totalVehiclePeakHourFactor"];
 
-		data[4]["total"] = trafficData["totalVehiclePeak15MinuteTime"];
+			data[4]["total"] = trafficData["totalVehiclePeak15MinuteTime"];
 
-		data[5]["total"] = trafficData["totalVehiclePeakHourConcentrationRatio"];
+			data[5]["total"] = trafficData["totalVehiclePeakHourConcentrationRatio"];
 
-		data[6]["total"] = trafficData["totalVehiclePeakHourFlowRate"];
+			data[6]["total"] = trafficData["totalVehiclePeakHourFlowRate"];
 
-		setData(data);
-		setLoading(false);
+			setData(data);
+			setLoading(false);
+		}
 	};
 
 	return (

@@ -27,8 +27,8 @@ const GeneralVisualization = (props) => {
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [trafficData, setTrafficData] = useState([]);
 
-	// var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
-	var camCode = cameraCode.length === 0 ? "0004" : cameraCode;
+	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
+	// var camCode = cameraCode.length === 0 ? "0004" : cameraCode;
 
 	var curTime = currentTime ? currentTime : "23:59:59";
 	const periodURL =

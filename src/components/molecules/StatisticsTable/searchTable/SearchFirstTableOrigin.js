@@ -5,13 +5,19 @@ import moment from "moment";
 import "../style.less";
 
 const SearchFisrtTable = (props) => {
-	const { firstData } = props;
+	const { trafficTotalData, setFirstData, setLoadingFirst } = props;
 
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
 
+	var TotalData = [];
+	var countCol;
 	useEffect(() => {
-		setData(firstData);
-	}, [firstData]);
+		countCol = 0;
+		setLoading(true);
+		setLoadingFirst(true);
+		axiosData();
+	}, [trafficTotalData]);
 
 	const columns = [
 		{
@@ -188,93 +194,93 @@ const SearchFisrtTable = (props) => {
 		},
 	];
 
-	// const axiosData = () => {
-	// 	console.log("count table axios");
-	// 	trafficTotalData.some((eachData, index) => {
-	// 		const {
-	// 			recordTime,
-	// 			totalVehicleVolume,
-	// 			totalVehicleAvgSpeed,
-	// 			totalVehiclePassengerCarUnit,
-	// 			totalVehicleSpdVolume,
-	// 			carVolume,
-	// 			carAvgSpeed,
-	// 			carPassengerCarUnit,
-	// 			carVehicleRatio,
-	// 			carSpdVolume,
-	// 			mBusVolume,
-	// 			mBusAvgSpeed,
-	// 			mBusPassengerCarUnit,
-	// 			mBusVehicleRatio,
-	// 			mBusSpdVolume,
-	// 			mTruckVolume,
-	// 			mTruckAvgSpeed,
-	// 			mTruckPassengerCarUnit,
-	// 			mTruckVehicleRatio,
-	// 			mTruckSpdVolume,
-	// 			motorVolume,
-	// 			motorAvgSpeed,
-	// 			motorPassengerCarUnit,
-	// 			motorVehicleRatio,
-	// 			motorSpdVolume,
-	// 			pedestrianVolume,
-	// 			jaywalkVolume,
-	// 		} = eachData;
-	// 		if (recordTime === "ALL") {
-	// 			return false;
-	// 		}
-	// 		if (countCol === 6) {
-	// 			return true;
-	// 		}
-	// 		countCol += 1;
+	const axiosData = () => {
+		console.log("count table axios");
+		trafficTotalData.some((eachData, index) => {
+			const {
+				recordTime,
+				totalVehicleVolume,
+				totalVehicleAvgSpeed,
+				totalVehiclePassengerCarUnit,
+				totalVehicleSpdVolume,
+				carVolume,
+				carAvgSpeed,
+				carPassengerCarUnit,
+				carVehicleRatio,
+				carSpdVolume,
+				mBusVolume,
+				mBusAvgSpeed,
+				mBusPassengerCarUnit,
+				mBusVehicleRatio,
+				mBusSpdVolume,
+				mTruckVolume,
+				mTruckAvgSpeed,
+				mTruckPassengerCarUnit,
+				mTruckVehicleRatio,
+				mTruckSpdVolume,
+				motorVolume,
+				motorAvgSpeed,
+				motorPassengerCarUnit,
+				motorVehicleRatio,
+				motorSpdVolume,
+				pedestrianVolume,
+				jaywalkVolume,
+			} = eachData;
+			if (recordTime === "ALL") {
+				return false;
+			}
+			if (countCol === 6) {
+				return true;
+			}
+			countCol += 1;
 
-	// 		let dataTemp = {};
+			let dataTemp = {};
 
-	// 		dataTemp["key"] = index + 1;
-	// 		dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일 HH:mm:ss");
+			dataTemp["key"] = index + 1;
+			dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일 HH:mm:ss");
 
-	// 		dataTemp["totalCount"] = totalVehicleVolume;
-	// 		dataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
-	// 		dataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
-	// 		dataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
+			dataTemp["totalCount"] = totalVehicleVolume;
+			dataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
+			dataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
+			dataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
 
-	// 		dataTemp["carCount"] = carVolume;
-	// 		dataTemp["carAvgSpeed"] = carAvgSpeed;
-	// 		dataTemp["carpcu"] = carPassengerCarUnit;
-	// 		dataTemp["carRatio"] = carVehicleRatio;
-	// 		dataTemp["carOverSpeed"] = carSpdVolume;
+			dataTemp["carCount"] = carVolume;
+			dataTemp["carAvgSpeed"] = carAvgSpeed;
+			dataTemp["carpcu"] = carPassengerCarUnit;
+			dataTemp["carRatio"] = carVehicleRatio;
+			dataTemp["carOverSpeed"] = carSpdVolume;
 
-	// 		dataTemp["busCount"] = mBusVolume;
-	// 		dataTemp["busAvgSpeed"] = mBusAvgSpeed;
-	// 		dataTemp["buspcu"] = mBusPassengerCarUnit;
-	// 		dataTemp["busRatio"] = mBusVehicleRatio;
-	// 		dataTemp["busOverSpeed"] = mBusSpdVolume;
+			dataTemp["busCount"] = mBusVolume;
+			dataTemp["busAvgSpeed"] = mBusAvgSpeed;
+			dataTemp["buspcu"] = mBusPassengerCarUnit;
+			dataTemp["busRatio"] = mBusVehicleRatio;
+			dataTemp["busOverSpeed"] = mBusSpdVolume;
 
-	// 		dataTemp["truckCount"] = mTruckVolume;
-	// 		dataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
-	// 		dataTemp["truckpcu"] = mTruckPassengerCarUnit;
-	// 		dataTemp["truckRatio"] = mTruckVehicleRatio;
-	// 		dataTemp["truckOverSpeed"] = mTruckSpdVolume;
+			dataTemp["truckCount"] = mTruckVolume;
+			dataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
+			dataTemp["truckpcu"] = mTruckPassengerCarUnit;
+			dataTemp["truckRatio"] = mTruckVehicleRatio;
+			dataTemp["truckOverSpeed"] = mTruckSpdVolume;
 
-	// 		dataTemp["motorCount"] = motorVolume;
-	// 		dataTemp["motorAvgSpeed"] = motorAvgSpeed;
-	// 		dataTemp["motorpcu"] = motorPassengerCarUnit;
-	// 		dataTemp["motorRatio"] = motorVehicleRatio;
-	// 		dataTemp["motorOverSpeed"] = motorSpdVolume;
-	// 		dataTemp["person"] = pedestrianVolume;
-	// 		dataTemp["jaywalk"] = jaywalkVolume;
+			dataTemp["motorCount"] = motorVolume;
+			dataTemp["motorAvgSpeed"] = motorAvgSpeed;
+			dataTemp["motorpcu"] = motorPassengerCarUnit;
+			dataTemp["motorRatio"] = motorVehicleRatio;
+			dataTemp["motorOverSpeed"] = motorSpdVolume;
+			dataTemp["person"] = pedestrianVolume;
+			dataTemp["jaywalk"] = jaywalkVolume;
 
-	// 		TotalData.push(dataTemp);
-	// 	});
-	// 	setFirstData(TotalData);
-	// 	setData(TotalData);
-	// 	setLoading(false);
-	// 	setLoadingFirst(false);
-	// };
+			TotalData.push(dataTemp);
+		});
+		setFirstData(TotalData);
+		setData(TotalData);
+		setLoading(false);
+		setLoadingFirst(false);
+	};
 
 	return (
 		<>
-			{Data.length === 0 ? (
+			{isLoading ? (
 				<div
 					style={{
 						marginTop: 20,

@@ -9,7 +9,14 @@ import * as actions from "../../../redux/actions";
 import "./style.less";
 
 const OverSpeedTable = (props) => {
-	const { startDate, endTime, cameraCode, baseURL, page } = props;
+	const {
+		startDate,
+		endTime,
+		cameraCode,
+		baseURL,
+		page,
+		setOverSpeedData,
+	} = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
@@ -85,7 +92,10 @@ const OverSpeedTable = (props) => {
 							</Button>,
 						]}
 					>
-						<p>{imglink}</p>
+						<a href={imglink}>과속차량 이미지 보기</a>
+
+						{/* <img alt="과속차량 이미지" src={imglink} />
+						<p>{imglink}</p> */}
 					</Modal>
 				</>
 			),
@@ -95,7 +105,7 @@ const OverSpeedTable = (props) => {
 	const axiosData = () => {
 		axios
 			.get(
-				`${baseURL}/violations/speeding/records?camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
+				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -138,7 +148,7 @@ const OverSpeedTable = (props) => {
 	const axiosSearchData = () => {
 		axios
 			.get(
-				`${baseURL}/violations/speeding/records?camCode=0004&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
+				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -175,6 +185,9 @@ const OverSpeedTable = (props) => {
 					dataTemp["imageLink"] = imageLink;
 					TotalData.push(dataTemp);
 				});
+				if (page) {
+					setOverSpeedData(TotalData);
+				}
 				setData(TotalData);
 				setLoadingData(false);
 			})

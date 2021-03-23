@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Collapse, Typography, Divider, Spin, message } from "antd";
 import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
+import { CSVLink } from "react-csv";
 import moment from "moment";
 
 import axios from "axios";
@@ -9,7 +10,7 @@ import * as actions from "../../../redux/actions";
 
 import FirstTable from "../../molecules/StatisticsTable/searchTable/SearchFirstTable";
 import SecondTable from "../../molecules/StatisticsTable/searchTable/SearchSecondTable";
-import OverSpeedTable from "../../molecules/StatisticsTable/OverSpeedTable";
+import SearchOverSpeedTable from "../../molecules/StatisticsTable/searchTable/SearchOverSpeed";
 
 import "./style.less";
 
@@ -22,11 +23,29 @@ const SearchCollapsedTable = (props) => {
 	const [isLoadingTrafficTotal, setLoadingTrafficTotal] = useState(true);
 	const [errorMsg, setMsg] = useState(false);
 
+	const [firstData, setFirstData] = useState([]);
+	const [secondData, setSecondData] = useState([]);
+	const [overSpeedData, setOverSpeedData] = useState([]);
+
+	const [isLoadingFirst, setLoadingFirst] = useState(true);
+	const [isLoadingSecond, setLoadingSecond] = useState(true);
+	const [isLoadingOverSpeed, setLoadingOverSpeed] = useState(true);
+	var firstDataTotal = [];
+	var secondDataTotal = [];
+	var OverSpeedTotalData = [];
+	var countCol;
+	var countOverSpeedCol;
+
 	useEffect(() => {
-		axiosAsync();
+		countCol = 0;
+		countOverSpeedCol = 0;
+		setLoadingFirst(true);
+		setLoadingSecond(true);
+		axiosAsyncFS();
+		axiosOverSpeedData();
 	}, [cameraCode, startDate, endTime]);
 
-	const axiosAsync = () => {
+	const axiosAsyncFS = () => {
 		axios
 			.get(
 				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=0`,
@@ -41,12 +60,164 @@ const SearchCollapsedTable = (props) => {
 				setTrafficTotalData(res.data);
 				console.log(res.data);
 				if (res.data.length !== 0) {
-					setLoadingTrafficTotal(false);
+					setMsg(false);
+					res.data.some((eachData, index) => {
+						const {
+							recordTime,
+							totalVehicleVolume,
+							totalVehicleAvgSpeed,
+							totalVehiclePassengerCarUnit,
+							totalVehicleSpdVolume,
+							carVolume,
+							carAvgSpeed,
+							carPassengerCarUnit,
+							carVehicleRatio,
+							carSpdVolume,
+							mBusVolume,
+							mBusAvgSpeed,
+							mBusPassengerCarUnit,
+							mBusVehicleRatio,
+							mBusSpdVolume,
+							mTruckVolume,
+							mTruckAvgSpeed,
+							mTruckPassengerCarUnit,
+							mTruckVehicleRatio,
+							mTruckSpdVolume,
+							motorVolume,
+							motorAvgSpeed,
+							motorPassengerCarUnit,
+							motorVehicleRatio,
+							motorSpdVolume,
+							pedestrianVolume,
+							jaywalkVolume,
+							totalVehicleDayNightRatio,
+							totalVehiclePeakHourFactor,
+							totalVehiclePeakHourConcentrationRatio,
+							totalVehiclePeakHourFlowRate,
+							carDayNightRatio,
+							mBusDayNightRatio,
+							mTruckDayNightRatio,
+							motorDayNightRatio,
+						} = eachData;
+						if (recordTime === "ALL") {
+							return false;
+						}
+						if (countCol === 6) {
+							return true;
+						}
+						countCol += 1;
+						let firstDataTemp = {};
+
+						firstDataTemp["key"] = index + 1;
+						firstDataTemp["time"] = moment(recordTime).format(
+							"YYYY년 MM월 DD일 HH:mm:ss"
+						);
+
+						firstDataTemp["totalCount"] = totalVehicleVolume;
+						firstDataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
+						firstDataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
+						firstDataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
+
+						firstDataTemp["carCount"] = carVolume;
+						firstDataTemp["carAvgSpeed"] = carAvgSpeed;
+						firstDataTemp["carpcu"] = carPassengerCarUnit;
+						firstDataTemp["carRatio"] = carVehicleRatio;
+						firstDataTemp["carOverSpeed"] = carSpdVolume;
+
+						firstDataTemp["busCount"] = mBusVolume;
+						firstDataTemp["busAvgSpeed"] = mBusAvgSpeed;
+						firstDataTemp["buspcu"] = mBusPassengerCarUnit;
+						firstDataTemp["busRatio"] = mBusVehicleRatio;
+						firstDataTemp["busOverSpeed"] = mBusSpdVolume;
+
+						firstDataTemp["truckCount"] = mTruckVolume;
+						firstDataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
+						firstDataTemp["truckpcu"] = mTruckPassengerCarUnit;
+						firstDataTemp["truckRatio"] = mTruckVehicleRatio;
+						firstDataTemp["truckOverSpeed"] = mTruckSpdVolume;
+
+						firstDataTemp["motorCount"] = motorVolume;
+						firstDataTemp["motorAvgSpeed"] = motorAvgSpeed;
+						firstDataTemp["motorpcu"] = motorPassengerCarUnit;
+						firstDataTemp["motorRatio"] = motorVehicleRatio;
+						firstDataTemp["motorOverSpeed"] = motorSpdVolume;
+						firstDataTemp["person"] = pedestrianVolume;
+						firstDataTemp["jaywalk"] = jaywalkVolume;
+
+						firstDataTotal.push(firstDataTemp);
+
+						let secondDataTemp = {};
+						secondDataTemp["key"] = index + 1;
+						secondDataTemp["time"] = moment(recordTime).format(
+							"YYYY년 MM월 DD일 HH:mm:ss"
+						);
+						secondDataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
+						secondDataTemp["totalPHF"] = totalVehiclePeakHourFactor;
+						secondDataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
+						secondDataTemp[
+							"totalVehiclePeakHourConcentrationRatio"
+						] = totalVehiclePeakHourConcentrationRatio;
+
+						secondDataTemp["carDayNightRatio"] = carDayNightRatio;
+						secondDataTemp["busDayNightRatio"] = mBusDayNightRatio;
+						secondDataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
+						secondDataTemp["motorDayNightRatio"] = motorDayNightRatio;
+						secondDataTotal.push(secondDataTemp);
+					});
+					setFirstData(firstDataTotal);
+					setSecondData(secondDataTotal);
+					setLoadingFirst(false);
+					setLoadingSecond(false);
 				}
 			})
 			.catch((err) => {
-				message.error("최대 31일 조회 가능합니다");
 				setMsg(true);
+				message.error("최대 31일 조회 가능합니다");
+				console.log(err);
+			});
+	};
+	const axiosOverSpeedData = () => {
+		axios
+			.get(
+				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Cache: "No-cache",
+					},
+				}
+			)
+			.then((res) => {
+				console.log("count search overspeed axios");
+				res.data.some((eachData, index) => {
+					const {
+						recordTime,
+						vehicleType,
+						licenseNumber,
+						speed,
+						imageLink,
+					} = eachData;
+					if (countOverSpeedCol === 5) {
+						return true;
+					}
+					countOverSpeedCol += 1;
+
+					let overSpeedDataTemp = {};
+					overSpeedDataTemp["key"] = index;
+					overSpeedDataTemp["time"] = moment(recordTime).format(
+						"YYYY년 MM월 DD일 HH:mm:ss"
+					);
+
+					overSpeedDataTemp["vehicleType"] = vehicleType;
+					overSpeedDataTemp["licenseNumber"] = licenseNumber;
+					overSpeedDataTemp["speed"] = speed;
+					overSpeedDataTemp["imageLink"] = imageLink;
+					OverSpeedTotalData.push(overSpeedDataTemp);
+				});
+				setOverSpeedData(OverSpeedTotalData);
+				setLoadingOverSpeed(false);
+			})
+			.catch((err) => {
 				console.log(err);
 			});
 	};
@@ -54,8 +225,6 @@ const SearchCollapsedTable = (props) => {
 	const collapseHeaderFirst = (
 		<div className="table-collapse-header">
 			1차 데이터
-			{/* <Divider type="vertical" />
-			{camera} */}
 			<Divider type="vertical" />
 			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
 			<Divider type="vertical" />
@@ -83,74 +252,141 @@ const SearchCollapsedTable = (props) => {
 			전체 데이터
 		</div>
 	);
-	const genExtra = () => (
+	const genExtra = (tableIdx) => (
 		<div
 			onClick={(event) => {
 				// If you don't want click extra trigger collapse, you can prevent this:
 				event.stopPropagation();
+				console.log(tableIdx);
 			}}
 		>
-			<DownloadOutlined />
-			다운로드
+			{tableIdx === "FIRST" ? (
+				<CSVLink data={firstData}>
+					{console.log(firstData)}
+					<DownloadOutlined />
+					다운로드
+				</CSVLink>
+			) : tableIdx === "SECOND" ? (
+				<CSVLink data={secondData}>
+					{console.log(secondData)}
+					<DownloadOutlined />
+					다운로드
+				</CSVLink>
+			) : (
+				<CSVLink data={overSpeedData}>
+					{console.log(overSpeedData)}
+					<DownloadOutlined />
+					다운로드
+				</CSVLink>
+			)}
 		</div>
 	);
 
 	return (
-		<div className="table-collapse">
-			<Title level={5} style={{ marginTop: 10 }}>
-				{camera} 데이터 조회 결과
-			</Title>
-			<Divider />
-			{isLoadingTrafficTotal ? (
-				errorMsg ? null : (
-					<div
-						style={{
-							marginTop: 20,
-							marginBottom: 20,
-							textAlign: "center",
-							paddingTop: 30,
-							paddingBottom: 30,
-						}}
-					>
-						<Spin size="large" />
-					</div>
-				)
-			) : (
-				<>
-					<Collapse
-						accordion
-						expandIconPosition="right"
-						expandIcon={({ isActive }) => (
-							// <EyeOutlined style={{ fontSize: 16, marginTop: -2 }} />
-							<div style={{ fontSize: 14, marginTop: -2 }}>
-								<EyeOutlined />
-								미리보기
-							</div>
-						)}
-					>
-						<Panel header={collapseHeaderFirst} key="1" extra={genExtra()}>
-							데이터 형식 미리보기 (5줄까지)
-							<FirstTable
-								currentLaneNum={0}
-								trafficTotalData={trafficTotalData}
-							/>
-						</Panel>
-						<Panel header={collapseHeaderSecond} key="2" extra={genExtra()}>
-							데이터 형식 미리보기 (5줄까지)
-							<SecondTable trafficTotalData={trafficTotalData} />
-						</Panel>
-						<Panel header={collapseHeaderOverSpeed} key="3" extra={genExtra()}>
-							데이터 형식 미리보기 (5줄까지)
-							<OverSpeedTable
-								startDate={startDate}
-								endTime={endTime}
-								page="SEARCH"
-							/>
-						</Panel>
-					</Collapse>
-				</>
+		<>
+			{errorMsg ? null : (
+				<div className="table-collapse">
+					<Title level={5} style={{ marginTop: 10 }}>
+						{camera} 데이터 조회 결과
+					</Title>
+					<Divider />
+					{isLoadingSecond ? (
+						<div
+							style={{
+								marginTop: 20,
+								marginBottom: 20,
+								textAlign: "center",
+								paddingTop: 30,
+								paddingBottom: 30,
+							}}
+						>
+							<Spin size="large" />
+						</div>
+					) : (
+						<>
+							<Collapse
+								accordion
+								expandIconPosition="right"
+								expandIcon={({ isActive }) => (
+									// <EyeOutlined style={{ fontSize: 16, marginTop: -2 }} />
+									<div style={{ fontSize: 14, marginTop: -2 }}>
+										<EyeOutlined />
+										미리보기
+									</div>
+								)}
+							>
+								<Panel
+									header={collapseHeaderFirst}
+									key="1"
+									extra={genExtra("FIRST")}
+								>
+									데이터 형식 미리보기 (5줄까지)
+									{isLoadingFirst ? (
+										<div
+											style={{
+												marginTop: 20,
+												marginBottom: 20,
+												textAlign: "center",
+												paddingTop: 30,
+												paddingBottom: 30,
+											}}
+										>
+											<Spin size="large" />
+										</div>
+									) : (
+										<FirstTable firstData={firstData} />
+									)}
+								</Panel>
+								<Panel
+									header={collapseHeaderSecond}
+									key="2"
+									extra={genExtra("SECOND")}
+								>
+									데이터 형식 미리보기 (5줄까지)
+									{isLoadingSecond ? (
+										<div
+											style={{
+												marginTop: 20,
+												marginBottom: 20,
+												textAlign: "center",
+												paddingTop: 30,
+												paddingBottom: 30,
+											}}
+										>
+											<Spin size="large" />
+										</div>
+									) : (
+										<SecondTable secondData={secondData} />
+									)}
+								</Panel>
+								<Panel
+									header={collapseHeaderOverSpeed}
+									key="3"
+									extra={genExtra("OVERSPEED")}
+								>
+									데이터 형식 미리보기 (5줄까지)
+									{isLoadingOverSpeed ? (
+										<div
+											style={{
+												marginTop: 20,
+												marginBottom: 20,
+												textAlign: "center",
+												paddingTop: 30,
+												paddingBottom: 30,
+											}}
+										>
+											<Spin size="large" />
+										</div>
+									) : (
+										<SearchOverSpeedTable overSpeedData={overSpeedData} />
+									)}
+								</Panel>
+							</Collapse>
+						</>
+					)}
+				</div>
 			)}
-		</div>
+		</>
 	);
 };
 

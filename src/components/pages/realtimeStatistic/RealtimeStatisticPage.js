@@ -24,7 +24,7 @@ const RealtimeStatisticPage = (props) => {
 	const [refresh, setRefresh] = useState(false);
 	// const date = moment(new Date()).format("YYYY-MM-DD");
 	// const date = moment("2020-03-11 00:00:00").format("YYYY-MM-DD");
-	const date = "2020-03-12";
+	const date = "2021-03-16";
 
 	var cameraAddress = "";
 	var camName = "";
@@ -36,8 +36,8 @@ const RealtimeStatisticPage = (props) => {
 		cameraAddress = camAddress;
 		camName = camera;
 	}
-	// var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
-	var camCode = cameraCode.length === 0 ? "0004" : cameraCode;
+	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
+	// var camCode = cameraCode.length === 0 ? "0004" : cameraCode;
 	var currTimeStr = currTime.format("HH:mm:ss");
 	// console.log(typeof currTimeStr);
 	useEffect(() => {

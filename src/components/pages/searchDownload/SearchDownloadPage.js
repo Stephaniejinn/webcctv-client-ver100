@@ -41,21 +41,7 @@ const SearchDownloadPage = () => {
 						{console.log("startDate", startDate)}
 						{console.log("endTime", endTime)}
 						{firstFilter ? (
-							count ? (
-								<SearchCollapsedTable startDate={startDate} endTime={endTime} />
-							) : (
-								<div
-									style={{
-										marginTop: 20,
-										marginBottom: 20,
-										textAlign: "center",
-										paddingTop: 30,
-										paddingBottom: 30,
-									}}
-								>
-									<Spin size="large" />
-								</div>
-							)
+							<SearchCollapsedTable startDate={startDate} endTime={endTime} />
 						) : null}
 					</Content>
 				</Layout>

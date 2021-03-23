@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Table, Spin } from "antd";
+import moment from "moment";
 
 import "../style.less";
 
 const SearchSecondTable = (props) => {
-	const { secondData } = props;
+	const { trafficTotalData, setSecondData } = props;
 
 	const [Data, setData] = useState([]);
+	const [isLoading, setLoading] = useState(true);
+
+	var TotalData = [];
+	var countCol;
 
 	useEffect(() => {
-		setData(secondData);
-	}, [secondData]);
+		countCol = 0;
+		setLoading(true);
+		parseData();
+	}, [trafficTotalData]);
 
 	const columns = [
 		{
@@ -88,10 +95,53 @@ const SearchSecondTable = (props) => {
 			],
 		},
 	];
+	const parseData = () => {
+		console.log("count table axios");
+		console.log(trafficTotalData);
+		trafficTotalData.some((eachData, index) => {
+			const {
+				recordTime,
+				totalVehicleDayNightRatio,
+				totalVehiclePeakHourFactor,
+				totalVehiclePeakHourConcentrationRatio,
+				totalVehiclePeakHourFlowRate,
+				carDayNightRatio,
+				mBusDayNightRatio,
+				mTruckDayNightRatio,
+				motorDayNightRatio,
+			} = eachData;
+			if (recordTime === "ALL") {
+				return false;
+			}
+			if (countCol === 6) {
+				return true;
+			}
+			countCol += 1;
+
+			let dataTemp = {};
+			dataTemp["key"] = index + 1;
+			dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일 HH:mm:ss");
+			dataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
+			dataTemp["totalPHF"] = totalVehiclePeakHourFactor;
+			dataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
+			dataTemp[
+				"totalVehiclePeakHourConcentrationRatio"
+			] = totalVehiclePeakHourConcentrationRatio;
+
+			dataTemp["carDayNightRatio"] = carDayNightRatio;
+			dataTemp["busDayNightRatio"] = mBusDayNightRatio;
+			dataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
+			dataTemp["motorDayNightRatio"] = motorDayNightRatio;
+			TotalData.push(dataTemp);
+		});
+		setSecondData(TotalData);
+		setData(TotalData);
+		setLoading(false);
+	};
 
 	return (
 		<>
-			{Data.length === 0 ? (
+			{isLoading ? (
 				<div
 					style={{
 						marginTop: 20,

@@ -45,7 +45,7 @@ const SeachData = (props) => {
 		}
 		timer = setTimeout(() => {
 			setCount(true);
-		}, 300);
+		}, 200);
 		return () => clearTimeout(timer);
 	};
 
