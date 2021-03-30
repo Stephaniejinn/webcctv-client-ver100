@@ -1,5 +1,5 @@
 const initialState = {
-	baseURL: "http://119.197.240.186:3004/api",
+	baseURL: "http://192.168.1.135:3002/api",
 	trafficURL: "/statistics/road-traffic",
 };
 export default function URL(state = initialState, action) {

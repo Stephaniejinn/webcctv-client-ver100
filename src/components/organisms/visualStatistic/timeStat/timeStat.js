@@ -58,7 +58,6 @@ const TimeVisualization = (props) => {
 			})
 			.then((res) => {
 				setTrafficTotalData(res.data);
-				console.log(res.data);
 				if (res.data.length !== 0) {
 					setLoadingTrafficTotal(false);
 				}

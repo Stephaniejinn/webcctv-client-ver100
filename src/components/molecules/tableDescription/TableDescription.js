@@ -21,7 +21,6 @@ const TableDescription = (props) => {
 
 	const { Title, Text } = Typography;
 
-	// const group = timeClassification ? "시간별" : "차선별";
 	const periodText =
 		period === "DAY" ? "일간" : period === "WEEK" ? "주간" : "월간";
 	const dataTypeText =
@@ -30,12 +29,10 @@ const TableDescription = (props) => {
 	var timeCalc;
 	if (page === "REALSTATISTIC") {
 		let curTime = moment(new Date()).format("YYYY-MM-DD HH");
-		console.log(curTime);
 		let nearest15 = Math.floor(currentTime.minute() / 15) * 15;
 		timeCalc = moment(
 			curTime + `:${nearest15 === 0 ? "00" : nearest15}:00`
 		).format("HH:mm:ss");
-		console.log(timeCalc);
 	}
 
 	return (

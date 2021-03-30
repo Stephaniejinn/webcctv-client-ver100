@@ -19,20 +19,23 @@ const SearchCollapsedTable = (props) => {
 	const { Panel } = Collapse;
 	const { Title } = Typography;
 
-	const [trafficTotalData, setTrafficTotalData] = useState([]);
-	const [isLoadingTrafficTotal, setLoadingTrafficTotal] = useState(true);
 	const [errorMsg, setMsg] = useState(false);
 
 	const [firstData, setFirstData] = useState([]);
 	const [secondData, setSecondData] = useState([]);
 	const [overSpeedData, setOverSpeedData] = useState([]);
 
+	const [firstDataTotal, setFirstDataTotal] = useState([]);
+	const [secondDataTotal, setSecondDataTotal] = useState([]);
+	const [overSpeedDataTotal, setOverSpeedDataTotal] = useState([]);
+
 	const [isLoadingFirst, setLoadingFirst] = useState(true);
 	const [isLoadingSecond, setLoadingSecond] = useState(true);
 	const [isLoadingOverSpeed, setLoadingOverSpeed] = useState(true);
-	var firstDataTotal = [];
-	var secondDataTotal = [];
-	var OverSpeedTotalData = [];
+
+	var firstDataParsed = [];
+	var secondDataParsed = [];
+	var OverSpeedParsed = [];
 	var countCol;
 	var countOverSpeedCol;
 
@@ -57,8 +60,6 @@ const SearchCollapsedTable = (props) => {
 				}
 			)
 			.then((res) => {
-				setTrafficTotalData(res.data);
-				console.log(res.data);
 				if (res.data.length !== 0) {
 					setMsg(false);
 					res.data.some((eachData, index) => {
@@ -99,14 +100,17 @@ const SearchCollapsedTable = (props) => {
 							mTruckDayNightRatio,
 							motorDayNightRatio,
 						} = eachData;
+						let firstDataTemp = {};
+						let secondDataTemp = {};
+
 						if (recordTime === "ALL") {
 							return false;
 						}
 						if (countCol === 6) {
-							return true;
+							setFirstData(firstDataParsed);
+							setSecondData(secondDataParsed);
 						}
 						countCol += 1;
-						let firstDataTemp = {};
 
 						firstDataTemp["key"] = index + 1;
 						firstDataTemp["time"] = moment(recordTime).format(
@@ -144,9 +148,6 @@ const SearchCollapsedTable = (props) => {
 						firstDataTemp["person"] = pedestrianVolume;
 						firstDataTemp["jaywalk"] = jaywalkVolume;
 
-						firstDataTotal.push(firstDataTemp);
-
-						let secondDataTemp = {};
 						secondDataTemp["key"] = index + 1;
 						secondDataTemp["time"] = moment(recordTime).format(
 							"YYYY년 MM월 DD일 HH:mm:ss"
@@ -162,10 +163,12 @@ const SearchCollapsedTable = (props) => {
 						secondDataTemp["busDayNightRatio"] = mBusDayNightRatio;
 						secondDataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
 						secondDataTemp["motorDayNightRatio"] = motorDayNightRatio;
-						secondDataTotal.push(secondDataTemp);
+
+						firstDataParsed.push(firstDataTemp);
+						secondDataParsed.push(secondDataTemp);
 					});
-					setFirstData(firstDataTotal);
-					setSecondData(secondDataTotal);
+					setFirstDataTotal(firstDataParsed);
+					setSecondDataTotal(secondDataParsed);
 					setLoadingFirst(false);
 					setLoadingSecond(false);
 				}
@@ -188,8 +191,7 @@ const SearchCollapsedTable = (props) => {
 				}
 			)
 			.then((res) => {
-				console.log("count search overspeed axios");
-				res.data.some((eachData, index) => {
+				res.data.forEach((eachData, index) => {
 					const {
 						recordTime,
 						vehicleType,
@@ -197,12 +199,13 @@ const SearchCollapsedTable = (props) => {
 						speed,
 						imageLink,
 					} = eachData;
+					let overSpeedDataTemp = {};
+
 					if (countOverSpeedCol === 5) {
-						return true;
+						setOverSpeedData(OverSpeedParsed);
 					}
 					countOverSpeedCol += 1;
 
-					let overSpeedDataTemp = {};
 					overSpeedDataTemp["key"] = index;
 					overSpeedDataTemp["time"] = moment(recordTime).format(
 						"YYYY년 MM월 DD일 HH:mm:ss"
@@ -212,9 +215,9 @@ const SearchCollapsedTable = (props) => {
 					overSpeedDataTemp["licenseNumber"] = licenseNumber;
 					overSpeedDataTemp["speed"] = speed;
 					overSpeedDataTemp["imageLink"] = imageLink;
-					OverSpeedTotalData.push(overSpeedDataTemp);
+					OverSpeedParsed.push(overSpeedDataTemp);
 				});
-				setOverSpeedData(OverSpeedTotalData);
+				setOverSpeedDataTotal(OverSpeedParsed);
 				setLoadingOverSpeed(false);
 			})
 			.catch((err) => {
@@ -257,24 +260,20 @@ const SearchCollapsedTable = (props) => {
 			onClick={(event) => {
 				// If you don't want click extra trigger collapse, you can prevent this:
 				event.stopPropagation();
-				console.log(tableIdx);
 			}}
 		>
 			{tableIdx === "FIRST" ? (
-				<CSVLink data={firstData}>
-					{console.log(firstData)}
+				<CSVLink data={firstDataTotal}>
 					<DownloadOutlined />
 					다운로드
 				</CSVLink>
 			) : tableIdx === "SECOND" ? (
-				<CSVLink data={secondData}>
-					{console.log(secondData)}
+				<CSVLink data={secondDataTotal}>
 					<DownloadOutlined />
 					다운로드
 				</CSVLink>
 			) : (
-				<CSVLink data={overSpeedData}>
-					{console.log(overSpeedData)}
+				<CSVLink data={overSpeedDataTotal}>
 					<DownloadOutlined />
 					다운로드
 				</CSVLink>
@@ -334,7 +333,9 @@ const SearchCollapsedTable = (props) => {
 											<Spin size="large" />
 										</div>
 									) : (
-										<FirstTable firstData={firstData} />
+										<>
+											<FirstTable firstData={firstData} />
+										</>
 									)}
 								</Panel>
 								<Panel

@@ -64,7 +64,6 @@ const RealtimeStatisticPage = (props) => {
 			)
 			.then((res) => {
 				setTrafficTotalData(res.data);
-				console.log(res.data);
 				message.success("Refresh 성공");
 				setRefresh(false);
 			})

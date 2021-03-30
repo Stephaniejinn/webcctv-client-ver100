@@ -7,7 +7,7 @@ const initialState = {
 	camAddress: "",
 	camLanes: "",
 };
-export default function location(state = initialState, action) {
+export default function locationCode(state = initialState, action) {
 	switch (action.type) {
 		case "LOCATION_CODE_INFO":
 			return action.payload;

@@ -22,6 +22,10 @@ const SeachData = (props) => {
 		camera,
 		setAddFilter,
 		setCount,
+		setDayDate,
+		setWeekDate,
+		setMonthDate,
+		setSearchDate,
 	} = props;
 
 	const { Title } = Typography;
@@ -50,6 +54,7 @@ const SeachData = (props) => {
 	};
 
 	const handleSearch = () => {
+		var dateInfo = {};
 		if (
 			tempStartDate !== "" &&
 			tempEndTime !== "" &&
@@ -63,6 +68,24 @@ const SeachData = (props) => {
 			setEndTime(tempEndTime);
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);
+
+			if (period === "DAY") {
+				dateInfo["dayStartDate"] = tempStartDate;
+				dateInfo["dayEndTime"] = tempEndTime;
+				setDayDate(dateInfo);
+			} else if (period === "WEEK") {
+				dateInfo["weekStartDate"] = tempStartDate;
+				dateInfo["weekEndTime"] = tempEndTime;
+				setWeekDate(dateInfo);
+			} else if (period === "MONTH") {
+				dateInfo["monthStartDate"] = tempStartDate;
+				dateInfo["monthEndTime"] = tempEndTime;
+				setMonthDate(dateInfo);
+			} else {
+				dateInfo["searchStartDate"] = tempStartDate;
+				dateInfo["searchEndTime"] = tempEndTime;
+				setSearchDate(dateInfo);
+			}
 			if (setAddFilter) {
 				if (!classification) {
 					setAddFilter(additionFilterValue);
@@ -75,6 +98,23 @@ const SeachData = (props) => {
 			setFirstFilter(true);
 			setStartDate(tempStartDate);
 			setEndTime(tempEndTime);
+			if (period === "DAY") {
+				dateInfo["dayStartDate"] = tempStartDate;
+				dateInfo["dayEndTime"] = tempEndTime;
+				setDayDate(dateInfo);
+			} else if (period === "WEEK") {
+				dateInfo["weekStartDate"] = tempStartDate;
+				dateInfo["weekEndTime"] = tempEndTime;
+				setWeekDate(dateInfo);
+			} else if (period === "MONTH") {
+				dateInfo["monthStartDate"] = tempStartDate;
+				dateInfo["monthEndTime"] = tempEndTime;
+				setMonthDate(dateInfo);
+			} else {
+				dateInfo["searchStartDate"] = tempStartDate;
+				dateInfo["searchEndTime"] = tempEndTime;
+				setSearchDate(dateInfo);
+			}
 			if (setAddFilter) {
 				if (!classification) {
 					setAddFilter(additionFilterValue);
@@ -144,7 +184,7 @@ const SeachData = (props) => {
 				<div className="search-area-input-button">
 					<Button
 						type="primary"
-						style={{ marginBottom: 10, width: 119, height: 32 }}
+						style={{ marginBottom: 10, width: 119, height: 35 }}
 						onClick={handleSearch}
 					>
 						조회
@@ -170,6 +210,18 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setLocationCodeInfo: (selectedOptionCode) => {
 			dispatch(actions.setLocationCode(selectedOptionCode));
+		},
+		setDayDate: (dayDate) => {
+			dispatch(actions.setDayDate(dayDate));
+		},
+		setWeekDate: (weekDate) => {
+			dispatch(actions.setWeekDate(weekDate));
+		},
+		setMonthDate: (monthDate) => {
+			dispatch(actions.setMonthDate(monthDate));
+		},
+		setSearchDate: (searchDate) => {
+			dispatch(actions.setSearchDate(searchDate));
 		},
 	};
 };

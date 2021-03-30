@@ -5,10 +5,9 @@ import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
-import SearchResultTab from "../../organisms/searchResultTab/SearchResultTab";
-import SearchCollapsedTable from "../../molecules/searchCollapsedTable/SearchCollapsedTable";
+import SearchCollapsedTable from "../../organisms/searchCollapsedTable/SearchCollapsedTable";
 
-import "../style.less";
+import "./style.less";
 
 const SearchDownloadPage = () => {
 	const [timeClassification, setTimeClassification] = useState(true);
@@ -38,8 +37,6 @@ const SearchDownloadPage = () => {
 							setFirstFilter={setFirstFilter}
 							setCount={setCount}
 						/>
-						{console.log("startDate", startDate)}
-						{console.log("endTime", endTime)}
 						{firstFilter ? (
 							<SearchCollapsedTable startDate={startDate} endTime={endTime} />
 						) : null}

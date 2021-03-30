@@ -20,7 +20,6 @@ const App = (props) => {
 		<BrowserRouter>
 			{isloggedIn ? (
 				<Switch>
-					{console.log(isloggedIn)}
 					{/* <Route path="/login" render={() => <LoginPage />} /> */}
 					<Route
 						exact
@@ -53,12 +52,5 @@ const mapStateToProps = (state) => {
 		isloggedIn: state.userInfo.isloggedIn,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		// getUserInfo: () => {
-		// 	dispatch(actions.userInfo());
-		// },
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(App);
-// export default App;
+
+export default connect(mapStateToProps)(App);

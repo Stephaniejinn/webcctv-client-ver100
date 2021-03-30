@@ -42,7 +42,6 @@ const StreamingGeneralVisualization = (props) => {
 			)
 			.then((res) => {
 				setTrafficData(res.data);
-				console.log(res.data);
 				setLoadingTraffic(false);
 			})
 			.catch((err) => {

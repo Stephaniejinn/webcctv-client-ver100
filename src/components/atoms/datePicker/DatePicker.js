@@ -1,16 +1,59 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DatePicker, ConfigProvider, Typography } from "antd";
 // import locale from "antd/lib/locale/ko_KR";
 import locale from "antd/es/locale/ko_KR";
 import "moment/locale/ko";
 import moment from "moment";
+import { connect } from "react-redux";
 
 import "./style.less";
 
-const MyDatePicker = ({ period, setTempStartDate, setTempEndTime }) => {
+const MyDatePicker = (props) => {
+	const {
+		period,
+		setTempStartDate,
+		setTempEndTime,
+		dayStartDate,
+		dayEndTime,
+		weekStartDate,
+		weekEndTime,
+		monthStartDate,
+		monthEndTime,
+		searchStartDate,
+		searchEndTime,
+	} = props;
 	const { RangePicker } = DatePicker;
 	const { Text } = Typography;
 	const [week, setWeek] = useState([]);
+
+	useEffect(() => {
+		if (period === "WEEK" && weekStartDate) {
+			setTempStartDate(weekStartDate);
+			setTempEndTime(weekEndTime);
+		} else if (period === "MONTH" && monthStartDate) {
+			setTempStartDate(monthStartDate);
+			setTempEndTime(monthEndTime);
+		} else if (period === "SEARCH" && searchStartDate) {
+			setTempStartDate(searchStartDate);
+			setTempEndTime(searchEndTime);
+		} else if (period === "DAY" && dayStartDate) {
+			setTempStartDate(dayStartDate);
+			setTempEndTime(dayEndTime);
+		} else {
+			return () => {
+				setTempStartDate("");
+				setTempEndTime("");
+			};
+		}
+	}, [period]);
+
+	var defaultDay = dayStartDate && moment(dayStartDate);
+	var defaultWeek = weekStartDate && moment(weekStartDate);
+	var defaultMonth = monthStartDate && moment(monthStartDate, "YYYY-MM");
+	var defaultSearch =
+		searchStartDate || searchEndTime
+			? [moment(searchStartDate), moment(searchEndTime)]
+			: null;
 
 	moment.locale("ko", {
 		week: {
@@ -46,7 +89,7 @@ const MyDatePicker = ({ period, setTempStartDate, setTempEndTime }) => {
 						onChange={onChange}
 						picker="week"
 						placeholder="주 선택"
-						// format="YYYY-MM-DD WW"
+						defaultValue={defaultWeek}
 					/>
 					{week[1] && (
 						<Text type="secondary" style={{ marginLeft: 10, marginTop: 5 }}>
@@ -55,13 +98,35 @@ const MyDatePicker = ({ period, setTempStartDate, setTempEndTime }) => {
 					)}
 				</div>
 			) : period === "MONTH" ? (
-				<DatePicker onChange={onChange} picker="month" placeholder="월 선택" />
+				<DatePicker
+					onChange={onChange}
+					picker="month"
+					placeholder="월 선택"
+					defaultValue={defaultMonth}
+				/>
 			) : period === "SEARCH" ? (
-				<RangePicker onChange={onChange} />
+				<RangePicker onChange={onChange} defaultValue={defaultSearch} />
 			) : (
-				<DatePicker onChange={onChange} placeholder="날짜 선택" />
+				<DatePicker
+					onChange={onChange}
+					placeholder="날짜 선택"
+					defaultValue={defaultDay}
+				/>
 			)}
 		</ConfigProvider>
 	);
 };
-export default MyDatePicker;
+const mapStateToProps = (state) => {
+	return {
+		dayStartDate: state.date.dayStartDate,
+		dayEndTime: state.date.dayEndTime,
+		weekStartDate: state.date.weekStartDate,
+		weekEndTime: state.date.weekEndTime,
+		monthStartDate: state.date.monthStartDate,
+		monthEndTime: state.date.monthEndTime,
+		searchStartDate: state.date.searchStartDate,
+		searchEndTime: state.date.searchEndTime,
+	};
+};
+
+export default connect(mapStateToProps)(MyDatePicker);

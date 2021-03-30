@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Spin, Button, Modal } from "antd";
+import { Table, Spin } from "antd";
 
 import "../style.less";
 
@@ -7,7 +7,6 @@ const SearchOverSpeedTable = (props) => {
 	const { overSpeedData } = props;
 
 	const [Data, setData] = useState([]);
-	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	useEffect(() => {
 		setData(overSpeedData);
@@ -38,38 +37,6 @@ const SearchOverSpeedTable = (props) => {
 			title: "이미지",
 			dataIndex: "imageLink",
 			key: "imageLink",
-			render: (imglink) => (
-				<>
-					<Button
-						type="link"
-						size="small"
-						onClick={() => setIsModalVisible(true)}
-					>
-						이미지 링크
-					</Button>
-					<Modal
-						title="과속차량 이미지"
-						centered
-						maskStyle={{ backgroundColor: "transparent" }}
-						visible={isModalVisible}
-						onOk={() => setIsModalVisible(false)}
-						onCancel={() => setIsModalVisible(false)}
-						footer={[
-							<Button
-								key="submit"
-								type="primary"
-								onClick={() => setIsModalVisible(false)}
-							>
-								확인
-							</Button>,
-						]}
-					>
-						<a href={imglink}>과속차량 이미지 보기</a>
-						{/* <img alt="과속차량 이미지" src={imglink} /> */}
-						{/* <p>{imglink}</p> */}
-					</Modal>
-				</>
-			),
 		},
 	];
 

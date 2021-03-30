@@ -6,9 +6,6 @@ const initialState = {
 };
 export default function userInfo(state = initialState, action) {
 	switch (action.type) {
-		// case "USER_INFO":
-		// 	return state;
-
 		case "USER_INFO_SET":
 			const { username, affiliation, permission, isloggedIn } = action.payload;
 			return {

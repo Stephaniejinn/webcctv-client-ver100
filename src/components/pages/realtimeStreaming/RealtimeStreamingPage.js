@@ -16,7 +16,7 @@ const RealtimeStreamingPage = () => {
 	// const date = moment(new Date()).format("YYYY-MM-DD");
 	const currentTime = moment(new Date()).format("HH:mm:ss");
 
-	const date = "2020-03-11";
+	const date = "2021-03-19";
 
 	return (
 		<div className="realtime-streaming-page">
@@ -35,21 +35,21 @@ const RealtimeStreamingPage = () => {
 								httpAddress="https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0004"
+								realtimeCamCode="0001"
 							/>
 							<VideoContainer
 								camName="수인사거리-2 [하행]"
 								httpAddress="https://globalbridge.synology.me:4001/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0004"
+								realtimeCamCode="0001"
 							/>
 							<VideoContainer
 								camName="수인사거리-3 [하행]"
 								httpAddress="https://globalbridge.synology.me:4002/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0004"
+								realtimeCamCode="0001"
 							/>
 						</div>
 					</Content>

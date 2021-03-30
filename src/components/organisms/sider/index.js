@@ -45,7 +45,6 @@ const MySider = () => {
 
 	const onOpenChange = (keys) => {
 		setOpenKeys(keys);
-		console.log("check keys", keys);
 	};
 
 	return (

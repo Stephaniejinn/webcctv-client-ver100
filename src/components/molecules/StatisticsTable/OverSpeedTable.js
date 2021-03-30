@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Spin, Button, Modal } from "antd";
+import { Table, Spin, Button, Modal, Descriptions } from "antd";
 import moment from "moment";
 
 import axios from "axios";
@@ -9,36 +9,16 @@ import * as actions from "../../../redux/actions";
 import "./style.less";
 
 const OverSpeedTable = (props) => {
-	const {
-		startDate,
-		endTime,
-		cameraCode,
-		baseURL,
-		page,
-		setOverSpeedData,
-	} = props;
+	const { startDate, endTime, cameraCode, baseURL, camera } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	var TotalData = [];
-	var countCol;
 
 	useEffect(() => {
-		if (page) {
-			setLoadingData(true);
-			countCol = 0;
-			axiosSearchData();
-		} else {
-			setLoadingData(true);
-			axiosData();
-		}
-		return () => {
-			console.log("count");
-			setData(TotalData);
-		};
-		// setLoadingData(true);
-		// axiosData();
+		setLoadingData(true);
+		axiosData();
 	}, [startDate, endTime, cameraCode]);
 
 	const columns = [
@@ -92,10 +72,19 @@ const OverSpeedTable = (props) => {
 							</Button>,
 						]}
 					>
-						<a href={imglink}>과속차량 이미지 보기</a>
+						{/* <a href={imglink}>과속차량 이미지 보기</a> */}
+						<Descriptions bordered size="small">
+							<Descriptions.Item label="위치" span={3}>
+								{camera}
+							</Descriptions.Item>
 
-						{/* <img alt="과속차량 이미지" src={imglink} />
-						<p>{imglink}</p> */}
+							<Descriptions.Item label="시간">{imglink[1]}</Descriptions.Item>
+							<Descriptions.Item label="위반속도">
+								{imglink[2]}km/h
+							</Descriptions.Item>
+						</Descriptions>
+
+						<img alt="과속차량 이미지" src={imglink[0]} />
 					</Modal>
 				</>
 			),
@@ -135,59 +124,9 @@ const OverSpeedTable = (props) => {
 					dataTemp["vehicleType"] = vehicleType;
 					dataTemp["licenseNumber"] = licenseNumber;
 					dataTemp["speed"] = speed;
-					dataTemp["imageLink"] = imageLink;
+					dataTemp["imageLink"] = [imageLink, dataTemp["time"], speed];
 					TotalData.push(dataTemp);
 				});
-				setData(TotalData);
-				setLoadingData(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-	const axiosSearchData = () => {
-		axios
-			.get(
-				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				console.log("count search overspeed axios");
-				res.data.some((eachData, index) => {
-					const {
-						recordTime,
-						vehicleType,
-						licenseNumber,
-						speed,
-						imageLink,
-					} = eachData;
-					if (countCol === 5) {
-						return true;
-					}
-					countCol += 1;
-					let dataTemp = {};
-					dataTemp["key"] = index;
-					if (startDate !== endTime) {
-						dataTemp["time"] = moment(recordTime).format(
-							"YYYY년 MM월 DD일 HH:mm:ss"
-						);
-					} else {
-						dataTemp["time"] = moment(recordTime).format("HH:mm:ss");
-					}
-					dataTemp["vehicleType"] = vehicleType;
-					dataTemp["licenseNumber"] = licenseNumber;
-					dataTemp["speed"] = speed;
-					dataTemp["imageLink"] = imageLink;
-					TotalData.push(dataTemp);
-				});
-				if (page) {
-					setOverSpeedData(TotalData);
-				}
 				setData(TotalData);
 				setLoadingData(false);
 			})
@@ -220,6 +159,7 @@ const mapStateToProps = (state) => {
 	return {
 		cameraCode: state.locationCode.cameraCode,
 		baseURL: state.baseURL.baseURL,
+		camera: state.location.camera,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

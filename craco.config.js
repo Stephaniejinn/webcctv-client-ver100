@@ -30,7 +30,8 @@ module.exports = {
 					lessOptions: {
 						// modifyVars: { "@primary-color": "#597ef7" },
 						modifyVars: {
-							"primary-color": "#688df2",
+							// "primary-color": "#688df2",
+							"@primary-color": "#27335c",
 							"box-shadow-base":
 								"0 4px 10px 0 rgba(20, 19, 34, 0.03), 0 0 10px 0 rgba(20, 19, 34, 0.02)",
 							"border-color-base": "#e4e9f0",
@@ -39,7 +40,6 @@ module.exports = {
 							theme: "light",
 							"font-family": "Arial",
 						},
-
 						javascriptEnabled: true,
 					},
 				},

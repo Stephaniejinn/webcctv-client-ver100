@@ -23,7 +23,7 @@ const LoginCard = (props) => {
 				{ headers: { "Content-Type": "application/json" } }
 			)
 			.then((res) => {
-				console.log(res);
+				// console.log(res);
 				const { jwt } = res.data;
 				window.localStorage.setItem("token", jwt);
 				let userInfo = {};
