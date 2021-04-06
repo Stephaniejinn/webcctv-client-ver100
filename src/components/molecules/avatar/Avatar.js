@@ -8,34 +8,51 @@ import {
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
+import axios from "axios";
 
 import "./style.less";
 
 const MyAvatar = (props) => {
-	const { username, affiliation, setUserInfo } = props;
+	const { baseURL, setLoggedIn, isMaster } = props;
 	const { Text } = Typography;
 	const HandleLogout = () => {
-		// console.log("logout");
-		let lougout = { isloggedIn: false };
-		setUserInfo(lougout);
+		axios
+			.delete(`${baseURL}/auth/tokens`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
+			.then((res) => {
+				console.log(res);
+				console.log("check delete");
+				window.localStorage.clear();
+				setLoggedIn(false);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 	const dropdownContent = (
 		<Menu style={{ width: 190 }}>
 			<Menu.Item>
 				<Text type="secondary" strong style={{ marginBottom: 6 }}>
-					접속 계정:{username}
+					접속 계정:{localStorage.getItem("username")}
 				</Text>
 				<Text type="secondary" strong>
-					소속: {affiliation}
+					소속: {localStorage.getItem("affiliate")}
 				</Text>
 			</Menu.Item>
 			<Divider />
-			<Menu.Item>
-				<Link to="/signup" style={{ color: "#595c97" }}>
-					<IdcardOutlined />
-					계정 발급
-				</Link>
-			</Menu.Item>
+			{isMaster && (
+				<Menu.Item>
+					<Link to="/signup" style={{ color: "#595c97" }}>
+						<IdcardOutlined />
+						계정 발급
+					</Link>
+				</Menu.Item>
+			)}
+
 			<Menu.Item>
 				<Link to="/password" style={{ color: "#595c97" }}>
 					<UserOutlined />
@@ -71,25 +88,14 @@ const MyAvatar = (props) => {
 				}}
 				size="large"
 			>
-				{username.slice(0, 1)}
+				{localStorage.getItem("username").slice(0, 1)}
 			</Avatar>
 		</Dropdown>
 	);
 };
 const mapStateToProps = (state) => {
 	return {
-		username: state.userInfo.username,
-		affiliation: state.userInfo.affiliation,
+		baseURL: state.baseURL.baseURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		// getUserInfo: () => {
-		// 	dispatch(actions.userInfo());
-		// },
-		setUserInfo: (userInfo) => {
-			dispatch(actions.setUserInfo(userInfo));
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(MyAvatar);
+export default connect(mapStateToProps)(MyAvatar);

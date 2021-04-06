@@ -6,7 +6,7 @@ import * as actions from "../../../../redux/actions";
 
 import TimeTableCard from "../../../molecules/tableCard/TimeTableCard";
 import TimeDataVisualization from "../../../molecules/dataVisualization/TimeDataVisualization";
-import "./style.less";
+import "../style.less";
 
 const TimeVisualization = (props) => {
 	const {

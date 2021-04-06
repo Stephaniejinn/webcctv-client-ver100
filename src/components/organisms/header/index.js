@@ -12,7 +12,8 @@ import "./style.less";
 const { Header } = Layout;
 const { Text } = Typography;
 
-const MyHeader = ({ page }) => {
+const MyHeader = (props) => {
+	const { page, setLoggedIn, isMaster } = props;
 	const [currentTime, setCurrentTime] = useState(
 		moment(new Date()).format("YYYY년 MM월 DD일 HH:mm:ss")
 	);
@@ -39,10 +40,8 @@ const MyHeader = ({ page }) => {
 				</div>
 			) : (
 				<div className="header-text-avatar">
-					<Text type="secondary" style={{ marginRight: 10 }}>
-						{currentTime}
-					</Text>
-					<Avatar />
+					<Text style={{ marginRight: 10 }}>{currentTime}</Text>
+					<Avatar setLoggedIn={setLoggedIn} isMaster={isMaster} />
 				</div>
 			)}
 		</Header>

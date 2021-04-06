@@ -10,9 +10,9 @@ import SearchInput from "../../atoms/cascaderBtn/CascaderBtn";
 
 import "./style.less";
 
-const RealtimeStreamingPage = () => {
+const RealtimeStreamingPage = (props) => {
 	const { Content } = Layout;
-
+	const { setLoggedIn, isMaster } = props;
 	// const date = moment(new Date()).format("YYYY-MM-DD");
 	const currentTime = moment(new Date()).format("HH:mm:ss");
 
@@ -21,9 +21,9 @@ const RealtimeStreamingPage = () => {
 	return (
 		<div className="realtime-streaming-page">
 			<Layout style={{ minHeight: "100vh" }}>
-				<Sider />
+				<Sider setLoggedIn={setLoggedIn} />
 				<Layout className="site-layout">
-					<Header />
+					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "실시간 영상"]} />
 						<div className="search-input">

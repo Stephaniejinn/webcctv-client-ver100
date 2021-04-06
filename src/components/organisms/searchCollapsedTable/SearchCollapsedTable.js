@@ -33,6 +33,9 @@ const SearchCollapsedTable = (props) => {
 	const [isLoadingSecond, setLoadingSecond] = useState(true);
 	const [isLoadingOverSpeed, setLoadingOverSpeed] = useState(true);
 
+	var firstDataParsedTotal = [];
+	var secondDataParsedTotal = [];
+	var OverSpeedParsedTotal = [];
 	var firstDataParsed = [];
 	var secondDataParsed = [];
 	var OverSpeedParsed = [];
@@ -106,11 +109,6 @@ const SearchCollapsedTable = (props) => {
 						if (recordTime === "ALL") {
 							return false;
 						}
-						if (countCol === 6) {
-							setFirstData(firstDataParsed);
-							setSecondData(secondDataParsed);
-						}
-						countCol += 1;
 
 						firstDataTemp["key"] = index + 1;
 						firstDataTemp["time"] = moment(recordTime).format(
@@ -164,11 +162,19 @@ const SearchCollapsedTable = (props) => {
 						secondDataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
 						secondDataTemp["motorDayNightRatio"] = motorDayNightRatio;
 
-						firstDataParsed.push(firstDataTemp);
-						secondDataParsed.push(secondDataTemp);
+						firstDataParsedTotal.push(firstDataTemp);
+						secondDataParsedTotal.push(secondDataTemp);
+						if (countCol < 6) {
+							countCol += 1;
+							firstDataParsed.push(firstDataTemp);
+							secondDataParsed.push(secondDataTemp);
+							setFirstData(firstDataParsed);
+							setSecondData(secondDataParsed);
+							console.log(firstDataParsed);
+						}
 					});
-					setFirstDataTotal(firstDataParsed);
-					setSecondDataTotal(secondDataParsed);
+					setFirstDataTotal(firstDataParsedTotal);
+					setSecondDataTotal(secondDataParsedTotal);
 					setLoadingFirst(false);
 					setLoadingSecond(false);
 				}
@@ -201,11 +207,6 @@ const SearchCollapsedTable = (props) => {
 					} = eachData;
 					let overSpeedDataTemp = {};
 
-					if (countOverSpeedCol === 5) {
-						setOverSpeedData(OverSpeedParsed);
-					}
-					countOverSpeedCol += 1;
-
 					overSpeedDataTemp["key"] = index;
 					overSpeedDataTemp["time"] = moment(recordTime).format(
 						"YYYY년 MM월 DD일 HH:mm:ss"
@@ -215,9 +216,14 @@ const SearchCollapsedTable = (props) => {
 					overSpeedDataTemp["licenseNumber"] = licenseNumber;
 					overSpeedDataTemp["speed"] = speed;
 					overSpeedDataTemp["imageLink"] = imageLink;
-					OverSpeedParsed.push(overSpeedDataTemp);
+					OverSpeedParsedTotal.push(overSpeedDataTemp);
+					if (countOverSpeedCol < 6) {
+						countOverSpeedCol += 1;
+						OverSpeedParsed.push(overSpeedDataTemp);
+						setOverSpeedData(OverSpeedParsed);
+					}
 				});
-				setOverSpeedDataTotal(OverSpeedParsed);
+				setOverSpeedDataTotal(OverSpeedParsedTotal);
 				setLoadingOverSpeed(false);
 			})
 			.catch((err) => {
@@ -334,6 +340,7 @@ const SearchCollapsedTable = (props) => {
 										</div>
 									) : (
 										<>
+											{console.log(firstData)}
 											<FirstTable firstData={firstData} />
 										</>
 									)}

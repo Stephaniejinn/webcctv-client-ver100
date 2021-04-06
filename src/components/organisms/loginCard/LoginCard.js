@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
 const LoginCard = (props) => {
-	const { baseURL, setUserInfo } = props;
+	const { baseURL, setLoggedIn } = props;
 	const { Title } = Typography;
 
 	const login = (values) => {
@@ -20,23 +20,42 @@ const LoginCard = (props) => {
 					username,
 					password,
 				}),
-				{ headers: { "Content-Type": "application/json" } }
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						"Content-Type": "application/json",
+					},
+				}
 			)
 			.then((res) => {
-				// console.log(res);
+				console.log(res);
 				const { jwt } = res.data;
 				window.localStorage.setItem("token", jwt);
-				let userInfo = {};
-				userInfo["username"] = username;
-				userInfo["isloggedIn"] = true;
-				setUserInfo(userInfo);
+				window.localStorage.setItem("username", username);
+				getUserInfo();
 			})
 			.catch((err) => {
 				console.log(err);
 				message.error("로그인 실패");
 			});
 	};
-
+	const getUserInfo = () => {
+		axios
+			.get(`${baseURL}/users/${localStorage.getItem("username")}`, {
+				headers: {
+					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
+			.then((res) => {
+				console.log(res);
+				window.localStorage.setItem("affiliate", res.data.affiliate);
+				setLoggedIn(true);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
 	return (
 		<Card>
 			<Form
@@ -98,14 +117,5 @@ const mapStateToProps = (state) => {
 		baseURL: state.baseURL.baseURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getBaseURL: () => {
-			dispatch(actions.getURL());
-		},
-		setUserInfo: (userInfo) => {
-			dispatch(actions.setUserInfo(userInfo));
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(LoginCard);
+
+export default connect(mapStateToProps)(LoginCard);

@@ -9,7 +9,8 @@ import SearchCollapsedTable from "../../organisms/searchCollapsedTable/SearchCol
 
 import "./style.less";
 
-const SearchDownloadPage = () => {
+const SearchDownloadPage = (props) => {
+	const { setLoggedIn, isMaster } = props;
 	const [timeClassification, setTimeClassification] = useState(true);
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
@@ -23,7 +24,7 @@ const SearchDownloadPage = () => {
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider />
 				<Layout className="site-layout">
-					<Header />
+					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "기간 별 데이터 조회"]} />
 						<SearchData

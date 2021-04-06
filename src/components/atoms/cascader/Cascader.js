@@ -12,6 +12,8 @@ const MyCascader = (props) => {
 		displayLocation = true,
 		setLocationChange,
 		baseURL,
+		isDisabled,
+		placeholdertxt,
 	} = props;
 
 	const [parsedOptions, setParsedOptions] = useState([]);
@@ -275,11 +277,12 @@ const MyCascader = (props) => {
 				size={size}
 				expandTrigger="hover"
 				onChange={onChange}
-				placeholder="위치 선택"
+				placeholder={placeholdertxt ? placeholdertxt : "위치 선택"}
 				showSearch={{ filter }}
 				// onPopupVisibleChange={getOptions}
 				options={parsedOptions}
 				defaultValue={defaultOption}
+				disabled={isDisabled && isDisabled}
 			/>
 		</>
 	);

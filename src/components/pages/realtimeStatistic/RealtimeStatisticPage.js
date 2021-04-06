@@ -15,7 +15,15 @@ import TimeTableCard from "../../molecules/tableCard/TimeTableCard";
 import "./style.less";
 
 const RealtimeStatisticPage = (props) => {
-	const { camAddress, camera, cameraCode, baseURL, trafficURL } = props;
+	const {
+		camAddress,
+		camera,
+		cameraCode,
+		baseURL,
+		trafficURL,
+		setLoggedIn,
+		isMaster,
+	} = props;
 	const { Content } = Layout;
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
@@ -76,7 +84,7 @@ const RealtimeStatisticPage = (props) => {
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider />
 				<Layout className="site-layout">
-					<Header />
+					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<RealtimeStatUpper
 							currTime={currTime}

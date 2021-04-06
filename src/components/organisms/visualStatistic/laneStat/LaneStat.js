@@ -7,7 +7,7 @@ import * as actions from "../../../../redux/actions";
 
 import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
-import "./style.less";
+import "../style.less";
 
 const LaneVisualization = (props) => {
 	const {

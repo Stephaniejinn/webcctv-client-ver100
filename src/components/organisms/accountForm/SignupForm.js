@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Form, Input, Checkbox, Button, Modal, Alert, message } from "antd";
 import { BankOutlined } from "@ant-design/icons";
+import useClippy from "use-clippy";
+import { connect } from "react-redux";
+import axios from "axios";
 
-// import { useRecoilValue } from "recoil";
-// import { globalLocationHierarchyState } from "../../../states/signup";
-// import { SIGNUP_API_URL } from "../../../constants";
-// import axios from "axios";
-// import useClippy from "use-clippy";
 import Cascader from "../../atoms/cascader/Cascader";
 import AccountDescriptionForm from "../../atoms/accountDescription/AccountDescriptionFrom";
 
@@ -41,60 +39,62 @@ const tailFormItemLayout = {
 	},
 };
 
-const SignupForm = () => {
+const SignupForm = (props) => {
+	const { baseURL } = props;
 	const [form] = Form.useForm();
 	const [modalVisible, setModalVisible] = useState(false);
+	const [clipboard, setClipboard] = useClippy();
 	const [signupInfo, setSignupInfo] = useState({
 		username: "",
 		password: "",
-		assgined: "",
-		permission: [],
+		affiliate: "",
+		permission: "",
 	});
-	// const location = useRecoilValue(globalLocationHierarchyState);
-	// const [clipboard, setClipboard] = useClippy();
 
 	const handleModalClose = () => {
 		setModalVisible(false);
 	};
 	const handleCopy = () => {
-		// setClipboard(
-		// 	`아이디: ${signupInfo.username} 비밀번호: ${signupInfo.password}`
-		// );
+		setClipboard(
+			`아이디: ${signupInfo.username} 비밀번호: ${signupInfo.password}`
+		);
 		message.success("클립보드에 복사되었습니다");
 	};
 	const signUp = (values) => {
-		setModalVisible(true);
-
-		// const { affiliation, permission, signupPassword } = values;
-		// const apiURL = SIGNUP_API_URL;
-		// axios
-		// 	.post(
-		// 		apiURL,
-		// 		JSON.stringify({
-		// 			affiliation,
-		// 			permission,
-		// 			signupPassword,
-		// 		}),
-		// 		{
-		// 			headers: { "Content-Type": "application/json" },
-		// 		}
-		// 	)
-		// 	.then((res) => {
-		// 		console.log(res.data);
-		// 		setModalVisible(res.data.success);
-		// 		setSignupInfo({
-		// 			username: res.data.username,
-		// 			password: res.data.password,
-		// 			affiliation,
-		// 			permission: res.data.permission,
-		// 		});
-		// 	})
-		// 	.catch((err) => {
-		// 		setModalVisible(false);
-		// 		if (err.response.status === 401) {
-		// 			message.error("관리자 비밀번호가 잘못되었습니다");
-		// 		}
-		// 	});
+		// const { affiliation, permission } = values;
+		const { affiliate } = values;
+		const permission = "[]";
+		axios
+			.post(
+				`${baseURL}/users`,
+				JSON.stringify({
+					affiliate,
+					permission,
+				}),
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Cache: "No-cache",
+					},
+				}
+			)
+			.then((res) => {
+				console.log(res.data);
+				setModalVisible(true);
+				setSignupInfo({
+					username: res.data.username,
+					password: res.data.password,
+					affiliate,
+					permission,
+				});
+			})
+			.catch((err) => {
+				// if (err.response.status === 401) {
+				// 	message.error("관리자 비밀번호가 잘못되었습니다");
+				// }
+				console.log(err.response);
+			});
 	};
 
 	return (
@@ -108,7 +108,7 @@ const SignupForm = () => {
 			size="large"
 		>
 			<Form.Item
-				name="affiliation"
+				name="affiliate"
 				label="소속"
 				rules={[
 					{
@@ -132,10 +132,9 @@ const SignupForm = () => {
 					},
 				]}
 			>
-				{/* <Cascader disabled options={location} placeholder="권한을 선택하세요" /> */}
-				<Cascader />
+				<Cascader isDisabled={true} placeholdertxt="권한을 선택하세요" />
 			</Form.Item>
-			<Form.Item
+			{/* <Form.Item
 				name="signupPassword"
 				label="관리자 비밀번호"
 				rules={[
@@ -146,8 +145,8 @@ const SignupForm = () => {
 				]}
 			>
 				<Input.Password />
-			</Form.Item>
-			<Form.Item
+			</Form.Item> */}
+			{/* <Form.Item
 				name="confirm"
 				valuePropName="checked"
 				rules={[
@@ -162,7 +161,7 @@ const SignupForm = () => {
 				style={{ marginBottom: 6 }}
 			>
 				<Checkbox>글로벌브릿지 담당자임을 확인합니다.</Checkbox>
-			</Form.Item>
+			</Form.Item> */}
 			<Form.Item wrapperCol={tailFormItemLayout.wrapperCol}>
 				<Button type="primary" htmlType="submit" size="large">
 					발급
@@ -186,7 +185,7 @@ const SignupForm = () => {
 					<AccountDescriptionForm
 						username={signupInfo.username}
 						password={signupInfo.password}
-						affiliation={signupInfo.affiliation}
+						affiliation={signupInfo.affiliate}
 						permission={signupInfo.permission}
 					/>
 				</Modal>
@@ -194,5 +193,10 @@ const SignupForm = () => {
 		</Form>
 	);
 };
+const mapStateToProps = (state) => {
+	return {
+		baseURL: state.baseURL.baseURL,
+	};
+};
 
-export default SignupForm;
+export default connect(mapStateToProps)(SignupForm);

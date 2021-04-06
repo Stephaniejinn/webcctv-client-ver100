@@ -1,14 +1,9 @@
 import React from "react";
-// import axios from "axios";
 import { Form, Input, message, Button } from "antd";
 import { BankOutlined, UserOutlined } from "@ant-design/icons";
-
-import Cascader from "../../atoms/cascader/Cascader";
-
-// import { useRecoilValue, useSetRecoilState } from "recoil";
-// import { isLoginState } from "../../../states/app";
-// import { userInfoState } from "../../../states/ui";
-// import { CHANGE_PASSWORD_API_URL } from "../../../constants/url";
+import axios from "axios";
+import { connect } from "react-redux";
+// import Cascader from "../../atoms/cascader/Cascader";
 
 import "./style.less";
 
@@ -43,39 +38,43 @@ const tailFormItemLayout = {
 	},
 };
 
-const PasswordForm = () => {
+const PasswordForm = (props) => {
+	const { setLoggedIn, baseURL } = props;
 	const [form] = Form.useForm();
-	// const { username, affiliation, permission } = useRecoilValue(userInfoState);
-	// const setIsLoggedIn = useSetRecoilState(isLoginState);
 
 	const changePassword = (values) => {
-		// console.log('Received values of form: ', values);
+		console.log("Received values of form: ", values);
 		const { oldPassword, newPassword } = values;
 
-		// axios
-		// 	.post(
-		// 		CHANGE_PASSWORD_API_URL,
-		// 		JSON.stringify({
-		// 			username,
-		// 			oldPassword,
-		// 			newPassword,
-		// 		}),
-		// 		{ headers: { "Content-Type": "application/json" } }
-		// 	)
-		// 	.then((res) => {
-		// 		if (res.status === 200) {
-		// 			message.success(res.data.message);
-		// 			setIsLoggedIn(false);
-		// 		}
-		// 		// redirect
-		// 	})
-		// 	.catch((err) => {
-		// 		if (err.response.status === 401) {
-		// 			message.error(err.response.data.message);
-		// 		} else {
-		// 			message.error("Unknown error");
-		// 		}
-		// 	});
+		axios
+			.put(
+				`${baseURL}/users/${localStorage.getItem("username")}/password`,
+				JSON.stringify({
+					oldPassword,
+					newPassword,
+				}),
+				{
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						"Content-Type": "application/json",
+					},
+				}
+			)
+			.then((res) => {
+				message.success("비밀번호 변경 성공");
+				setLoggedIn(false);
+				// redirect
+			})
+			.catch((err) => {
+				console.log(err.response);
+				if (err.response.status === 401) {
+					message.error(err.response.data.message);
+				} else if (err.response.status === 400) {
+					message.error("비밀번호 형식이 틀렸습니다");
+				} else {
+					message.error("Unknown error");
+				}
+			});
 	};
 
 	return (
@@ -84,27 +83,32 @@ const PasswordForm = () => {
 			form={form}
 			name="register"
 			onFinish={changePassword}
-			initialValues={{
-				region: ["인천광역시", "중구", "수인사거리"],
-			}}
 			scrollToFirstError
 			size="large"
 		>
-			<Form.Item name="username" label="계정" initialValue="username">
+			<Form.Item
+				name="username"
+				label="계정"
+				initialValue={localStorage.getItem("username")}
+			>
 				<Input
 					disabled
 					prefix={<UserOutlined className="site-form-item-icon" />}
 				/>
 			</Form.Item>
-			<Form.Item name="affiliation" label="소속" initialValue="affiliation">
+			<Form.Item
+				name="affiliation"
+				label="소속"
+				initialValue={localStorage.getItem("affiliate")}
+			>
 				<Input
 					disabled
 					prefix={<BankOutlined className="site-form-item-icon" />}
 				/>
 			</Form.Item>
-			<Form.Item name="permission" label="권한" initialValue="permission">
+			{/* <Form.Item name="permission" label="권한" initialValue="permission">
 				<Cascader />
-			</Form.Item>
+			</Form.Item> */}
 			<Form.Item
 				name="oldPassword"
 				label="현재 비밀번호"
@@ -123,8 +127,74 @@ const PasswordForm = () => {
 				label="새 비밀번호"
 				rules={[
 					{
+						type: "string",
 						required: true,
 						message: "새 비밀번호를 입력하세요",
+					},
+					{
+						min: 8,
+						message: "최소 8자리 이상",
+					},
+					{
+						validator: (rule, value) => {
+							const oNumber = "0123456789";
+							const oLetter = "abcdefghijklmnopqrstuvwxyz";
+							const oLetterCap = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+							const oSpecial = "-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\"";
+							const oTher = oNumber + oLetter + oLetterCap + oSpecial;
+							let total = 0;
+							const oSpeArr = value.split("");
+
+							const oNumberItem = oSpeArr.find(
+								(item) => oNumber.indexOf(item) !== -1
+							);
+							const oLetterItem = oSpeArr.find(
+								(item) => oLetter.indexOf(item) !== -1
+							);
+							const oLetterCapItem = oSpeArr.find(
+								(item) => oLetterCap.indexOf(item) !== -1
+							);
+							const oSpeItem = oSpeArr.find(
+								(item) => oSpecial.indexOf(item) !== -1
+							);
+							const oTherItem = oSpeArr.find(
+								(item) => oTher.indexOf(item) === -1
+							);
+							if (oTherItem !== undefined) {
+								console.log(oTherItem);
+								return Promise.reject(
+									"영문 대문자, 소문자, 숫자, 특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
+								);
+							}
+							if (oNumberItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject("숫자 최소 한개 이상");
+							}
+							if (oLetterItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject("영문 소문자 최소 한개 이상");
+							}
+							if (oSpeItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject(
+									"특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
+								);
+							}
+							if (oLetterCapItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject("영문 대문자 최소 한개 이상");
+							}
+							if (total === 4) {
+								return Promise.resolve();
+							}
+							return Promise.reject(
+								"영문 대문자, 소문자, 숫자, 특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
+							);
+						},
 					},
 				]}
 				hasFeedback
@@ -173,4 +243,10 @@ const PasswordForm = () => {
 	);
 };
 
-export default PasswordForm;
+const mapStateToProps = (state) => {
+	return {
+		baseURL: state.baseURL.baseURL,
+	};
+};
+
+export default connect(mapStateToProps)(PasswordForm);

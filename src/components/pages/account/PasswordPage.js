@@ -8,7 +8,8 @@ import PasswordForm from "../../organisms/accountForm/PasswordFrom";
 
 import "./style.less";
 
-const PasswordPage = () => {
+const PasswordPage = (props) => {
+	const { setLoggedIn, isMaster } = props;
 	const { Content } = Layout;
 	const { Title } = Typography;
 	return (
@@ -16,7 +17,7 @@ const PasswordPage = () => {
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider />
 				<Layout className="site-layout">
-					<Header />
+					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb
 							pageHierarchy={["대시보드", "개인정보", "비밀번호 변경"]}
@@ -25,7 +26,7 @@ const PasswordPage = () => {
 							비밀번호 변경
 						</Title>
 						<Divider />
-						<PasswordForm />
+						<PasswordForm isMaster={isMaster} setLoggedIn={setLoggedIn} />
 					</Content>
 				</Layout>
 			</Layout>

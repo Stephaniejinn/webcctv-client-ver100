@@ -6,7 +6,8 @@ import LoginCard from "../../organisms/loginCard/LoginCard";
 
 import "./style.less";
 
-const LoginPage = () => {
+const LoginPage = (props) => {
+	const { setLoggedIn } = props;
 	const { Content } = Layout;
 	const { Title, Text } = Typography;
 	return (
@@ -20,7 +21,7 @@ const LoginPage = () => {
 							<Text type="secondary">
 								주식회사 글로벌브릿지 인공지능 대시보드
 							</Text>
-							<LoginCard />
+							<LoginCard setLoggedIn={setLoggedIn} />
 						</div>
 					</Content>
 				</Layout>

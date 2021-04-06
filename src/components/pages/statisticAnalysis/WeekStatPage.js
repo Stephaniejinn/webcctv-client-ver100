@@ -11,7 +11,8 @@ import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 
 import "./style.less";
 
-const WeekStatPage = () => {
+const WeekStatPage = (props) => {
+	const { setLoggedIn, isMaster } = props;
 	const [timeClassification, setTimeClassification] = useState(true);
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
@@ -26,7 +27,7 @@ const WeekStatPage = () => {
 			<Layout style={{ minHeight: "100vh" }}>
 				<Sider />
 				<Layout className="site-layout">
-					<Header />
+					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "통계 분석", "주간 별"]} />
 						<SearchData
