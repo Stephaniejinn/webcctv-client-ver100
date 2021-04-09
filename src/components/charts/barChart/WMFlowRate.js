@@ -21,17 +21,18 @@ const WMFlowRate = (props) => {
 		END: "주말전체",
 	};
 
-	var TotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "8") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 시간별 PHF parse");
+		var TotalData = [];
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				weekOption,

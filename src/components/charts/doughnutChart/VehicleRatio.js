@@ -9,6 +9,8 @@ const VehicleRatio = (props) => {
 
 	useEffect(() => {
 		setLoadingData(true);
+		setData([]);
+
 		parseTraffic();
 	}, [trafficData]);
 
@@ -35,7 +37,6 @@ const VehicleRatio = (props) => {
 		vehicleRatioData[1].value = trafficData[0]["mBusVolume"];
 		vehicleRatioData[2].value = trafficData[0]["mTruckVolume"];
 		vehicleRatioData[3].value = trafficData[0]["motorVolume"];
-		// console.log("vehicleRatioData", vehicleRatioData);
 		setData(vehicleRatioData);
 		setLoadingData(false);
 	};
@@ -46,7 +47,7 @@ const VehicleRatio = (props) => {
 		colorField: "type",
 		radius: 1,
 		innerRadius: 0.46,
-		legend: false,
+		legend: true,
 		label: {
 			type: "inner",
 			offset: "-54%",

@@ -12,14 +12,15 @@ const MonthPeakTime = (props) => {
 	useEffect(() => {
 		if (activeVisualKey === "7") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
-			console.log(trafficTotalData);
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
-	var TotalData = [];
-
 	const parseTotalData = () => {
+		var TotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const { recordDate, totalVehiclePeak15MinuteTime } = TrafficData;
 			let temp = {};

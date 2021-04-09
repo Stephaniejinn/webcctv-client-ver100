@@ -5,7 +5,7 @@ import { isMobile } from "react-device-detect";
 
 import "./style.less";
 
-const Video = ({ source }) => {
+const Video = ({ source, showControls }) => {
 	const videoRef = useRef();
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -43,7 +43,8 @@ const Video = ({ source }) => {
 			onClick={handleClick}
 			muted
 			// autoPlay
-			controls={isMobile}
+			controls={isMobile || showControls}
+			// controls={true}
 			preload="auto"
 		/>
 	);

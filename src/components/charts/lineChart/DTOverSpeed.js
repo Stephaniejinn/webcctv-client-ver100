@@ -9,17 +9,19 @@ const OverSpeedCnt = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var cntTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "5") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 과속 parse");
+		var cntTotalData = [];
+
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
 				recordTime,

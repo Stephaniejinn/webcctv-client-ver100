@@ -21,6 +21,7 @@ const TimeVisualization = (props) => {
 	const { TabPane } = Tabs;
 
 	const [isLoadingTrafficTotal, setLoadingTrafficTotal] = useState(true);
+	const [isEmptyData, setEmptyData] = useState(false);
 
 	const [totalLaneArr, setTotalLaneArr] = useState([]);
 	const [currentLaneNum, setCurrentLaneNum] = useState("0");
@@ -45,6 +46,8 @@ const TimeVisualization = (props) => {
 	}, [camLanes]);
 
 	useEffect(() => {
+		setTrafficTotalData([]);
+		setLoadingTrafficTotal(true);
 		axiosAsync();
 	}, [cameraCode, startDate, endTime, currentLaneNum]);
 
@@ -58,18 +61,22 @@ const TimeVisualization = (props) => {
 			})
 			.then((res) => {
 				setTrafficTotalData(res.data);
+				console.log(res.data);
 				if (res.data.length !== 0) {
 					setLoadingTrafficTotal(false);
+					setEmptyData(false);
+				} else {
+					setEmptyData(true);
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
+				setEmptyData(true);
 			});
 	};
 
 	function callback(key) {
 		setCurrentLaneNum(key);
-		console.log("key", key);
 	}
 	return (
 		<Tabs defaultActiveKey="0" activeKey={currentLaneNum} onChange={callback}>

@@ -17,6 +17,7 @@ const MTSecondTable = (props) => {
 		if (currentLaneNum === 0) {
 			countCol = 0;
 			setLoading(true);
+			setData([]);
 			parseData();
 		}
 	}, [trafficTotalData]);
@@ -53,44 +54,27 @@ const MTSecondTable = (props) => {
 			],
 		},
 		{
-			title: "승용차",
-			key: "car",
+			title: "차종별 주야율",
+			dataIndex: "TypeDayNightRatio",
+			key: "TypeNightRatio",
 			children: [
 				{
-					title: "주야율",
+					title: "승용차",
 					dataIndex: "carDayNightRatio",
 					key: "carNightRatio",
 				},
-			],
-		},
-		{
-			title: "버스",
-			key: "bus",
-			children: [
 				{
-					title: "주야율",
+					title: "버스",
 					dataIndex: "busDayNightRatio",
 					key: "busNightRatio",
 				},
-			],
-		},
-		{
-			title: "화물차",
-			key: "truck",
-			children: [
 				{
-					title: "주야율",
+					title: "화물차",
 					dataIndex: "truckDayNightRatio",
 					key: "truckNightRatio",
 				},
-			],
-		},
-		{
-			title: "이륜차",
-			key: "motor",
-			children: [
 				{
-					title: "주야율",
+					title: "이륜차",
 					dataIndex: "motorDayNightRatio",
 					key: "motorNightRatio",
 				},
@@ -101,7 +85,7 @@ const MTSecondTable = (props) => {
 		console.log("count table axios");
 		trafficTotalData.forEach((eachData, index) => {
 			const {
-				recordTime,
+				recordDate,
 				totalVehicleDayNightRatio,
 				totalVehiclePeakHourFactor,
 				totalVehiclePeakHourConcentrationRatio,
@@ -124,7 +108,7 @@ const MTSecondTable = (props) => {
 				}
 				countCol += 1;
 			} else {
-				dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일");
+				dataTemp["time"] = moment(recordDate).format("YYYY년 MM월 DD일");
 			}
 			dataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
 			dataTemp["totalPHF"] = totalVehiclePeakHourFactor;

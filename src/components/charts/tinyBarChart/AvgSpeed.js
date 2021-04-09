@@ -10,6 +10,7 @@ const AvgSpeedTinyColumn = (props) => {
 
 	useEffect(() => {
 		setLoadingData(true);
+		setData([]);
 		parseTrafficData();
 	}, [trafficData]);
 
@@ -48,6 +49,7 @@ const AvgSpeedTinyColumn = (props) => {
 						"km/h"
 					);
 			},
+			// showTitle: true,
 		},
 	};
 	return (

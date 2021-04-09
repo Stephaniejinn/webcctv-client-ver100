@@ -55,8 +55,8 @@ const TableDescription = (props) => {
 						<>
 							{camera.length === 0 ? "수인사거리-1 [하행]" : camera}
 							<Divider type="vertical" />
-							2021년 03월 23일
-							{/* {moment(startDate).format("YYYY년 MM월 DD일")} */}
+							{/* 2021년 03월 23일 */}
+							{moment(startDate).format("YYYY년 MM월 DD일")}
 							<Divider type="vertical" />
 							00:00:00 ~ {timeCalc}
 						</>

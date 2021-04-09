@@ -24,6 +24,7 @@ const WeekPedestrians = (props) => {
 	useEffect(() => {
 		if (activeVisualKey === "11") {
 			setLoading(true);
+			setData([]);
 
 			parseTotalData();
 		}

@@ -11,6 +11,7 @@ const DTSecondTable = (props) => {
 	useEffect(() => {
 		if (currentLaneNum === 0) {
 			setLoading(true);
+			setData([]);
 			parseData();
 		}
 	}, [trafficTotalData]);

@@ -6,7 +6,7 @@ const PHF = (props) => {
 	const [PHF, setPHF] = useState("");
 
 	useEffect(() => {
-		if (activeVisualKey === "8") {
+		if (activeVisualKey === "9") {
 			setPHF(trafficTotalData[0]["totalVehiclePeakHourFactor"]);
 		}
 	}, [trafficTotalData, activeVisualKey]);

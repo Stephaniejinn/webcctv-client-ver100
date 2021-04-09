@@ -18,17 +18,20 @@ const WTAvgSpeed = (props) => {
 		DAY: "평일전체",
 		END: "주말전체",
 	};
-	var TotalData = [];
 
 	useEffect(() => {
 		if (activeVisualKey === "4") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 주간 평균속도 그래프 parse");
+		var TotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				weekOption,
@@ -91,7 +94,6 @@ const WTAvgSpeed = (props) => {
 			},
 		},
 		seriesField: "key",
-		stepType: "hvh",
 	};
 	return (
 		<>

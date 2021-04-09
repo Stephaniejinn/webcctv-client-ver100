@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Spin } from "antd";
 
-import "../style.less";
+// import "../style.less";
 
 const WLFisrtTable = (props) => {
 	const { trafficTotalData } = props;
@@ -14,6 +14,7 @@ const WLFisrtTable = (props) => {
 	useEffect(() => {
 		FristRow = true;
 		setLoading(true);
+		setData([]);
 		axiosData();
 	}, [trafficTotalData]);
 

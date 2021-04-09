@@ -17,6 +17,7 @@ const DTFisrtTable = (props) => {
 
 	useEffect(() => {
 		FristRow = true;
+		setData([]);
 		axiosData();
 	}, [trafficTotalData]);
 

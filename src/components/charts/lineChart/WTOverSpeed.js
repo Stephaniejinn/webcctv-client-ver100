@@ -18,17 +18,20 @@ const WTOverSpeed = (props) => {
 		DAY: "평일전체",
 		END: "주말전체",
 	};
-	var TotalData = [];
 
 	useEffect(() => {
 		if (activeVisualKey === "5") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 주간 시간별 과속 parse");
+		var TotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				weekOption,
@@ -92,7 +95,6 @@ const WTOverSpeed = (props) => {
 			},
 		},
 		seriesField: "key",
-		stepType: "hvh",
 	};
 	return (
 		<>

@@ -19,21 +19,22 @@ const VehicleRatio = (props) => {
 		END: "주말전체",
 	};
 
-	var carRatio = [];
-	var busRatio = [];
-	var truckRatio = [];
-	var motorRatio = [];
-	var RatioTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "3") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count count parse");
+		var carRatio = [];
+		var busRatio = [];
+		var truckRatio = [];
+		var motorRatio = [];
+		var RatioTotalData = [];
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				weekOption,

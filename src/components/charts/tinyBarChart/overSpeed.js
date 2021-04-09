@@ -10,6 +10,7 @@ const OverSpeedTinyColumn = (props) => {
 
 	useEffect(() => {
 		setLoadingData(true);
+		setData([]);
 		parseViolationData();
 	}, [trafficData]);
 

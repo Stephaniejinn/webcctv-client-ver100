@@ -6,7 +6,8 @@ import * as actions from "../../../redux/actions";
 
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
 import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
-import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
+// import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
+import OverSpeedBar from "../../charts/barChart/GenOverSpeed";
 
 import "./style.less";
 
@@ -24,6 +25,8 @@ const StreamingGeneralVisualization = (props) => {
 	const [trafficData, setTrafficData] = useState([]);
 
 	useEffect(() => {
+		setLoadingTraffic(true);
+		setTrafficData([]);
 		getTrafficData();
 	}, [realtimeCamCode, startDate, endTime]);
 
@@ -49,9 +52,6 @@ const StreamingGeneralVisualization = (props) => {
 			});
 	};
 
-	var TrafficPieChart = <VehicleRatio trafficData={trafficData} />;
-	var OverSpeedTinyBarChart = <OverSpeedTinyBar trafficData={trafficData} />;
-
 	return (
 		<div className="general-graph-layout">
 			{isLoadingTraffic ? (
@@ -68,10 +68,13 @@ const StreamingGeneralVisualization = (props) => {
 				</div>
 			) : (
 				<div className="general-graph-card">
-					<VisualizationCard title="차종별 통행량" chart={TrafficPieChart} />
 					<VisualizationCard
-						title="차종별 과속차량"
-						chart={OverSpeedTinyBarChart}
+						title="차종별 통행량(대) 누계"
+						chart={<VehicleRatio trafficData={trafficData} />}
+					/>
+					<VisualizationCard
+						title="차종별 과속차량(대) 누계"
+						chart={<OverSpeedBar trafficData={trafficData} />}
 					/>
 				</div>
 			)}

@@ -8,17 +8,19 @@ const AvgSpeedLine = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var avgSpeedTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "4") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 차선별 평균속도 parse");
+		var avgSpeedTotalData = [];
+
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
 				laneNumber,

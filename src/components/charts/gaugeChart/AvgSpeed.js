@@ -10,6 +10,8 @@ const AvgSpeedGauge = (props) => {
 
 	useEffect(() => {
 		setLoadingData(true);
+		setData([]);
+
 		parseData();
 	}, [trafficData]);
 

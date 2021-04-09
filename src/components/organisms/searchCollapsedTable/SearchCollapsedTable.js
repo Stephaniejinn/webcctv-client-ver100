@@ -17,7 +17,7 @@ import "./style.less";
 const SearchCollapsedTable = (props) => {
 	const { startDate, endTime, camera, cameraCode, baseURL, trafficURL } = props;
 	const { Panel } = Collapse;
-	const { Title } = Typography;
+	const { Title, Text } = Typography;
 
 	const [errorMsg, setMsg] = useState(false);
 
@@ -33,25 +33,39 @@ const SearchCollapsedTable = (props) => {
 	const [isLoadingSecond, setLoadingSecond] = useState(true);
 	const [isLoadingOverSpeed, setLoadingOverSpeed] = useState(true);
 
-	var firstDataParsedTotal = [];
-	var secondDataParsedTotal = [];
-	var OverSpeedParsedTotal = [];
-	var firstDataParsed = [];
-	var secondDataParsed = [];
-	var OverSpeedParsed = [];
+	const [isEmptyTrafficData, setEmptyTrafficData] = useState(false);
+	const [isEmptyOverSpeedData, setEmptyOverSpeedData] = useState(false);
+
+	// var firstDataParsedTotal = [];
+	// var secondDataParsedTotal = [];
+	// var firstDataParsed = [];
+	// var secondDataParsed = [];
+	// var OverSpeedParsedTotal = [];
+	// var OverSpeedParsed = [];
 	var countCol;
 	var countOverSpeedCol;
 
 	useEffect(() => {
 		countCol = 0;
 		countOverSpeedCol = 0;
+		setEmptyTrafficData(false);
+		setEmptyOverSpeedData(false);
 		setLoadingFirst(true);
 		setLoadingSecond(true);
+		setLoadingOverSpeed(true);
 		axiosAsyncFS();
 		axiosOverSpeedData();
 	}, [cameraCode, startDate, endTime]);
 
 	const axiosAsyncFS = () => {
+		setFirstData([]);
+		setSecondData([]);
+		setFirstDataTotal([]);
+		setSecondDataTotal([]);
+		var firstDataParsedTotal = [];
+		var secondDataParsedTotal = [];
+		var firstDataParsed = [];
+		var secondDataParsed = [];
 		axios
 			.get(
 				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=0`,
@@ -177,15 +191,28 @@ const SearchCollapsedTable = (props) => {
 					setSecondDataTotal(secondDataParsedTotal);
 					setLoadingFirst(false);
 					setLoadingSecond(false);
+				} else {
+					setEmptyTrafficData(true);
+					message.error("해당 기간 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
-				setMsg(true);
-				message.error("최대 31일 조회 가능합니다");
-				console.log(err);
+				if (err.status === 400) {
+					setMsg(true);
+					message.error("최대 31일 조회 가능합니다");
+					console.log(err.response);
+				}
+				if (err.status === 404) {
+					setEmptyTrafficData(true);
+					message.error("해당 기간 데이터가 없습니다");
+				}
 			});
 	};
 	const axiosOverSpeedData = () => {
+		setOverSpeedData([]);
+		setOverSpeedDataTotal([]);
+		var OverSpeedParsedTotal = [];
+		var OverSpeedParsed = [];
 		axios
 			.get(
 				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
@@ -197,37 +224,44 @@ const SearchCollapsedTable = (props) => {
 				}
 			)
 			.then((res) => {
-				res.data.forEach((eachData, index) => {
-					const {
-						recordTime,
-						vehicleType,
-						licenseNumber,
-						speed,
-						imageLink,
-					} = eachData;
-					let overSpeedDataTemp = {};
+				if (res.data.length !== 0) {
+					res.data.forEach((eachData, index) => {
+						const {
+							recordTime,
+							vehicleType,
+							licenseNumber,
+							speed,
+							imageLink,
+						} = eachData;
+						let overSpeedDataTemp = {};
 
-					overSpeedDataTemp["key"] = index;
-					overSpeedDataTemp["time"] = moment(recordTime).format(
-						"YYYY년 MM월 DD일 HH:mm:ss"
-					);
+						overSpeedDataTemp["key"] = index;
+						overSpeedDataTemp["time"] = moment(recordTime).format(
+							"YYYY년 MM월 DD일 HH:mm:ss"
+						);
 
-					overSpeedDataTemp["vehicleType"] = vehicleType;
-					overSpeedDataTemp["licenseNumber"] = licenseNumber;
-					overSpeedDataTemp["speed"] = speed;
-					overSpeedDataTemp["imageLink"] = imageLink;
-					OverSpeedParsedTotal.push(overSpeedDataTemp);
-					if (countOverSpeedCol < 6) {
-						countOverSpeedCol += 1;
-						OverSpeedParsed.push(overSpeedDataTemp);
-						setOverSpeedData(OverSpeedParsed);
-					}
-				});
-				setOverSpeedDataTotal(OverSpeedParsedTotal);
-				setLoadingOverSpeed(false);
+						overSpeedDataTemp["vehicleType"] = vehicleType;
+						overSpeedDataTemp["licenseNumber"] = licenseNumber;
+						overSpeedDataTemp["speed"] = speed;
+						overSpeedDataTemp["imageLink"] = imageLink;
+						OverSpeedParsedTotal.push(overSpeedDataTemp);
+						if (countOverSpeedCol < 6) {
+							countOverSpeedCol += 1;
+							OverSpeedParsed.push(overSpeedDataTemp);
+							setOverSpeedData(OverSpeedParsed);
+						}
+					});
+					setOverSpeedDataTotal(OverSpeedParsedTotal);
+					setLoadingOverSpeed(false);
+				} else {
+					setEmptyOverSpeedData(true);
+					message.error("해당 기간 과속 데이터가 없습니다");
+				}
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
+				setEmptyOverSpeedData(true);
+				message.error("해당 기간 과속 데이터가 없습니다");
 			});
 	};
 
@@ -289,7 +323,7 @@ const SearchCollapsedTable = (props) => {
 
 	return (
 		<>
-			{errorMsg ? null : (
+			{errorMsg ? null : isEmptyTrafficData ? null : (
 				<div className="table-collapse">
 					<Title level={5} style={{ marginTop: 10 }}>
 						{camera} 데이터 조회 결과
@@ -372,8 +406,11 @@ const SearchCollapsedTable = (props) => {
 									key="3"
 									extra={genExtra("OVERSPEED")}
 								>
-									데이터 형식 미리보기 (5줄까지)
-									{isLoadingOverSpeed ? (
+									{isEmptyOverSpeedData ? (
+										<Text strong type="danger">
+											해당 기간 과속 데이터가 없습니다
+										</Text>
+									) : isLoadingOverSpeed ? (
 										<div
 											style={{
 												marginTop: 20,
@@ -386,7 +423,13 @@ const SearchCollapsedTable = (props) => {
 											<Spin size="large" />
 										</div>
 									) : (
-										<SearchOverSpeedTable overSpeedData={overSpeedData} />
+										<>
+											데이터 형식 미리보기 (5줄까지)
+											<SearchOverSpeedTable
+												overSpeedData={overSpeedData}
+												isEmptyOverSpeedData={isEmptyOverSpeedData}
+											/>
+										</>
 									)}
 								</Panel>
 							</Collapse>

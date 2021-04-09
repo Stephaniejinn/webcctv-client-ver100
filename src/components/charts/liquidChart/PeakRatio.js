@@ -5,7 +5,7 @@ const PeakRatio = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
 	const [peakRatio, setPeakRatio] = useState(0);
 	useEffect(() => {
-		if (activeVisualKey === "9") {
+		if (activeVisualKey === "10") {
 			setPeakRatio(
 				trafficTotalData[0]["totalVehiclePeakHourConcentrationRatio"]
 			);

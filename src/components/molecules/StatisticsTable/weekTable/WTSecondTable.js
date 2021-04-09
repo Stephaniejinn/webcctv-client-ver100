@@ -25,6 +25,7 @@ const WTSecondTable = (props) => {
 	useEffect(() => {
 		if (currentLaneNum === 0) {
 			setLoading(true);
+			setData([]);
 			parseData();
 		}
 	}, [trafficTotalData]);
@@ -63,44 +64,27 @@ const WTSecondTable = (props) => {
 			],
 		},
 		{
-			title: "승용차",
-			key: "car",
+			title: "차종별 주야율",
+			dataIndex: "TypeDayNightRatio",
+			key: "TypeNightRatio",
 			children: [
 				{
-					title: "주야율",
+					title: "승용차",
 					dataIndex: "carDayNightRatio",
 					key: "carNightRatio",
 				},
-			],
-		},
-		{
-			title: "버스",
-			key: "bus",
-			children: [
 				{
-					title: "주야율",
+					title: "버스",
 					dataIndex: "busDayNightRatio",
 					key: "busNightRatio",
 				},
-			],
-		},
-		{
-			title: "화물차",
-			key: "truck",
-			children: [
 				{
-					title: "주야율",
+					title: "화물차",
 					dataIndex: "truckDayNightRatio",
 					key: "truckNightRatio",
 				},
-			],
-		},
-		{
-			title: "이륜차",
-			key: "motor",
-			children: [
 				{
-					title: "주야율",
+					title: "이륜차",
 					dataIndex: "motorDayNightRatio",
 					key: "motorNightRatio",
 				},

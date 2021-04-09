@@ -8,21 +8,22 @@ const PCU = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var PCUCar = [];
-	var PCUBus = [];
-	var PCUTruck = [];
-	var PCUMotor = [];
-	var PCUTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "2") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 차선별 PCU parse");
+		var PCUCar = [];
+		var PCUBus = [];
+		var PCUTruck = [];
+		var PCUMotor = [];
+		var PCUTotalData = [];
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
 				laneNumber,

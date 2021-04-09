@@ -22,14 +22,15 @@ const WeekPeakTime = (props) => {
 	useEffect(() => {
 		if (activeVisualKey === "7") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
-			console.log(trafficTotalData);
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
-	var TotalData = [];
-
 	const parseTotalData = () => {
+		var TotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const { weekOption, totalVehiclePeak15MinuteTime } = TrafficData;
 			let temp = {};

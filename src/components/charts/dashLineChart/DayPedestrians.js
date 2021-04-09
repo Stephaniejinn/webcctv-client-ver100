@@ -3,6 +3,7 @@ import { Line } from "@ant-design/charts";
 import { Spin } from "antd";
 
 import moment from "moment";
+import { unstable_batchedUpdates } from "react-dom";
 
 const Pedestrians = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
@@ -14,7 +15,7 @@ const Pedestrians = (props) => {
 	useEffect(() => {
 		if (activeVisualKey === "11") {
 			setLoading(true);
-
+			setData([]);
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);

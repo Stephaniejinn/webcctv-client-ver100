@@ -8,21 +8,22 @@ const VehicleCnt = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var cntCar = [];
-	var cntBus = [];
-	var cntTruck = [];
-	var cntMotor = [];
-	var cntTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "1") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 차선별 통행량 parse");
+		var cntCar = [];
+		var cntBus = [];
+		var cntTruck = [];
+		var cntMotor = [];
+		var cntTotalData = [];
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
 				laneNumber,

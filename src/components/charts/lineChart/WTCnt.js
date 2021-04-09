@@ -18,17 +18,20 @@ const WTCnt = (props) => {
 		DAY: "평일전체",
 		END: "주말전체",
 	};
-	var cntTotalData = [];
 
 	useEffect(() => {
 		if (activeVisualKey === "1") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 주간 통행량 그래프 parse");
+		var cntTotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				weekOption,
@@ -45,24 +48,24 @@ const WTCnt = (props) => {
 			const tempTotal = {};
 			const week = WeekKey[weekOption];
 			tempCar["time"] = week;
-			tempCar["key"] = "승용차";
+			tempCar["category"] = "승용차";
 			tempCar["value"] = carVolume;
 
 			tempBus["time"] = week;
-			tempBus["key"] = "버스";
+			tempBus["category"] = "버스";
 			tempBus["value"] = mBusVolume;
 
 			tempTruck["time"] = week;
-			tempTruck["key"] = "화물차";
+			tempTruck["category"] = "화물차";
 			tempTruck["value"] = mTruckVolume;
 
 			tempMotor["time"] = week;
-			tempMotor["key"] = "오토바이";
+			tempMotor["category"] = "오토바이";
 			tempMotor["value"] = motorVolume;
 
 			tempTotal["time"] = week;
 			tempTotal["value"] = totalVehicleVolume;
-			tempTotal["key"] = "전체";
+			tempTotal["category"] = "전체";
 
 			cntTotalData.push(tempCar);
 			cntTotalData.push(tempBus);
@@ -78,6 +81,7 @@ const WTCnt = (props) => {
 		data: Data,
 		xField: "time",
 		yField: "value",
+		seriesField: "category",
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
@@ -88,8 +92,6 @@ const WTCnt = (props) => {
 			},
 		},
 		legend: true,
-		seriesField: "key",
-		stepType: "hvh",
 	};
 	return (
 		<>

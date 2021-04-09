@@ -48,9 +48,7 @@ const RealtimeStatUpper = (props) => {
 			Math.floor(moment(new Date()).minute() / 15) * 15
 		) {
 			message.success("새로운 데이터가 없습니다");
-			// console.log("not changed");
 		} else {
-			// console.log("changed");
 			setCurrTime(moment(new Date()));
 			setRefresh(true);
 		}

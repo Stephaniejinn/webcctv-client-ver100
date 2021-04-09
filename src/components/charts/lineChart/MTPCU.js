@@ -8,17 +8,19 @@ const MTPCULine = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var PCUTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "2") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 PCU parse");
+		var PCUTotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				recordDate,

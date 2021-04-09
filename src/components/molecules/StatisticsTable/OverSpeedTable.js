@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { Table, Spin, Button, Modal, Descriptions } from "antd";
+import { Table, Spin, Button, Modal, Descriptions, Typography } from "antd";
 import moment from "moment";
 
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
+import Video from "../../molecules/video/Video";
 import "./style.less";
 
 const OverSpeedTable = (props) => {
 	const { startDate, endTime, cameraCode, baseURL, camera } = props;
+	const { Text } = Typography;
 
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
-	const [isModalVisible, setModalVisible] = useState(false);
+	const [isEmptyData, setEmptyData] = useState(false);
+	const [isImgModalVisible, setImgModalVisible] = useState(false);
+	const [isVideoModalVisible, setVideoModalVisible] = useState(false);
 	const [shownKey, setShownKey] = useState("");
 	var TotalData = [];
 
 	useEffect(() => {
 		setLoadingData(true);
+		setEmptyData(false);
+		setData([]);
 		axiosData();
 	}, [startDate, endTime, cameraCode]);
 
@@ -57,7 +63,7 @@ const OverSpeedTable = (props) => {
 					<Button
 						type="link"
 						size="small"
-						onClick={() => setModalVisible(true)}
+						onClick={() => setImgModalVisible(true)}
 					>
 						이미지 보기
 					</Button>
@@ -67,24 +73,53 @@ const OverSpeedTable = (props) => {
 								title="과속차량 이미지"
 								centered
 								maskStyle={{ backgroundColor: "transparent" }}
-								bodyStyle={{ width: 600 }}
-								style={{ width: 600 }}
-								visible={isModalVisible}
-								onOk={() => setModalVisible(false)}
-								onCancel={() => setModalVisible(false)}
+								bodyStyle={{ width: 630 }}
+								style={{ width: 630 }}
+								visible={isImgModalVisible}
+								onOk={() => setImgModalVisible(false)}
+								onCancel={() => setImgModalVisible(false)}
 								footer={[
 									<Button
 										key="submit"
 										type="primary"
-										onClick={() => setModalVisible(false)}
+										onClick={() => setImgModalVisible(false)}
 									>
 										확인
 									</Button>,
 								]}
 							>
 								<Descriptions bordered size="small">
-									<Descriptions.Item label="위반차량" span={3}>
+									<Descriptions.Item label="위반차량" span={2}>
 										{imgInfo[5]}
+									</Descriptions.Item>
+									<Descriptions.Item label="과속영상" span={1}>
+										<Button
+											type="primary"
+											ghost
+											onClick={() => setVideoModalVisible(true)}
+										>
+											영상 보기
+										</Button>
+										<Modal
+											title="과속차량 영상"
+											visible={isVideoModalVisible}
+											onOk={() => setVideoModalVisible(false)}
+											onCancel={() => setVideoModalVisible(false)}
+											footer={[
+												<Button
+													key="submit"
+													type="primary"
+													onClick={() => setVideoModalVisible(false)}
+												>
+													확인
+												</Button>,
+											]}
+										>
+											<Video
+												source={`http://192.168.1.100:4000/api/videos/snap?cam_code=${cameraCode}&record_time=${imgInfo[6]}`}
+												showControls={true}
+											/>
+										</Modal>
 									</Descriptions.Item>
 									<Descriptions.Item label="시간" span={2}>
 										{imgInfo[2]}
@@ -125,49 +160,63 @@ const OverSpeedTable = (props) => {
 			)
 			.then((res) => {
 				console.log("count table axios");
-				res.data.forEach((eachData, index) => {
-					const {
-						recordTime,
-						vehicleType,
-						laneNumber,
-						licenseNumber,
-						speed,
-						imageLink,
-					} = eachData;
-					let dataTemp = {};
-					dataTemp["key"] = index.toString();
-					if (startDate !== endTime) {
-						dataTemp["time"] = moment(recordTime).format(
-							"YYYY년 MM월 DD일 HH:mm:ss"
-						);
-					} else {
-						dataTemp["time"] = moment(recordTime).format("HH:mm:ss");
-					}
-					dataTemp["vehicleType"] = vehicleType;
-					dataTemp["licenseNumber"] = licenseNumber;
-					dataTemp["speed"] = `${speed} km/h`;
-					dataTemp["laneNumber"] = `${laneNumber} 차선`;
-					dataTemp["imageLink"] = [
-						index.toString(),
-						imageLink,
-						moment(recordTime).format("YYYY년 MM월 DD일 HH시 mm분 ss초"),
-						speed,
-						dataTemp["laneNumber"],
-						licenseNumber,
-					];
-					TotalData.push(dataTemp);
-				});
-				setData(TotalData);
-				setLoadingData(false);
+				if (res.data.length !== 0) {
+					res.data.forEach((eachData, index) => {
+						const {
+							recordTime,
+							vehicleType,
+							laneNumber,
+							licenseNumber,
+							speed,
+							imageLink,
+						} = eachData;
+						let dataTemp = {};
+						dataTemp["key"] = index.toString();
+						if (startDate !== endTime) {
+							dataTemp["time"] = moment(recordTime).format(
+								"YYYY년 MM월 DD일 HH:mm:ss"
+							);
+						} else {
+							dataTemp["time"] = moment(recordTime).format("HH:mm:ss");
+						}
+						dataTemp["vehicleType"] = vehicleType;
+						dataTemp["licenseNumber"] = licenseNumber;
+						dataTemp["speed"] = `${speed} km/h`;
+						dataTemp["laneNumber"] = `${laneNumber} 차선`;
+						dataTemp["imageLink"] = [
+							index.toString(),
+							imageLink,
+							moment(recordTime).format("YYYY년 MM월 DD일 HH시 mm분 ss초"),
+							speed,
+							dataTemp["laneNumber"],
+							licenseNumber,
+							recordTime,
+						];
+						TotalData.push(dataTemp);
+					});
+					setData(TotalData);
+					setLoadingData(false);
+					setEmptyData(false);
+				} else {
+					console.log("데이터 없음");
+					setEmptyData(true);
+				}
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
+				setEmptyData(true);
 			});
 	};
 
 	return (
 		<>
-			{isLoadingData ? (
+			{isEmptyData ? (
+				<div className="empty-data-text">
+					<Text strong type="danger">
+						해당 과속 데이터가 없습니다
+					</Text>
+				</div>
+			) : isLoadingData ? (
 				<div
 					style={{
 						marginTop: 20,

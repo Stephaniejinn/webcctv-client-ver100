@@ -7,38 +7,38 @@ const MyBidirectionalBar = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var dataSample = [
-		{
-			차종: "승용차",
-			"주간 12시간 교통량": 0,
-			"야간 12시간 교통량": 0,
-		},
-		{
-			차종: "버스",
-			"주간 12시간 교통량": 0,
-			"야간 12시간 교통량": 0,
-		},
-		{
-			차종: "화물차",
-			"주간 12시간 교통량": 0,
-			"야간 12시간 교통량": 0,
-		},
-		{
-			차종: "이륜차",
-			"주간 12시간 교통량": 0,
-			"야간 12시간 교통량": 0,
-		},
-	];
-
 	useEffect(() => {
 		if (activeVisualKey === "6") {
 			setLoading(true);
+			setData([]);
 			parseTotalData();
 			console.log(trafficTotalData);
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
+		var dataSample = [
+			{
+				차종: "승용차",
+				"주간 12시간 교통량": 0,
+				"야간 12시간 교통량": 0,
+			},
+			{
+				차종: "버스",
+				"주간 12시간 교통량": 0,
+				"야간 12시간 교통량": 0,
+			},
+			{
+				차종: "화물차",
+				"주간 12시간 교통량": 0,
+				"야간 12시간 교통량": 0,
+			},
+			{
+				차종: "이륜차",
+				"주간 12시간 교통량": 0,
+				"야간 12시간 교통량": 0,
+			},
+		];
 		var trafficData = trafficTotalData[0];
 
 		dataSample[0]["야간 12시간 교통량"] = trafficData["carNighttimeVolume"];

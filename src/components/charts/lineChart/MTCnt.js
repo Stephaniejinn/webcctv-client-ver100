@@ -8,17 +8,20 @@ const MTCnt = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
-	var cntTotalData = [];
 
 	useEffect(() => {
 		if (activeVisualKey === "1") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 통행량 parse");
+		var cntTotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				recordDate,
@@ -69,7 +72,6 @@ const MTCnt = (props) => {
 		xField: "time",
 		yField: "value",
 		seriesField: "category",
-		// xAxis: { type: "time" },
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {

@@ -23,7 +23,7 @@ const App = (props) => {
 
 	useEffect(() => {
 		loginStatus();
-	}, []);
+	}, [localStorage.getItem("username")]);
 
 	const loginStatus = () => {
 		axios
@@ -45,8 +45,8 @@ const App = (props) => {
 			})
 			.catch((err) => {
 				console.log(err);
-				if (localStorage.getItem("username").length !== 0) {
-					message.warning("로드아웃 되었습니다");
+				if (localStorage.getItem("username")) {
+					message.warning("로그아웃 되었습니다");
 				}
 				setLoading(false);
 			});

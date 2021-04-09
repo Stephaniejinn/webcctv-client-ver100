@@ -3,7 +3,6 @@ import { Layout, message } from "antd";
 import moment from "moment";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
@@ -28,11 +27,11 @@ const RealtimeStatisticPage = (props) => {
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
 
-	const [currTime, setCurrTime] = useState(moment(new Date()));
+	const [currTime, setCurrTime] = useState(
+		moment(new Date()).subtract(1, "second")
+	);
 	const [refresh, setRefresh] = useState(false);
-	// const date = moment(new Date()).format("YYYY-MM-DD");
-	// const date = moment("2020-03-11 00:00:00").format("YYYY-MM-DD");
-	const date = "2021-03-16";
+	const date = moment(new Date()).format("YYYY-MM-DD");
 
 	var cameraAddress = "";
 	var camName = "";
@@ -45,9 +44,8 @@ const RealtimeStatisticPage = (props) => {
 		camName = camera;
 	}
 	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
-	// var camCode = cameraCode.length === 0 ? "0004" : cameraCode;
 	var currTimeStr = currTime.format("HH:mm:ss");
-	// console.log(typeof currTimeStr);
+
 	useEffect(() => {
 		axiosAsync();
 	}, []);
@@ -72,11 +70,13 @@ const RealtimeStatisticPage = (props) => {
 			)
 			.then((res) => {
 				setTrafficTotalData(res.data);
-				message.success("Refresh 성공");
+				if (refresh) {
+					message.success("Refresh 성공");
+				}
 				setRefresh(false);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
 			});
 	};
 	return (
@@ -130,17 +130,5 @@ const mapStateToProps = (state) => {
 		trafficURL: state.baseURL.trafficURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationInfo: () => {
-			dispatch(actions.getLocation());
-		},
-		getLocationCodeInfo: () => {
-			dispatch(actions.getLocationCode());
-		},
-	};
-};
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(RealtimeStatisticPage);
+
+export default connect(mapStateToProps)(RealtimeStatisticPage);

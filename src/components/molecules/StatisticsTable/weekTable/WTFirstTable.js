@@ -23,6 +23,7 @@ const WTFirstTable = (props) => {
 
 	useEffect(() => {
 		setLoading(true);
+		setData([]);
 		axiosData();
 	}, [trafficTotalData]);
 
@@ -33,7 +34,9 @@ const WTFirstTable = (props) => {
 				title: "시간",
 				dataIndex: "time",
 				key: "time",
-				width: 70,
+				width: 67,
+				textWrap: "word-break",
+				ellipsis: true,
 			},
 			{
 				title: "전체",

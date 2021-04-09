@@ -54,15 +54,7 @@ const DemoPie = () => {
 		},
 		interactions: [{ type: "element-selected" }, { type: "element-active" }],
 	};
-	// useEffect(() => {
-	// 	if (ref) {
-	// 		ref.setState("active", (data) => data.type === "分类一");
-	// 		ref.setState(
-	// 			"selected",
-	// 			(data) => data.type === "分类一" || data.type === "分类二"
-	// 		);
-	// 	}
-	// }, []);
+
 	return <Pie {...config} chartRef={(chartRef) => (ref = chartRef)} />;
 };
 export default DemoPie;

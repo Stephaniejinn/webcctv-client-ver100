@@ -7,21 +7,22 @@ const VehicleRatio = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var carRatio = [];
-	var busRatio = [];
-	var truckRatio = [];
-	var motorRatio = [];
-	var RatioTotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "3") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 차선별 차종비율 parse");
+		var carRatio = [];
+		var busRatio = [];
+		var truckRatio = [];
+		var motorRatio = [];
+		var RatioTotalData = [];
 		trafficTotalData.slice(1).forEach((TrafficData) => {
 			const {
 				laneNumber,

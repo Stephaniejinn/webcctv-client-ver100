@@ -13,10 +13,8 @@ import "./style.less";
 const RealtimeStreamingPage = (props) => {
 	const { Content } = Layout;
 	const { setLoggedIn, isMaster } = props;
-	// const date = moment(new Date()).format("YYYY-MM-DD");
+	const date = moment(new Date()).format("YYYY-MM-DD");
 	const currentTime = moment(new Date()).format("HH:mm:ss");
-
-	const date = "2021-03-19";
 
 	return (
 		<div className="realtime-streaming-page">

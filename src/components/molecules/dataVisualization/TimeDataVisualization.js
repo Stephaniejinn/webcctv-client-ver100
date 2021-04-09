@@ -6,7 +6,7 @@ import DayVehicleRatio from "../../charts/lineChart/DTVehicleRatio";
 import DayAvgSpeed from "../../charts/lineChart/DTAvgSpeed";
 import DayOverSpeed from "../../charts/lineChart/DTOverSpeed";
 import Peak15 from "../../charts/statisticText/Peak15";
-import PeakHour from "../../charts/statisticText/PeakHour";
+import PeakHourFlowRate from "../../charts/statisticText/PeakHourFlowRate";
 import DayPHF from "../../charts/statisticText/PHF";
 import DayConcentrationRatio from "../../charts/liquidChart/PeakRatio";
 import BidirectionalBar from "../../charts/bidirectionalBar/DayNight";
@@ -173,7 +173,7 @@ const TimeDataVisualization = (props) => {
 					</TabPane>
 					<TabPane tab="첨두유율" key="8">
 						{period === "DAY" ? (
-							<PeakHour
+							<PeakHourFlowRate
 								trafficTotalData={trafficTotalData}
 								activeVisualKey={activeVisualKey}
 							/>

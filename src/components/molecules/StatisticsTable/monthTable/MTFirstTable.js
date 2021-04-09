@@ -10,12 +10,12 @@ const MTFirstTable = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var TotalData = [];
 	var countCol;
 
 	useEffect(() => {
 		countCol = 0;
 		setLoading(true);
+		setData([]);
 		axiosData();
 	}, [trafficTotalData]);
 
@@ -26,7 +26,9 @@ const MTFirstTable = (props) => {
 				title: "시간",
 				dataIndex: "time",
 				key: "time",
-				width: 200,
+				width: 120,
+				textWrap: "word-break",
+				ellipsis: true,
 			},
 			{
 				title: "전체",
@@ -358,10 +360,11 @@ const MTFirstTable = (props) => {
 		];
 	}
 	const axiosData = () => {
+		var TotalData = [];
 		console.log("count table axios");
 		trafficTotalData.forEach((eachData, index) => {
 			const {
-				recordTime,
+				recordDate,
 				totalVehicleVolume,
 				totalVehicleAvgSpeed,
 				totalVehiclePassengerCarUnit,
@@ -402,7 +405,7 @@ const MTFirstTable = (props) => {
 				}
 				countCol += 1;
 			} else {
-				dataTemp["time"] = moment(recordTime).format("YYYY년 MM월 DD일");
+				dataTemp["time"] = moment(recordDate).format("YYYY년 MM월 DD일");
 			}
 			dataTemp["totalCount"] = totalVehicleVolume;
 			dataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;

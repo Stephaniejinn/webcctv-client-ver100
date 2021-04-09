@@ -14,17 +14,19 @@ const VehicleRatio = (props) => {
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
 
-	var TotalData = [];
-
 	useEffect(() => {
 		if (activeVisualKey === "3") {
 			setLoading(true);
+			setData([]);
+
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		console.log("count 일간 차종비율 parse");
+		var TotalData = [];
+
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const {
 				recordDate,
