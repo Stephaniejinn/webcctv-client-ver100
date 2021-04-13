@@ -24,8 +24,10 @@ const Video = (props) => {
 						videoRef.current.play();
 					});
 					hls.on(Hls.Events.ERROR, (_, data) => {
-						if (data.response.code === 404) {
-							setVideoSource(false);
+						if (data.response) {
+							if (data.response.code === 404) {
+								setVideoSource(false);
+							}
 						}
 					});
 				});

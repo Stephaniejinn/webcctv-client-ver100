@@ -26,6 +26,7 @@ const RealtimeStatisticPage = (props) => {
 	const { Content } = Layout;
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
+	const [isEmptyData, setEmptyData] = useState(false);
 
 	const [currTime, setCurrTime] = useState(
 		moment(new Date()).subtract(1, "second")
@@ -47,6 +48,7 @@ const RealtimeStatisticPage = (props) => {
 	var currTimeStr = currTime.format("HH:mm:ss");
 
 	useEffect(() => {
+		setEmptyData(false);
 		setTrafficTotalData([]);
 		axiosAsync();
 	}, []);
@@ -54,6 +56,7 @@ const RealtimeStatisticPage = (props) => {
 	useEffect(() => {
 		console.log("refresh", refresh);
 		if (refresh) {
+			setEmptyData(false);
 			setTrafficTotalData([]);
 			axiosAsync();
 		}
@@ -71,7 +74,12 @@ const RealtimeStatisticPage = (props) => {
 				}
 			)
 			.then((res) => {
-				setTrafficTotalData(res.data);
+				if (res.data.length !== 0) {
+					setTrafficTotalData(res.data);
+					setEmptyData(false);
+				} else {
+					setEmptyData(true);
+				}
 				if (refresh) {
 					message.success("Refresh 성공");
 				}
@@ -79,6 +87,7 @@ const RealtimeStatisticPage = (props) => {
 			})
 			.catch((err) => {
 				console.log(err.response);
+				setEmptyData(true);
 			});
 	};
 	return (
@@ -115,7 +124,7 @@ const RealtimeStatisticPage = (props) => {
 							startDate={date}
 							endTime={date}
 							currentTime={currTime}
-							interval="15M"
+							isEmptyData={isEmptyData}
 						/>
 					</Content>
 				</Layout>

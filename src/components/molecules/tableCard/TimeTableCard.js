@@ -28,6 +28,7 @@ const TimeTableCard = (props) => {
 		endTime,
 		currentTime,
 		page = "",
+		isEmptyData,
 	} = props;
 
 	return (
@@ -49,6 +50,7 @@ const TimeTableCard = (props) => {
 							currentLaneNum={parseInt(currentLaneNum)}
 							trafficTotalData={trafficTotalData}
 							page={page}
+							isEmptyData={isEmptyData}
 						/>
 					</>
 				) : parseInt(currentLaneNum) === 0 ? (

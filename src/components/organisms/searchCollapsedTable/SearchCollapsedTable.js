@@ -123,7 +123,6 @@ const SearchCollapsedTable = (props) => {
 			.then((res) => {
 				if (res.data.length !== 0) {
 					setMsg(false);
-					console.log(res.data);
 					res.data.some((eachData, index) => {
 						const {
 							recordTime,
@@ -247,18 +246,25 @@ const SearchCollapsedTable = (props) => {
 					setLoadingSecond(false);
 				} else {
 					setEmptyTrafficData(true);
-					message.error("해당 기간 데이터가 없습니다");
+					message.warning("해당 기간 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
-				if (err.status === 400) {
-					setMsg(true);
-					message.error("최대 31일 조회 가능합니다");
-					console.log(err.response);
+				console.log(err.response);
+				setMsg(true);
+				if (err.response.status === 400) {
+					if (
+						new Date(endTime).getTime() >=
+						new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
+					) {
+						message.warning("해당 기간 데이터가 없습니다");
+					} else {
+						message.warning("최대 31일까지 조회 할 수 있습니다");
+					}
 				}
-				if (err.status === 404) {
+				if (err.response.status === 404) {
 					setEmptyTrafficData(true);
-					message.error("해당 기간 데이터가 없습니다");
+					message.warning("해당 기간 데이터가 없습니다");
 				}
 			});
 	};
@@ -279,7 +285,7 @@ const SearchCollapsedTable = (props) => {
 			)
 			.then((res) => {
 				if (res.data.length !== 0) {
-					console.log(res.data);
+					setMsg(false);
 					res.data.forEach((eachData, index) => {
 						const {
 							recordTime,
@@ -312,14 +318,21 @@ const SearchCollapsedTable = (props) => {
 					setOverSpeedDataTotal(OverSpeedParsedTotal);
 					setLoadingOverSpeed(false);
 				} else {
+					setMsg(true);
 					setEmptyOverSpeedData(true);
-					message.error("해당 기간 과속 데이터가 없습니다");
+					message.warning("해당 기간 과속 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
 				console.log(err.response);
+				setMsg(true);
 				setEmptyOverSpeedData(true);
-				message.error("해당 기간 과속 데이터가 없습니다");
+				if (
+					!new Date(endTime).getTime() >=
+					new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
+				) {
+					message.warning("해당 기간 과속 데이터가 없습니다");
+				}
 			});
 	};
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table, Spin } from "antd";
+import { Table, Spin, Typography } from "antd";
 import moment from "moment";
 
 // import axios from "axios";
@@ -9,11 +9,12 @@ import moment from "moment";
 import "../style.less";
 
 const DTFisrtTable = (props) => {
-	const { currentLaneNum, trafficTotalData, page } = props;
+	const { currentLaneNum, trafficTotalData, page, isEmptyData = false } = props;
+	const { Text } = Typography;
 
 	const [Data, setData] = useState([]);
+
 	var FristRow;
-	var TotalData = [];
 
 	useEffect(() => {
 		FristRow = true;
@@ -347,6 +348,7 @@ const DTFisrtTable = (props) => {
 
 	const axiosData = () => {
 		console.log("count table axios");
+		var TotalData = [];
 		trafficTotalData.forEach((eachData, index) => {
 			const {
 				recordTime,
@@ -432,7 +434,23 @@ const DTFisrtTable = (props) => {
 
 	return (
 		<>
-			{Data.length === 0 ? (
+			{isEmptyData ? (
+				page === "REALSTATISTIC" && (
+					<div
+						style={{
+							marginTop: 20,
+							marginBottom: 20,
+							textAlign: "center",
+							paddingTop: 30,
+							paddingBottom: 30,
+						}}
+					>
+						<Text strong type="danger">
+							해당 과속 데이터가 없습니다
+						</Text>
+					</div>
+				)
+			) : Data.length === 0 ? (
 				<div
 					style={{
 						marginTop: 20,

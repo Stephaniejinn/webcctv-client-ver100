@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tabs } from "antd";
+import { Tabs, message } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../../redux/actions";
@@ -60,9 +60,8 @@ const TimeVisualization = (props) => {
 				},
 			})
 			.then((res) => {
-				setTrafficTotalData(res.data);
-				console.log(res.data);
 				if (res.data.length !== 0) {
+					setTrafficTotalData(res.data);
 					setLoadingTrafficTotal(false);
 					setEmptyData(false);
 				} else {
@@ -70,7 +69,9 @@ const TimeVisualization = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
+				if (err.response.status === 400) {
+					message.warning("해당 기간 시간 별 데이터가 없습니다");
+				}
 				setEmptyData(true);
 			});
 	};

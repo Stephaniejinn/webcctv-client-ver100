@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Spin, Typography, message } from "antd";
+import moment from "moment";
 
 import axios from "axios";
 import { connect } from "react-redux";
@@ -79,6 +80,12 @@ const GeneralVisualization = (props) => {
 				setEmptyData(true);
 				if (err.response.status === 500) {
 					message.warning("서버에 문제가 있습니다");
+				} else if (err.response.status === 400) {
+					if (
+						!new Date(endTime).getTime() >=
+						new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
+					)
+						message.warning("해당 기간 시간 별 데이터가 없습니다");
 				}
 			});
 	};

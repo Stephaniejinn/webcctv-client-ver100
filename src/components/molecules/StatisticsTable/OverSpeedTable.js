@@ -68,7 +68,7 @@ const OverSpeedTable = (props) => {
 					>
 						이미지 보기
 					</Button>
-					{shownKey.toString() === imgInfo[0] && (
+					{shownKey === imgInfo[0] % 10 && (
 						<>
 							<Modal
 								title="과속차량 이미지"
@@ -132,7 +132,7 @@ const OverSpeedTable = (props) => {
 														paddingBottom: 30,
 													}}
 												>
-													<Text>해당 과속차량 영상 없습니다</Text>
+													<Text>해당 과속차량 영상이 없습니다</Text>
 												</div>
 											)}
 										</Modal>
@@ -166,7 +166,7 @@ const OverSpeedTable = (props) => {
 											paddingBottom: 30,
 										}}
 									>
-										<Text>해당 과속차량 이미지 없습니다</Text>
+										<Text>해당 과속차량 이미지가 없습니다</Text>
 									</div>
 								)}
 							</Modal>
@@ -228,7 +228,6 @@ const OverSpeedTable = (props) => {
 					setLoadingData(false);
 					setEmptyData(false);
 				} else {
-					console.log("데이터 없음");
 					setEmptyData(true);
 				}
 			})
@@ -262,6 +261,7 @@ const OverSpeedTable = (props) => {
 				<Table
 					columns={columns}
 					dataSource={Data}
+					pagination={{ pageSize: 10, showSizeChanger: false }}
 					onRow={(record, rowIndex) => {
 						return {
 							onClick: (event) => {
