@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, Typography, Divider, Spin, message } from "antd";
+import { Collapse, Typography, Divider, Spin, message, Select } from "antd";
 import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
 import { CSVLink } from "react-csv";
 import moment from "moment";
@@ -36,17 +36,61 @@ const SearchCollapsedTable = (props) => {
 	const [isEmptyTrafficData, setEmptyTrafficData] = useState(false);
 	const [isEmptyOverSpeedData, setEmptyOverSpeedData] = useState(false);
 
-	// var firstDataParsedTotal = [];
-	// var secondDataParsedTotal = [];
-	// var firstDataParsed = [];
-	// var secondDataParsed = [];
-	// var OverSpeedParsedTotal = [];
-	// var OverSpeedParsed = [];
-	var countCol;
+	var countFirstCol;
+	var countSecondCol;
 	var countOverSpeedCol;
+	const firstDataHeaders = [
+		{ label: "시간", key: "time" },
+		{ label: "전체 통행량", key: "totalCount" },
+		{ label: "전체 평균속도", key: "totalAvgSpeed" },
+		{ label: "전체 PCU", key: "totalpcu" },
+		{ label: "전체 과속대수", key: "totalOverSpeed" },
+		{ label: "승용차 통행량", key: "carCount" },
+		{ label: "승용차 평균속도", key: "totalAvgSpeed" },
+		{ label: "승용차 PCU", key: "carpcu" },
+		{ label: "승용차 비율", key: "carRatio" },
+		{ label: "승용차 과속대수", key: "carOverSpeed" },
+		{ label: "버스 통행량", key: "busCount" },
+		{ label: "버스 평균속도", key: "busAvgSpeed" },
+		{ label: "버스 PCU", key: "buspcu" },
+		{ label: "버스 비율", key: "busRatio" },
+		{ label: "버스 과속대수", key: "busOverSpeed" },
+		{ label: "화물차 통행량", key: "truckCount" },
+		{ label: "화물차 평균속도", key: "truckAvgSpeed" },
+		{ label: "화물차 PCU", key: "truckpcu" },
+		{ label: "화물차 비율", key: "truckRatio" },
+		{ label: "화물차 과속대수", key: "truckOverSpeed" },
+		{ label: "이륜차 통행량", key: "motorCount" },
+		{ label: "이륜차 평균속도", key: "motorAvgSpeed" },
+		{ label: "이륜차 PCU", key: "motorpcu" },
+		{ label: "이륜차 비율", key: "motorRatio" },
+		{ label: "이륜차 과속대수", key: "motorOverSpeed" },
+	];
+
+	const secondDataHeaders = [
+		{ label: "시간", key: "time" },
+		{ label: "전체 주야율", key: "totalDayNightRatio" },
+		{ label: "PHF", key: "totalPHF" },
+		{ label: "점두유율", key: "totalPeekHourCnt" },
+		{ label: "집중율", key: "totalVehiclePeakHourConcentrationRatio" },
+		{ label: "승용차 주야율", key: "carDayNightRatio" },
+		{ label: "승용차 주야율", key: "busDayNightRatio" },
+		{ label: "승용차 주야율", key: "truckDayNightRatio" },
+		{ label: "승용차 주야율", key: "motorDayNightRatio" },
+	];
+
+	const overSpeedDataHeaders = [
+		{ label: "시간", key: "time" },
+		{ label: "차종", key: "vehicleType" },
+		{ label: "차량번호", key: "licenseNumber" },
+		{ label: "위반속도", key: "speed" },
+		{ label: "차선", key: "laneNumber" },
+		{ label: "이미지 링크", key: "imageLink" },
+	];
 
 	useEffect(() => {
-		countCol = 0;
+		countFirstCol = 0;
+		countSecondCol = 0;
 		countOverSpeedCol = 0;
 		setEmptyTrafficData(false);
 		setEmptyOverSpeedData(false);
@@ -79,6 +123,7 @@ const SearchCollapsedTable = (props) => {
 			.then((res) => {
 				if (res.data.length !== 0) {
 					setMsg(false);
+					console.log(res.data);
 					res.data.some((eachData, index) => {
 						const {
 							recordTime,
@@ -116,77 +161,86 @@ const SearchCollapsedTable = (props) => {
 							mBusDayNightRatio,
 							mTruckDayNightRatio,
 							motorDayNightRatio,
+							totalVehiclePeakHourTime,
 						} = eachData;
 						let firstDataTemp = {};
 						let secondDataTemp = {};
 
 						if (recordTime === "ALL") {
-							return false;
-						}
+							secondDataTemp["key"] = index + 1;
+							secondDataTemp["time"] = moment(totalVehiclePeakHourTime).format(
+								"YYYY년 MM월 DD일"
+							);
+							secondDataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
+							secondDataTemp["totalPHF"] = totalVehiclePeakHourFactor;
+							secondDataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
+							secondDataTemp[
+								"totalVehiclePeakHourConcentrationRatio"
+							] = totalVehiclePeakHourConcentrationRatio;
 
-						firstDataTemp["key"] = index + 1;
-						firstDataTemp["time"] = moment(recordTime).format(
-							"YYYY년 MM월 DD일 HH:mm:ss"
-						);
+							secondDataTemp["carDayNightRatio"] = carDayNightRatio;
+							secondDataTemp["busDayNightRatio"] = mBusDayNightRatio;
+							secondDataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
+							secondDataTemp["motorDayNightRatio"] = motorDayNightRatio;
+							secondDataParsedTotal.push(secondDataTemp);
 
-						firstDataTemp["totalCount"] = totalVehicleVolume;
-						firstDataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
-						firstDataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
-						firstDataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
+							if (countSecondCol < 5) {
+								countSecondCol += 1;
+								secondDataParsed.push(secondDataTemp);
+							}
+							if (countSecondCol === 5) {
+								setSecondData(secondDataParsed);
+							}
+						} else {
+							firstDataTemp["key"] = index + 1;
+							firstDataTemp["time"] = moment(recordTime).format(
+								"YYYY년 MM월 DD일 HH:mm:ss"
+							);
 
-						firstDataTemp["carCount"] = carVolume;
-						firstDataTemp["carAvgSpeed"] = carAvgSpeed;
-						firstDataTemp["carpcu"] = carPassengerCarUnit;
-						firstDataTemp["carRatio"] = carVehicleRatio;
-						firstDataTemp["carOverSpeed"] = carSpdVolume;
+							firstDataTemp["totalCount"] = totalVehicleVolume;
+							firstDataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
+							firstDataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
+							firstDataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
 
-						firstDataTemp["busCount"] = mBusVolume;
-						firstDataTemp["busAvgSpeed"] = mBusAvgSpeed;
-						firstDataTemp["buspcu"] = mBusPassengerCarUnit;
-						firstDataTemp["busRatio"] = mBusVehicleRatio;
-						firstDataTemp["busOverSpeed"] = mBusSpdVolume;
+							firstDataTemp["carCount"] = carVolume;
+							firstDataTemp["carAvgSpeed"] = carAvgSpeed;
+							firstDataTemp["carpcu"] = carPassengerCarUnit;
+							firstDataTemp["carRatio"] = carVehicleRatio;
+							firstDataTemp["carOverSpeed"] = carSpdVolume;
 
-						firstDataTemp["truckCount"] = mTruckVolume;
-						firstDataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
-						firstDataTemp["truckpcu"] = mTruckPassengerCarUnit;
-						firstDataTemp["truckRatio"] = mTruckVehicleRatio;
-						firstDataTemp["truckOverSpeed"] = mTruckSpdVolume;
+							firstDataTemp["busCount"] = mBusVolume;
+							firstDataTemp["busAvgSpeed"] = mBusAvgSpeed;
+							firstDataTemp["buspcu"] = mBusPassengerCarUnit;
+							firstDataTemp["busRatio"] = mBusVehicleRatio;
+							firstDataTemp["busOverSpeed"] = mBusSpdVolume;
 
-						firstDataTemp["motorCount"] = motorVolume;
-						firstDataTemp["motorAvgSpeed"] = motorAvgSpeed;
-						firstDataTemp["motorpcu"] = motorPassengerCarUnit;
-						firstDataTemp["motorRatio"] = motorVehicleRatio;
-						firstDataTemp["motorOverSpeed"] = motorSpdVolume;
-						firstDataTemp["person"] = pedestrianVolume;
-						firstDataTemp["jaywalk"] = jaywalkVolume;
+							firstDataTemp["truckCount"] = mTruckVolume;
+							firstDataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
+							firstDataTemp["truckpcu"] = mTruckPassengerCarUnit;
+							firstDataTemp["truckRatio"] = mTruckVehicleRatio;
+							firstDataTemp["truckOverSpeed"] = mTruckSpdVolume;
 
-						secondDataTemp["key"] = index + 1;
-						secondDataTemp["time"] = moment(recordTime).format(
-							"YYYY년 MM월 DD일 HH:mm:ss"
-						);
-						secondDataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
-						secondDataTemp["totalPHF"] = totalVehiclePeakHourFactor;
-						secondDataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
-						secondDataTemp[
-							"totalVehiclePeakHourConcentrationRatio"
-						] = totalVehiclePeakHourConcentrationRatio;
+							firstDataTemp["motorCount"] = motorVolume;
+							firstDataTemp["motorAvgSpeed"] = motorAvgSpeed;
+							firstDataTemp["motorpcu"] = motorPassengerCarUnit;
+							firstDataTemp["motorRatio"] = motorVehicleRatio;
+							firstDataTemp["motorOverSpeed"] = motorSpdVolume;
+							firstDataTemp["person"] = pedestrianVolume;
+							firstDataTemp["jaywalk"] = jaywalkVolume;
 
-						secondDataTemp["carDayNightRatio"] = carDayNightRatio;
-						secondDataTemp["busDayNightRatio"] = mBusDayNightRatio;
-						secondDataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
-						secondDataTemp["motorDayNightRatio"] = motorDayNightRatio;
-
-						firstDataParsedTotal.push(firstDataTemp);
-						secondDataParsedTotal.push(secondDataTemp);
-						if (countCol < 6) {
-							countCol += 1;
-							firstDataParsed.push(firstDataTemp);
-							secondDataParsed.push(secondDataTemp);
-							setFirstData(firstDataParsed);
-							setSecondData(secondDataParsed);
-							console.log(firstDataParsed);
+							firstDataParsedTotal.push(firstDataTemp);
+							if (countFirstCol < 5) {
+								countFirstCol += 1;
+								firstDataParsed.push(firstDataTemp);
+							}
+							if (countFirstCol === 5) {
+								setFirstData(firstDataParsed);
+							}
 						}
 					});
+					if (secondData.length === 0) {
+						setSecondData(secondDataParsed);
+					}
 					setFirstDataTotal(firstDataParsedTotal);
 					setSecondDataTotal(secondDataParsedTotal);
 					setLoadingFirst(false);
@@ -225,6 +279,7 @@ const SearchCollapsedTable = (props) => {
 			)
 			.then((res) => {
 				if (res.data.length !== 0) {
+					console.log(res.data);
 					res.data.forEach((eachData, index) => {
 						const {
 							recordTime,
@@ -232,6 +287,7 @@ const SearchCollapsedTable = (props) => {
 							licenseNumber,
 							speed,
 							imageLink,
+							laneNumber,
 						} = eachData;
 						let overSpeedDataTemp = {};
 
@@ -243,9 +299,11 @@ const SearchCollapsedTable = (props) => {
 						overSpeedDataTemp["vehicleType"] = vehicleType;
 						overSpeedDataTemp["licenseNumber"] = licenseNumber;
 						overSpeedDataTemp["speed"] = speed;
+						overSpeedDataTemp["laneNumber"] = `${laneNumber} 차선`;
+
 						overSpeedDataTemp["imageLink"] = imageLink;
 						OverSpeedParsedTotal.push(overSpeedDataTemp);
-						if (countOverSpeedCol < 6) {
+						if (countOverSpeedCol < 5) {
 							countOverSpeedCol += 1;
 							OverSpeedParsed.push(overSpeedDataTemp);
 							setOverSpeedData(OverSpeedParsed);
@@ -272,7 +330,9 @@ const SearchCollapsedTable = (props) => {
 			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
 			<Divider type="vertical" />
 			전체 및 특정 차선 데이터 <Divider type="vertical" />
-			15분 단위
+			15분 단위 <Divider type="vertical" />
+			{/* 차선
+			<Select size="small" /> */}
 		</div>
 	);
 
@@ -283,7 +343,7 @@ const SearchCollapsedTable = (props) => {
 			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
 			<Divider type="vertical" />
 			전체 데이터 <Divider type="vertical" />
-			하루 단위
+			하루 단위 <Divider type="vertical" />
 		</div>
 	);
 	const collapseHeaderOverSpeed = (
@@ -292,7 +352,7 @@ const SearchCollapsedTable = (props) => {
 			<Divider type="vertical" />
 			{moment(startDate).format("LL")} ~ {moment(endTime).format("LL")}
 			<Divider type="vertical" />
-			전체 데이터
+			전체 데이터 <Divider type="vertical" />
 		</div>
 	);
 	const genExtra = (tableIdx) => (
@@ -303,17 +363,35 @@ const SearchCollapsedTable = (props) => {
 			}}
 		>
 			{tableIdx === "FIRST" ? (
-				<CSVLink data={firstDataTotal}>
+				<CSVLink
+					data={firstDataTotal}
+					filename={`1차 데이터_${moment(startDate).format("l")}-${moment(
+						endTime
+					).format("l")}.csv`}
+					headers={firstDataHeaders}
+				>
 					<DownloadOutlined />
 					다운로드
 				</CSVLink>
 			) : tableIdx === "SECOND" ? (
-				<CSVLink data={secondDataTotal}>
+				<CSVLink
+					data={secondDataTotal}
+					filename={`2차 데이터_${moment(startDate).format("l")}-${moment(
+						endTime
+					).format("l")}.csv`}
+					headers={secondDataHeaders}
+				>
 					<DownloadOutlined />
 					다운로드
 				</CSVLink>
 			) : (
-				<CSVLink data={overSpeedDataTotal}>
+				<CSVLink
+					data={overSpeedDataTotal}
+					filename={`과속 데이터_${moment(startDate).format("l")}-${moment(
+						endTime
+					).format("l")}.csv`}
+					headers={overSpeedDataHeaders}
+				>
 					<DownloadOutlined />
 					다운로드
 				</CSVLink>
@@ -347,7 +425,6 @@ const SearchCollapsedTable = (props) => {
 								accordion
 								expandIconPosition="right"
 								expandIcon={({ isActive }) => (
-									// <EyeOutlined style={{ fontSize: 16, marginTop: -2 }} />
 									<div style={{ fontSize: 14, marginTop: -2 }}>
 										<EyeOutlined />
 										미리보기
@@ -374,7 +451,6 @@ const SearchCollapsedTable = (props) => {
 										</div>
 									) : (
 										<>
-											{console.log(firstData)}
 											<FirstTable firstData={firstData} />
 										</>
 									)}

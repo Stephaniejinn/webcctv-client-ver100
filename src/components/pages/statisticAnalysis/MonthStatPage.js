@@ -48,6 +48,7 @@ const MonthStatPage = (props) => {
 											period="MONTH"
 											startDate={startDate}
 											endTime={endTime}
+											refresh={false}
 										/>
 									</div>
 									{timeClassification ? (

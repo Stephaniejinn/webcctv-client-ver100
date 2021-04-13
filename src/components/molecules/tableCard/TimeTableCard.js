@@ -48,6 +48,7 @@ const TimeTableCard = (props) => {
 						<DTFirstTable
 							currentLaneNum={parseInt(currentLaneNum)}
 							trafficTotalData={trafficTotalData}
+							page={page}
 						/>
 					</>
 				) : parseInt(currentLaneNum) === 0 ? (

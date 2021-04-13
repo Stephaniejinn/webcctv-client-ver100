@@ -13,7 +13,6 @@ import "./style.less";
 const { Title } = Typography;
 
 const VideoContainer = ({
-	page,
 	camName,
 	httpAddress,
 	date,
@@ -28,7 +27,6 @@ const VideoContainer = ({
 			</div>
 			<div className="video-container-graph">
 				<StreamingGenVisualization
-					page={page}
 					startDate={date}
 					endTime={date}
 					currentTime={currentTime}

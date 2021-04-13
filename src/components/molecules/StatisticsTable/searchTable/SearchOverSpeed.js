@@ -29,6 +29,11 @@ const SearchOverSpeedTable = (props) => {
 			key: "speed",
 		},
 		{
+			title: "차선",
+			dataIndex: "laneNumber",
+			key: "laneNumber",
+		},
+		{
 			title: "차종",
 			dataIndex: "vehicleType",
 			key: "vehicleType",

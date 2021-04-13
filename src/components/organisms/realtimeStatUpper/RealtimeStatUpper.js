@@ -65,7 +65,7 @@ const RealtimeStatUpper = (props) => {
 						실시간 통계 | {camName}
 					</Title>
 					<Button onClick={handleRefresh} style={{ marginTop: 2 }}>
-						Refresh
+						새로고침
 					</Button>
 				</div>
 				<div className="search-input-drawer">

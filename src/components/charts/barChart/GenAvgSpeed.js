@@ -3,7 +3,7 @@ import { Column } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const GeneralOverSpeed = (props) => {
-	const { trafficData } = props;
+	const { trafficData, page } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
@@ -22,13 +22,40 @@ const GeneralOverSpeed = (props) => {
 			{ type: "화물차", value: 0 },
 			{ type: "오토바이", value: 0 },
 		];
-		console.log(TotalData);
-		console.log(trafficData);
-		TotalData[0].value = trafficData[0]["carAvgSpeed"];
-		TotalData[1].value = trafficData[0]["mBusAvgSpeed"];
-		TotalData[2].value = trafficData[0]["mTruckAvgSpeed"];
-		TotalData[3].value = trafficData[0]["motorAvgSpeed"];
+		var data = {
+			carAvgSpeed: 0,
+			mBusAvgSpeed: 0,
+			mTruckAvgSpeed: 0,
+			motorAvgSpeed: 0,
+		};
+		if (page === "REALSTATISTIC") {
+			trafficData.forEach((eachData) => {
+				data["carAvgSpeed"] += eachData["carAvgSpeed"];
+				data["mBusAvgSpeed"] += eachData["mBusAvgSpeed"];
+				data["mTruckAvgSpeed"] += eachData["mTruckAvgSpeed"];
+				data["motorAvgSpeed"] += eachData["motorAvgSpeed"];
+			});
+			let length = trafficData.length;
+			data["carAvgSpeed"] = parseFloat(
+				(data["carAvgSpeed"] / length).toFixed(2)
+			);
+			data["mBusAvgSpeed"] = parseFloat(
+				(data["mBusAvgSpeed"] / length).toFixed(2)
+			);
+			data["mTruckAvgSpeed"] = parseFloat(
+				(data["mTruckAvgSpeed"] / length).toFixed(2)
+			);
+			data["motorAvgSpeed"] = parseFloat(
+				(data["motorAvgSpeed"] / length).toFixed(2)
+			);
+		} else {
+			data = trafficData[0];
+		}
 
+		TotalData[0].value = data["carAvgSpeed"];
+		TotalData[1].value = data["mBusAvgSpeed"];
+		TotalData[2].value = data["mTruckAvgSpeed"];
+		TotalData[3].value = data["motorAvgSpeed"];
 		setData(TotalData);
 		setLoading(false);
 	};

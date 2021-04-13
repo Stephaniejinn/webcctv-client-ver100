@@ -40,14 +40,14 @@ const RealtimeStreamingPage = (props) => {
 								httpAddress="https://globalbridge.synology.me:4001/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0001"
+								realtimeCamCode="0002"
 							/>
 							<VideoContainer
 								camName="수인사거리-3 [하행]"
 								httpAddress="https://globalbridge.synology.me:4002/m3u8VideoStream.m3u8"
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0001"
+								realtimeCamCode="0003"
 							/>
 						</div>
 					</Content>

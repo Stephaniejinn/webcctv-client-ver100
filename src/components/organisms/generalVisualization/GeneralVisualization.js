@@ -17,12 +17,14 @@ import "./style.less";
 const GeneralVisualization = (props) => {
 	const {
 		period,
+		page,
 		startDate,
 		endTime,
 		currentTime,
 		cameraCode,
 		baseURL,
 		trafficURL,
+		refresh,
 	} = props;
 	const { Text } = Typography;
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
@@ -42,6 +44,15 @@ const GeneralVisualization = (props) => {
 		getTrafficData();
 	}, [camCode, startDate, endTime]);
 
+	useEffect(() => {
+		if (refresh) {
+			setEmptyData(false);
+			setLoadingTraffic(true);
+			setTrafficData([]);
+			getTrafficData();
+		}
+	}, [refresh]);
+
 	const getTrafficData = () => {
 		axios
 			.get(
@@ -54,9 +65,8 @@ const GeneralVisualization = (props) => {
 				}
 			)
 			.then((res) => {
-				console.log(res.data);
-				setTrafficData(res.data);
 				if (res.data.length !== 0) {
+					setTrafficData(res.data);
 					setLoadingTraffic(false);
 					setEmptyData(false);
 				} else {
@@ -67,7 +77,9 @@ const GeneralVisualization = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 				setEmptyData(true);
-				message.warning("해당 기간 시간 별 데이터가 없습니다");
+				if (err.response.status === 500) {
+					message.warning("서버에 문제가 있습니다");
+				}
 			});
 	};
 
@@ -91,21 +103,21 @@ const GeneralVisualization = (props) => {
 						<div className="general-graph-card">
 							<VisualizationCard
 								title="차종별 통행량(대)"
-								chart={<VehicleRatio trafficData={trafficData} />}
+								chart={<VehicleRatio trafficData={trafficData} page={page} />}
 							/>
 							<VisualizationCard
 								title="차종별 과속차량(대)"
-								chart={<OverSpeedBar trafficData={trafficData} />}
+								chart={<OverSpeedBar trafficData={trafficData} page={page} />}
 							/>
 						</div>
 						<div className="general-graph-card">
 							<VisualizationCard
 								title="평균속도(대)"
-								chart={<AvgSpeedGauge trafficData={trafficData} />}
+								chart={<AvgSpeedGauge trafficData={trafficData} page={page} />}
 							/>
 							<VisualizationCard
 								title="차종별 평균속도(km/h)"
-								chart={<AvgSpeedBar trafficData={trafficData} />}
+								chart={<AvgSpeedBar trafficData={trafficData} page={page} />}
 							/>
 						</div>
 					</>

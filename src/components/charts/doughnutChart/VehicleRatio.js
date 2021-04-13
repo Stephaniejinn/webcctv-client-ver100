@@ -3,15 +3,15 @@ import { Pie } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const VehicleRatio = (props) => {
-	const { trafficData } = props;
+	const { trafficData, page } = props;
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
 
 	useEffect(() => {
 		setLoadingData(true);
 		setData([]);
-
 		parseTraffic();
+		console.log(page);
 	}, [trafficData]);
 
 	const parseTraffic = () => {
@@ -33,10 +33,24 @@ const VehicleRatio = (props) => {
 				value: 0,
 			},
 		];
-		vehicleRatioData[0].value = trafficData[0]["carVolume"];
-		vehicleRatioData[1].value = trafficData[0]["mBusVolume"];
-		vehicleRatioData[2].value = trafficData[0]["mTruckVolume"];
-		vehicleRatioData[3].value = trafficData[0]["motorVolume"];
+		var data = { carVolume: 0, mBusVolume: 0, mTruckVolume: 0, motorVolume: 0 };
+		if (page === "STREAMING") {
+			data = trafficData[trafficData.length - 1];
+		} else if (page === "REALSTATISTIC") {
+			trafficData.forEach((eachData) => {
+				data["carVolume"] += eachData["carVolume"];
+				data["mBusVolume"] += eachData["mBusVolume"];
+				data["mTruckVolume"] += eachData["mTruckVolume"];
+				data["motorVolume"] = +eachData["motorVolume"];
+			});
+		} else {
+			data = trafficData[0];
+		}
+		vehicleRatioData[0].value = data["carVolume"];
+		vehicleRatioData[1].value = data["mBusVolume"];
+		vehicleRatioData[2].value = data["mTruckVolume"];
+		vehicleRatioData[3].value = data["motorVolume"];
+
 		setData(vehicleRatioData);
 		setLoadingData(false);
 	};

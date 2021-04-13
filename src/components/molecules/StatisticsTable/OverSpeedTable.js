@@ -19,6 +19,7 @@ const OverSpeedTable = (props) => {
 	const [isImgModalVisible, setImgModalVisible] = useState(false);
 	const [isVideoModalVisible, setVideoModalVisible] = useState(false);
 	const [shownKey, setShownKey] = useState("");
+	const [isVideoSource, setVideoSource] = useState(true);
 	var TotalData = [];
 
 	useEffect(() => {
@@ -115,10 +116,25 @@ const OverSpeedTable = (props) => {
 												</Button>,
 											]}
 										>
-											<Video
-												source={`http://192.168.1.100:4000/api/videos/snap?cam_code=${cameraCode}&record_time=${imgInfo[6]}`}
-												showControls={true}
-											/>
+											{isVideoSource ? (
+												<Video
+													source={`http://globalbridge.synology.me:5555/api/videos/snap?cam_code=${cameraCode}&record_time=${imgInfo[6]}`}
+													showControls={true}
+													setVideoSource={setVideoSource}
+												/>
+											) : (
+												<div
+													style={{
+														marginTop: 20,
+														marginBottom: 20,
+														textAlign: "center",
+														paddingTop: 30,
+														paddingBottom: 30,
+													}}
+												>
+													<Text>해당 과속차량 영상 없습니다</Text>
+												</div>
+											)}
 										</Modal>
 									</Descriptions.Item>
 									<Descriptions.Item label="시간" span={2}>
@@ -134,11 +150,25 @@ const OverSpeedTable = (props) => {
 										{imgInfo[4]}
 									</Descriptions.Item>
 								</Descriptions>
-								<img
-									style={{ marginTop: 15 }}
-									alt="과속차량 이미지"
-									src={imgInfo[1]}
-								/>
+								{imgInfo[1] ? (
+									<img
+										style={{ marginTop: 15 }}
+										alt="과속차량 이미지"
+										src={imgInfo[1]}
+									/>
+								) : (
+									<div
+										style={{
+											marginTop: 20,
+											marginBottom: 20,
+											textAlign: "center",
+											paddingTop: 30,
+											paddingBottom: 30,
+										}}
+									>
+										<Text>해당 과속차량 이미지 없습니다</Text>
+									</div>
+								)}
 							</Modal>
 						</>
 					)}
@@ -238,7 +268,7 @@ const OverSpeedTable = (props) => {
 								setShownKey(rowIndex);
 							}, // click row
 						};
-					}} // rowSelection={rowSelection}
+					}}
 					size="small"
 					bordered
 				/>

@@ -48,6 +48,7 @@ const WeekStatPage = (props) => {
 											period="WEEK"
 											startDate={startDate}
 											endTime={endTime}
+											refresh={false}
 										/>
 									</div>
 									{timeClassification ? (

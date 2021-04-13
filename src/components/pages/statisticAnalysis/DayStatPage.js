@@ -49,6 +49,7 @@ const DayStatPage = (props) => {
 											period="DAY"
 											startDate={startDate}
 											endTime={endTime}
+											refresh={false}
 										/>
 									</div>
 									{timeClassification ? (

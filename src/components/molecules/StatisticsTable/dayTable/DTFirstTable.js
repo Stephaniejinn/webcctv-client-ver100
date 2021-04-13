@@ -9,7 +9,7 @@ import moment from "moment";
 import "../style.less";
 
 const DTFisrtTable = (props) => {
-	const { currentLaneNum, trafficTotalData } = props;
+	const { currentLaneNum, trafficTotalData, page } = props;
 
 	const [Data, setData] = useState([]);
 	var FristRow;
@@ -380,9 +380,15 @@ const DTFisrtTable = (props) => {
 			let dataTemp = {};
 
 			dataTemp["key"] = index + 1;
+
 			if (FristRow) {
-				dataTemp["time"] = "전체";
-				FristRow = false;
+				if (page === "REALSTATISTIC") {
+					dataTemp["time"] = moment(recordTime).format("HH:mm");
+					FristRow = false;
+				} else {
+					dataTemp["time"] = "전체";
+					FristRow = false;
+				}
 			} else {
 				dataTemp["time"] = moment(recordTime).format("HH:mm");
 			}

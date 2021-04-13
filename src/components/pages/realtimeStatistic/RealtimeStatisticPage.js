@@ -47,12 +47,14 @@ const RealtimeStatisticPage = (props) => {
 	var currTimeStr = currTime.format("HH:mm:ss");
 
 	useEffect(() => {
+		setTrafficTotalData([]);
 		axiosAsync();
 	}, []);
 
 	useEffect(() => {
 		console.log("refresh", refresh);
 		if (refresh) {
+			setTrafficTotalData([]);
 			axiosAsync();
 		}
 	}, [refresh]);
@@ -100,6 +102,7 @@ const RealtimeStatisticPage = (props) => {
 									startDate={date}
 									endTime={date}
 									currentTime={currTimeStr}
+									refresh={refresh}
 								/>
 							</div>
 						</div>

@@ -3,7 +3,7 @@ import { Gauge } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const AvgSpeedGauge = (props) => {
-	const { trafficData } = props;
+	const { trafficData, page } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(true);
@@ -16,7 +16,16 @@ const AvgSpeedGauge = (props) => {
 	}, [trafficData]);
 
 	const parseData = () => {
-		setData(trafficData[0]["totalVehicleAvgSpeed"] / 100);
+		if (page === "REALSTATISTIC") {
+			let value = 0;
+			trafficData.forEach((data) => {
+				value += data["totalVehicleAvgSpeed"];
+			});
+			value = value / trafficData.length / 100;
+			setData(value);
+		} else {
+			setData(trafficData[0]["totalVehicleAvgSpeed"] / 100);
+		}
 		setLoadingData(false);
 	};
 
@@ -28,7 +37,6 @@ const AvgSpeedGauge = (props) => {
 		},
 		indicator: {
 			pointer: { style: { stroke: "#D0D0D0", lineWidth: 2 } },
-			// pin: { style: { stroke: '#D0D0D0', lineWidth:0.5 } },
 			pin: null,
 		},
 		axis: {

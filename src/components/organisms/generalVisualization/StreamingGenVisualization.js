@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Spin } from "antd";
+import { Spin, message } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
@@ -23,9 +23,11 @@ const StreamingGeneralVisualization = (props) => {
 
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [trafficData, setTrafficData] = useState([]);
+	const [isEmptyData, setEmptyData] = useState(false);
 
 	useEffect(() => {
 		setLoadingTraffic(true);
+		setEmptyData(false);
 		setTrafficData([]);
 		getTrafficData();
 	}, [realtimeCamCode, startDate, endTime]);
@@ -44,38 +46,61 @@ const StreamingGeneralVisualization = (props) => {
 				}
 			)
 			.then((res) => {
-				setTrafficData(res.data);
-				setLoadingTraffic(false);
+				console.log(res.data);
+				if (res.data.length !== 0) {
+					setTrafficData(res.data);
+					setLoadingTraffic(false);
+					setEmptyData(false);
+				} else {
+					setLoadingTraffic(true);
+					setEmptyData(true);
+				}
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
+				if (err.response.status === 500) {
+					message.warning("서버에 문제가 있습니다");
+				}
+				setLoadingTraffic(true);
+				setEmptyData(true);
 			});
 	};
 
 	return (
 		<div className="general-graph-layout">
-			{isLoadingTraffic ? (
-				<div
-					style={{
-						marginTop: 20,
-						marginBottom: 20,
-						textAlign: "center",
-						paddingTop: 30,
-						paddingBottom: 30,
-					}}
-				>
-					<Spin size="large" />
-				</div>
+			{!isEmptyData ? (
+				isLoadingTraffic ? (
+					<div
+						style={{
+							marginTop: 20,
+							marginBottom: 20,
+							textAlign: "center",
+							paddingTop: 30,
+							paddingBottom: 30,
+						}}
+					>
+						<Spin size="large" />
+					</div>
+				) : (
+					<div className="general-graph-card">
+						<VisualizationCard
+							title="차종별 통행량(대) "
+							chart={
+								<VehicleRatio trafficData={trafficData} page="STREAMING" />
+							}
+						/>
+						<VisualizationCard
+							title="차종별 과속차량(대) "
+							chart={
+								<OverSpeedBar trafficData={trafficData} page="STREAMING" />
+							}
+						/>
+					</div>
+				)
 			) : (
 				<div className="general-graph-card">
-					<VisualizationCard
-						title="차종별 통행량(대) 누계"
-						chart={<VehicleRatio trafficData={trafficData} />}
-					/>
-					<VisualizationCard
-						title="차종별 과속차량(대) 누계"
-						chart={<OverSpeedBar trafficData={trafficData} />}
-					/>
+					<VisualizationCard title="차종별 통행량(대)" />
+					<VisualizationCard title="차종별 과속차량(대)" />
 				</div>
 			)}
 		</div>

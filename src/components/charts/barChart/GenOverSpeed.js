@@ -3,7 +3,7 @@ import { Column } from "@ant-design/charts";
 import { Spin } from "antd";
 
 const GeneralAvgSpeed = (props) => {
-	const { trafficData } = props;
+	const { trafficData, page } = props;
 
 	const [Data, setData] = useState([]);
 	const [isLoading, setLoading] = useState(true);
@@ -11,7 +11,6 @@ const GeneralAvgSpeed = (props) => {
 	useEffect(() => {
 		setLoading(true);
 		setData([]);
-
 		parseTotalData();
 	}, [trafficData]);
 
@@ -23,10 +22,28 @@ const GeneralAvgSpeed = (props) => {
 			{ type: "화물차", value: 0 },
 			{ type: "오토바이", value: 0 },
 		];
-		TotalData[0].value = trafficData[0]["carSpdVolume"];
-		TotalData[1].value = trafficData[0]["mBusSpdVolume"];
-		TotalData[2].value = trafficData[0]["mTruckSpdVolume"];
-		TotalData[3].value = trafficData[0]["motorSpdVolume"];
+		var data = {
+			carSpdVolume: 0,
+			mBusSpdVolume: 0,
+			mTruckSpdVolume: 0,
+			motorSpdVolume: 0,
+		};
+		if (page === "STREAMING") {
+			data = trafficData[trafficData.length - 1];
+		} else if (page === "REALSTATISTIC") {
+			trafficData.forEach((eachData) => {
+				data["carSpdVolume"] += eachData["carSpdVolume"];
+				data["mBusSpdVolume"] += eachData["mBusSpdVolume"];
+				data["mTruckSpdVolume"] += eachData["mTruckSpdVolume"];
+				data["motorSpdVolume"] += eachData["motorSpdVolume"];
+			});
+		} else {
+			data = trafficData[0];
+		}
+		TotalData[0].value = data["carSpdVolume"];
+		TotalData[1].value = data["mBusSpdVolume"];
+		TotalData[2].value = data["mTruckSpdVolume"];
+		TotalData[3].value = data["motorSpdVolume"];
 
 		setData(TotalData);
 		setLoading(false);

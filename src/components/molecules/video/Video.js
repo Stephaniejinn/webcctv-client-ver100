@@ -5,7 +5,8 @@ import { isMobile } from "react-device-detect";
 
 import "./style.less";
 
-const Video = ({ source, showControls }) => {
+const Video = (props) => {
+	const { source, showControls, setVideoSource } = props;
 	const videoRef = useRef();
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -21,6 +22,11 @@ const Video = ({ source, showControls }) => {
 					hls.loadSource(source);
 					hls.on(Hls.Events.MANIFEST_PARSED, () => {
 						videoRef.current.play();
+					});
+					hls.on(Hls.Events.ERROR, (_, data) => {
+						if (data.response.code === 404) {
+							setVideoSource(false);
+						}
 					});
 				});
 			} else if (
