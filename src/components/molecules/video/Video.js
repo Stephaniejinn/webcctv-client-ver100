@@ -14,34 +14,47 @@ const Video = (props) => {
 	};
 
 	useEffect(() => {
-		if (videoRef) {
-			if (Hls.isSupported()) {
-				const hls = new Hls();
-				hls.attachMedia(videoRef.current);
-				hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-					hls.loadSource(source);
-					hls.on(Hls.Events.MANIFEST_PARSED, () => {
-						videoRef.current.play();
-					});
-					hls.on(Hls.Events.ERROR, (_, data) => {
-						if (data.response) {
-							if (data.response.code === 404) {
-								setVideoSource(false);
-							}
-						}
-					});
-				});
-			} else if (
-				videoRef.current.canPlayType("application/vnd.apple.mpegurl")
-			) {
-				videoRef.current.src = source;
-				videoRef.addEventListener("loadedmetadata", () => {
+		if (!videoRef) return;
+
+		const hls = new Hls({
+			xhrSetup: (xhr, url) => {
+				xhr.setRequestHeader(
+					"authorization",
+					`Bearer ${localStorage.getItem("jwt")}`
+				);
+			},
+		});
+
+		if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
+			videoRef.current.src = source;
+			videoRef.addEventListener("loadedmetadata", () => {
+				videoRef.current.play();
+			});
+		} else if (Hls.isSupported()) {
+			hls.attachMedia(videoRef.current);
+			hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+				hls.loadSource(source);
+				hls.on(Hls.Events.MANIFEST_PARSED, () => {
 					videoRef.current.play();
 				});
-			} else {
-				alert("Unsupported Browser");
-			}
+				hls.on(Hls.Events.ERROR, (_, data) => {
+					if (data.response) {
+						if (data.response.code === 404) {
+							setVideoSource(false);
+						} else if (data.response.code === 401) {
+							// jwt가 invalid 할 때
+							setVideoSource(false);
+						}
+					}
+				});
+			});
+		} else {
+			alert("실시간 영상이 지원되지 않는 브라우저입니다");
 		}
+
+		return () => {
+			hls.destroy();
+		};
 	}, [source]);
 
 	return (

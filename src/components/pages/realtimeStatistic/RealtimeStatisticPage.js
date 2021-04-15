@@ -27,35 +27,55 @@ const RealtimeStatisticPage = (props) => {
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
 	const [isEmptyData, setEmptyData] = useState(false);
-
 	const [currTime, setCurrTime] = useState(
 		moment(new Date()).subtract(1, "second")
 	);
 	const [refresh, setRefresh] = useState(false);
-	const date = moment(new Date()).format("YYYY-MM-DD");
+	const [cameraAddress, setCameraAddress] = useState("");
 
-	var cameraAddress = "";
-	var camName = "";
+	const date = moment(new Date()).format("YYYY-MM-DD");
+	var currTimeStr = currTime.format("HH:mm:ss");
+
+	var camName;
 	if (camAddress.length === 0 || camera.length === 0) {
-		cameraAddress =
-			"https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8";
 		camName = "수인사거리-1 [하행]";
 	} else {
-		cameraAddress = camAddress;
 		camName = camera;
 	}
 	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
-	var currTimeStr = currTime.format("HH:mm:ss");
 
 	useEffect(() => {
 		setEmptyData(false);
 		setTrafficTotalData([]);
-		axiosAsync();
-	}, []);
+		if (camAddress.length === 0 || camera.length === 0) {
+			axios
+				.get(`${baseURL}/locations/ICN/28110/2008001/001/cameras`, {
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Cache: "No-cache",
+					},
+				})
+				.then((res) => {
+					if (res.data.length !== 0) {
+						setCameraAddress(res.data[0].httpStreamAddr);
+						axiosAsync();
+					}
+				})
+				.catch((err) => {
+					console.log(err.response);
+				});
+		} else {
+			setCameraAddress(camAddress);
+			axiosAsync();
+			// console.log("camCode ", camCode);
+			// console.log("camName", camName);
+			// console.log("cameraAddress", cameraAddress);
+		}
+	}, [cameraCode, currTimeStr]);
 
 	useEffect(() => {
-		console.log("refresh", refresh);
 		if (refresh) {
+			console.log("refresh", refresh);
 			setEmptyData(false);
 			setTrafficTotalData([]);
 			axiosAsync();

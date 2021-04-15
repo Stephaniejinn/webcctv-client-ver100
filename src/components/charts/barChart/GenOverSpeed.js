@@ -63,7 +63,7 @@ const GeneralAvgSpeed = (props) => {
 		},
 		meta: {
 			type: { alias: "차종" },
-			value: { alias: "평균속도" },
+			value: { alias: "과속대수" },
 		},
 	};
 	return (

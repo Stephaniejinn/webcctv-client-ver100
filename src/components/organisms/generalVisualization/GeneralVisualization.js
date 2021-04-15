@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Spin, Typography, message } from "antd";
+import { Spin, message } from "antd";
 import moment from "moment";
-
 import axios from "axios";
 import { connect } from "react-redux";
 
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
 import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
 import AvgSpeedGauge from "../../charts/gaugeChart/AvgSpeed";
-// import AvgSpeedTinyBar from "../../charts/tinyBarChart/AvgSpeed";
-// import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
 import AvgSpeedBar from "../../charts/barChart/GenAvgSpeed";
 import OverSpeedBar from "../../charts/barChart/GenOverSpeed";
 
@@ -27,16 +24,17 @@ const GeneralVisualization = (props) => {
 		trafficURL,
 		refresh,
 	} = props;
-	const { Text } = Typography;
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [isEmptyData, setEmptyData] = useState(false);
 	const [trafficData, setTrafficData] = useState([]);
+	const [curEndTime, setCurEndTime] = useState("");
 
 	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
 
 	var curTime = currentTime ? currentTime : "23:59:59";
 	const periodURL =
 		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
+	const title = page === "REALSTATISTIC" && `00:00 ~ ${curEndTime} `;
 
 	useEffect(() => {
 		setEmptyData(false);
@@ -68,6 +66,11 @@ const GeneralVisualization = (props) => {
 			.then((res) => {
 				if (res.data.length !== 0) {
 					setTrafficData(res.data);
+					setCurEndTime(
+						moment(new Date(res.data[res.data.length - 1].recordTime))
+							.add(15, "m")
+							.format("HH:mm")
+					);
 					setLoadingTraffic(false);
 					setEmptyData(false);
 				} else {
@@ -79,7 +82,7 @@ const GeneralVisualization = (props) => {
 				console.log(err.response);
 				setEmptyData(true);
 				if (err.response.status === 500) {
-					message.warning("서버에 문제가 있습니다");
+					message.error("서버에 문제가 있습니다");
 				} else if (err.response.status === 400) {
 					if (
 						!new Date(endTime).getTime() >=
@@ -109,21 +112,21 @@ const GeneralVisualization = (props) => {
 					<>
 						<div className="general-graph-card">
 							<VisualizationCard
-								title="차종별 통행량(대)"
+								title={`차종별 통행량 | ${title}`}
 								chart={<VehicleRatio trafficData={trafficData} page={page} />}
 							/>
 							<VisualizationCard
-								title="차종별 과속차량(대)"
+								title={`차종별 과속차량 | ${title}`}
 								chart={<OverSpeedBar trafficData={trafficData} page={page} />}
 							/>
 						</div>
 						<div className="general-graph-card">
 							<VisualizationCard
-								title="평균속도(대)"
+								title={`평균속도 | ${title}`}
 								chart={<AvgSpeedGauge trafficData={trafficData} page={page} />}
 							/>
 							<VisualizationCard
-								title="차종별 평균속도(km/h)"
+								title={`차종별 평균속도 | ${title}`}
 								chart={<AvgSpeedBar trafficData={trafficData} page={page} />}
 							/>
 						</div>

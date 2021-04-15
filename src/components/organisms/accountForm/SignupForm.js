@@ -62,12 +62,15 @@ const SignupForm = (props) => {
 	};
 	const signUp = (values) => {
 		// const { affiliation, permission } = values;
-		const { affiliate } = values;
+		const { signupUsername, password, affiliate } = values;
 		const permission = "[]";
+		console.log(signupUsername);
 		axios
 			.post(
 				`${baseURL}/users`,
 				JSON.stringify({
+					username: signupUsername,
+					password,
 					affiliate,
 					permission,
 				}),
@@ -81,18 +84,20 @@ const SignupForm = (props) => {
 			)
 			.then((res) => {
 				console.log(res.data);
-				setModalVisible(true);
-				setSignupInfo({
-					username: res.data.username,
-					password: res.data.password,
-					affiliate,
-					permission,
-				});
+				if (res.data.success) {
+					setModalVisible(true);
+					setSignupInfo({
+						username: res.data.username,
+						password,
+						affiliate,
+						permission,
+					});
+				}
 			})
 			.catch((err) => {
-				// if (err.response.status === 401) {
-				// 	message.error("관리자 비밀번호가 잘못되었습니다");
-				// }
+				if (err.response.status === 409) {
+					message.error("이미 존재하는 아이디입니다");
+				}
 				console.log(err.response);
 			});
 	};
@@ -108,6 +113,119 @@ const SignupForm = (props) => {
 			size="large"
 		>
 			<Form.Item
+				name="signupUsername"
+				label="아이디"
+				rules={[
+					{
+						required: true,
+						message: "발급 대상의 계정이름을 입력하세요.",
+					},
+				]}
+			>
+				<Input prefix={<BankOutlined className="site-form-item-icon" />} />
+			</Form.Item>
+			<Form.Item
+				name="password"
+				label="비밀번호"
+				rules={[
+					{
+						type: "string",
+						required: true,
+						message: "발급 대상의 초기 비밀번호를 입력하세요",
+					},
+					{
+						min: 8,
+						message: "최소 8자리 이상",
+					},
+					{
+						validator: (rule, value) => {
+							const oNumber = "0123456789";
+							const oLetter = "abcdefghijklmnopqrstuvwxyz";
+							const oLetterCap = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+							const oSpecial = "-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\"";
+							const oTher = oNumber + oLetter + oLetterCap + oSpecial;
+							let total = 0;
+							const oSpeArr = value.split("");
+
+							const oNumberItem = oSpeArr.find(
+								(item) => oNumber.indexOf(item) !== -1
+							);
+							const oLetterItem = oSpeArr.find(
+								(item) => oLetter.indexOf(item) !== -1
+							);
+							const oLetterCapItem = oSpeArr.find(
+								(item) => oLetterCap.indexOf(item) !== -1
+							);
+							const oSpeItem = oSpeArr.find(
+								(item) => oSpecial.indexOf(item) !== -1
+							);
+							const oTherItem = oSpeArr.find(
+								(item) => oTher.indexOf(item) === -1
+							);
+							if (oTherItem !== undefined) {
+								console.log(oTherItem);
+								return Promise.reject(
+									"영문 대문자, 소문자, 숫자, 특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
+								);
+							}
+							if (oNumberItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject("숫자 최소 한개 이상");
+							}
+							if (oLetterItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject("영문 소문자 최소 한개 이상");
+							}
+							if (oSpeItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject(
+									"특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
+								);
+							}
+							if (oLetterCapItem !== undefined) {
+								total += 1;
+							} else {
+								return Promise.reject("영문 대문자 최소 한개 이상");
+							}
+							if (total === 4) {
+								return Promise.resolve();
+							}
+							return Promise.reject(
+								"영문 대문자, 소문자, 숫자, 특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
+							);
+						},
+					},
+				]}
+				hasFeedback
+			>
+				<Input.Password />
+			</Form.Item>
+			<Form.Item
+				name="confirm"
+				label="비밀번호 재확인"
+				dependencies={["password"]}
+				hasFeedback
+				rules={[
+					{
+						required: true,
+						message: "발급 대상의 초기 비밀번호를 다시 한번 입력하세요",
+					},
+					({ getFieldValue }) => ({
+						validator(rule, value) {
+							if (!value || getFieldValue("password") === value) {
+								return Promise.resolve();
+							}
+							return Promise.reject("비밀번호 확인이 올바르지 않습니다");
+						},
+					}),
+				]}
+			>
+				<Input.Password />
+			</Form.Item>
+			<Form.Item
 				name="affiliate"
 				label="소속"
 				rules={[
@@ -119,7 +237,6 @@ const SignupForm = (props) => {
 			>
 				<Input prefix={<BankOutlined className="site-form-item-icon" />} />
 			</Form.Item>
-
 			<Form.Item
 				name="permission"
 				label="권한"
@@ -134,34 +251,6 @@ const SignupForm = (props) => {
 			>
 				<Cascader isDisabled={true} placeholdertxt="권한을 선택하세요" />
 			</Form.Item>
-			{/* <Form.Item
-				name="signupPassword"
-				label="관리자 비밀번호"
-				rules={[
-					{
-						required: true,
-						message: "관리자 비밀번호를 입력하세요.",
-					},
-				]}
-			>
-				<Input.Password />
-			</Form.Item> */}
-			{/* <Form.Item
-				name="confirm"
-				valuePropName="checked"
-				rules={[
-					{
-						validator: (_, value) =>
-							value
-								? Promise.resolve()
-								: Promise.reject("담당자임을 확인해주세요."),
-					},
-				]}
-				wrapperCol={tailFormItemLayout.wrapperCol}
-				style={{ marginBottom: 6 }}
-			>
-				<Checkbox>글로벌브릿지 담당자임을 확인합니다.</Checkbox>
-			</Form.Item> */}
 			<Form.Item wrapperCol={tailFormItemLayout.wrapperCol}>
 				<Button type="primary" htmlType="submit" size="large">
 					발급

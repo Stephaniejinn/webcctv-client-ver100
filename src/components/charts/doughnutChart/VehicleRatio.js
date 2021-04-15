@@ -11,7 +11,6 @@ const VehicleRatio = (props) => {
 		setLoadingData(true);
 		setData([]);
 		parseTraffic();
-		console.log(page);
 	}, [trafficData]);
 
 	const parseTraffic = () => {

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Spin, message } from "antd";
+import moment from "moment";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
 import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
-// import OverSpeedTinyBar from "../../charts/tinyBarChart/overSpeed";
 import OverSpeedBar from "../../charts/barChart/GenOverSpeed";
 
 import "./style.less";
@@ -24,20 +24,20 @@ const StreamingGeneralVisualization = (props) => {
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [trafficData, setTrafficData] = useState([]);
 	const [isEmptyData, setEmptyData] = useState(false);
+	const [curStartTime, setCurStartTime] = useState("");
+	const [curEndTime, setCurEndTime] = useState("");
 
 	useEffect(() => {
 		setLoadingTraffic(true);
 		setEmptyData(false);
 		setTrafficData([]);
 		getTrafficData();
-	}, [realtimeCamCode, startDate, endTime]);
+	}, [realtimeCamCode, startDate, endTime, currentTime]);
 
 	const getTrafficData = () => {
 		axios
 			.get(
 				`${baseURL}${trafficURL}/daily?camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&axis=time&laneNumber=0`,
-				// `${baseURL}/statistics/road-traffic/daily?camCode=0004&startDate=2020-03-15&endTime=2020-03-15 23:59:59&axis=time&laneNumber=0`,
-
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -46,9 +46,19 @@ const StreamingGeneralVisualization = (props) => {
 				}
 			)
 			.then((res) => {
-				console.log(res.data);
 				if (res.data.length !== 0) {
+					var tempStartTime = moment(
+						res.data[res.data.length - 1].recordTime
+					).format("HH:mm");
+					var tempEndTime = moment(
+						new Date(res.data[res.data.length - 1].recordTime)
+					)
+						.add(15, "m")
+						.format("HH:mm");
+
 					setTrafficData(res.data);
+					setCurStartTime(tempStartTime);
+					setCurEndTime(tempEndTime);
 					setLoadingTraffic(false);
 					setEmptyData(false);
 				} else {
@@ -59,7 +69,7 @@ const StreamingGeneralVisualization = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 				if (err.response.status === 500) {
-					message.warning("서버에 문제가 있습니다");
+					message.error("서버에 문제가 있습니다");
 				}
 				setLoadingTraffic(true);
 				setEmptyData(true);
@@ -84,13 +94,13 @@ const StreamingGeneralVisualization = (props) => {
 				) : (
 					<div className="general-graph-card">
 						<VisualizationCard
-							title="차종별 통행량(대) "
+							title={`차종별 통행량 | ${curStartTime} ~ ${curEndTime}`}
 							chart={
 								<VehicleRatio trafficData={trafficData} page="STREAMING" />
 							}
 						/>
 						<VisualizationCard
-							title="차종별 과속차량(대) "
+							title={`차종별 과속차량 | ${curStartTime} ~ ${curEndTime}`}
 							chart={
 								<OverSpeedBar trafficData={trafficData} page="STREAMING" />
 							}
@@ -99,8 +109,8 @@ const StreamingGeneralVisualization = (props) => {
 				)
 			) : (
 				<div className="general-graph-card">
-					<VisualizationCard title="차종별 통행량(대)" />
-					<VisualizationCard title="차종별 과속차량(대)" />
+					<VisualizationCard title="차종별 통행량" />
+					<VisualizationCard title="차종별 과속차량" />
 				</div>
 			)}
 		</div>

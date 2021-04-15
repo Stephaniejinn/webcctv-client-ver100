@@ -446,7 +446,7 @@ const DTFisrtTable = (props) => {
 						}}
 					>
 						<Text strong type="danger">
-							해당 과속 데이터가 없습니다
+							해당 데이터가 없습니다
 						</Text>
 					</div>
 				)

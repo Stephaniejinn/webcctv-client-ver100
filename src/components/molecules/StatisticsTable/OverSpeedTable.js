@@ -118,7 +118,7 @@ const OverSpeedTable = (props) => {
 										>
 											{isVideoSource ? (
 												<Video
-													source={`http://globalbridge.synology.me:5555/api/videos/snap?cam_code=${cameraCode}&record_time=${imgInfo[6]}`}
+													source={`http://globalbridge.synology.me:5555/api/streams/${cameraCode}/clip?record_time=${imgInfo[6]}`}
 													showControls={true}
 													setVideoSource={setVideoSource}
 												/>
