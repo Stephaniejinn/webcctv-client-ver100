@@ -15,7 +15,15 @@ import SearchOverSpeedTable from "../../molecules/StatisticsTable/searchTable/Se
 import "./style.less";
 
 const SearchCollapsedTable = (props) => {
-	const { startDate, endTime, camera, cameraCode, baseURL, trafficURL } = props;
+	const {
+		startDate,
+		endTime,
+		camera,
+		cameraCode,
+		baseURL,
+		trafficURL,
+		setLoggedIn,
+	} = props;
 	const { Panel } = Collapse;
 	const { Title, Text } = Typography;
 
@@ -261,10 +269,12 @@ const SearchCollapsedTable = (props) => {
 					} else {
 						message.warning("최대 31일까지 조회 할 수 있습니다");
 					}
-				}
-				if (err.response.status === 404) {
+				} else if (err.response.status === 404) {
 					setEmptyTrafficData(true);
 					message.warning("해당 기간 데이터가 없습니다");
+				} else if (err.response.status === 401) {
+					message.warning("로그아웃 되었습니다");
+					setLoggedIn(false);
 				}
 			});
 	};
@@ -332,6 +342,8 @@ const SearchCollapsedTable = (props) => {
 					new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
 				) {
 					message.warning("해당 기간 과속 데이터가 없습니다");
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
 				}
 			});
 	};

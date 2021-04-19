@@ -18,7 +18,7 @@ const GeneralGraphCard = ({ title, chart }) => {
 							paddingBottom: 30,
 						}}
 					>
-						<Text>해당 카메라 데이터가 없습니다</Text>
+						<Text>현재 해당 카메라 데이터가 없습니다</Text>
 					</div>
 				</Card>
 			)}

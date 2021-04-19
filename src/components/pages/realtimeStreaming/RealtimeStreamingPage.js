@@ -60,20 +60,21 @@ const RealtimeStreamingPage = (props) => {
 								date={date}
 								currentTime={currentTime}
 								realtimeCamCode="0001"
+								setLoggedIn={setLoggedIn}
 							/>
 							<VideoContainer
 								camName="수인사거리-2 [하행]"
 								httpAddress={address[1]}
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0002"
+								realtimeCamCode="0001"
 							/>
 							<VideoContainer
 								camName="수인사거리-3 [하행]"
 								httpAddress={address[2]}
 								date={date}
 								currentTime={currentTime}
-								realtimeCamCode="0003"
+								realtimeCamCode="0001"
 							/>
 						</div>
 					</Content>

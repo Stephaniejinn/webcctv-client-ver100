@@ -19,6 +19,7 @@ const StreamingGeneralVisualization = (props) => {
 		realtimeCamCode,
 		baseURL,
 		trafficURL,
+		setLoggedIn,
 	} = props;
 
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
@@ -70,6 +71,9 @@ const StreamingGeneralVisualization = (props) => {
 				console.log(err.response);
 				if (err.response.status === 500) {
 					message.error("서버에 문제가 있습니다");
+				} else if (err.response.status === 401) {
+					message.warning("로그아웃 되었습니다");
+					setLoggedIn(false);
 				}
 				setLoadingTraffic(true);
 				setEmptyData(true);

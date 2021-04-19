@@ -23,6 +23,7 @@ const GeneralVisualization = (props) => {
 		baseURL,
 		trafficURL,
 		refresh,
+		setLoggedIn,
 	} = props;
 	const [isLoadingTraffic, setLoadingTraffic] = useState(true);
 	const [isEmptyData, setEmptyData] = useState(false);
@@ -34,7 +35,7 @@ const GeneralVisualization = (props) => {
 	var curTime = currentTime ? currentTime : "23:59:59";
 	const periodURL =
 		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
-	const title = page === "REALSTATISTIC" && `00:00 ~ ${curEndTime} `;
+	const title = page === "REALSTATISTIC" ? `| 00:00 ~ ${curEndTime} ` : "";
 
 	useEffect(() => {
 		setEmptyData(false);
@@ -89,6 +90,9 @@ const GeneralVisualization = (props) => {
 						new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
 					)
 						message.warning("해당 기간 시간 별 데이터가 없습니다");
+				} else if (err.response.status === 401) {
+					message.warning("로그아웃 되었습니다");
+					setLoggedIn(false);
 				}
 			});
 	};
@@ -112,21 +116,21 @@ const GeneralVisualization = (props) => {
 					<>
 						<div className="general-graph-card">
 							<VisualizationCard
-								title={`차종별 통행량 | ${title}`}
+								title={`차종별 통행량 ${title}`}
 								chart={<VehicleRatio trafficData={trafficData} page={page} />}
 							/>
 							<VisualizationCard
-								title={`차종별 과속차량 | ${title}`}
+								title={`차종별 과속차량 ${title}`}
 								chart={<OverSpeedBar trafficData={trafficData} page={page} />}
 							/>
 						</div>
 						<div className="general-graph-card">
 							<VisualizationCard
-								title={`평균속도 | ${title}`}
+								title={`평균속도 ${title}`}
 								chart={<AvgSpeedGauge trafficData={trafficData} page={page} />}
 							/>
 							<VisualizationCard
-								title={`차종별 평균속도 | ${title}`}
+								title={`차종별 평균속도 ${title}`}
 								chart={<AvgSpeedBar trafficData={trafficData} page={page} />}
 							/>
 						</div>

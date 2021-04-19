@@ -46,9 +46,11 @@ const MonthStatPage = (props) => {
 									<div className="statistic-general-visualization">
 										<GeneralVisualization
 											period="MONTH"
+											page="MONTH"
 											startDate={startDate}
 											endTime={endTime}
 											refresh={false}
+											setLoggedIn={setLoggedIn}
 										/>
 									</div>
 									{timeClassification ? (
@@ -56,6 +58,7 @@ const MonthStatPage = (props) => {
 											period="MONTH"
 											startDate={startDate}
 											endTime={endTime}
+											setLoggedIn={setLoggedIn}
 										/>
 									) : (
 										<LaneStatistic
@@ -63,6 +66,7 @@ const MonthStatPage = (props) => {
 											startDate={startDate}
 											endTime={endTime}
 											additionalFilter={additionalFilter}
+											setLoggedIn={setLoggedIn}
 										/>
 									)}
 								</>

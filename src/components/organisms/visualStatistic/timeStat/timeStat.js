@@ -17,6 +17,7 @@ const TimeVisualization = (props) => {
 		camLanes,
 		baseURL,
 		trafficURL,
+		setLoggedIn,
 	} = props;
 	const { TabPane } = Tabs;
 
@@ -71,6 +72,8 @@ const TimeVisualization = (props) => {
 			.catch((err) => {
 				if (err.response.status === 400) {
 					message.warning("해당 기간 시간 별 데이터가 없습니다");
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
 				}
 				setEmptyData(true);
 			});

@@ -18,6 +18,7 @@ const VideoContainer = ({
 	date,
 	currentTime,
 	realtimeCamCode,
+	setLoggedIn,
 }) => {
 	return (
 		<div className="video-container">
@@ -31,6 +32,7 @@ const VideoContainer = ({
 					endTime={date}
 					currentTime={currentTime}
 					realtimeCamCode={realtimeCamCode}
+					setLoggedIn={setLoggedIn}
 				/>
 			</div>
 		</div>

@@ -39,7 +39,11 @@ const SearchDownloadPage = (props) => {
 							setCount={setCount}
 						/>
 						{firstFilter ? (
-							<SearchCollapsedTable startDate={startDate} endTime={endTime} />
+							<SearchCollapsedTable
+								startDate={startDate}
+								endTime={endTime}
+								setLoggedIn={setLoggedIn}
+							/>
 						) : null}
 					</Content>
 				</Layout>

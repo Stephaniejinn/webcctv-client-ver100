@@ -46,9 +46,11 @@ const WeekStatPage = (props) => {
 									<div className="statistic-general-visualization">
 										<GeneralVisualization
 											period="WEEK"
+											page="WEEK"
 											startDate={startDate}
 											endTime={endTime}
 											refresh={false}
+											setLoggedIn={setLoggedIn}
 										/>
 									</div>
 									{timeClassification ? (
@@ -56,6 +58,7 @@ const WeekStatPage = (props) => {
 											period="WEEK"
 											startDate={startDate}
 											endTime={endTime}
+											setLoggedIn={setLoggedIn}
 										/>
 									) : (
 										<LaneStatistic
@@ -63,6 +66,7 @@ const WeekStatPage = (props) => {
 											startDate={startDate}
 											endTime={endTime}
 											additionalFilter={additionalFilter}
+											setLoggedIn={setLoggedIn}
 										/>
 									)}
 								</>

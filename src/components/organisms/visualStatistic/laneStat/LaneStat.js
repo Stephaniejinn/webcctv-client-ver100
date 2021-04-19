@@ -18,6 +18,7 @@ const LaneVisualization = (props) => {
 		baseURL,
 		trafficURL,
 		additionalFilter,
+		setLoggedIn,
 	} = props;
 	const { Text } = Typography;
 
@@ -63,7 +64,13 @@ const LaneVisualization = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 				setEmptyData(true);
-				message.warning("해당 기간 차선 별 데이터가 없습니다");
+				if (err.response.status === 401) {
+					setLoggedIn(false);
+				} else if (err.response.status === 500) {
+					message.error("서버에 문제가 있습니다");
+				} else {
+					message.warning("해당 기간 차선 별 데이터가 없습니다");
+				}
 			});
 	};
 

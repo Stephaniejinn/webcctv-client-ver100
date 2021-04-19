@@ -20,7 +20,7 @@ const Video = (props) => {
 			xhrSetup: (xhr, url) => {
 				xhr.setRequestHeader(
 					"authorization",
-					`Bearer ${localStorage.getItem("jwt")}`
+					`Bearer ${localStorage.getItem("token")}`
 				);
 			},
 		});

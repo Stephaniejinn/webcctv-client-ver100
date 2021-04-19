@@ -63,6 +63,10 @@ const RealtimeStatisticPage = (props) => {
 				})
 				.catch((err) => {
 					console.log(err.response);
+					if (err.response.status === 401) {
+						message.warning("로그아웃 되었습니다");
+						setLoggedIn(false);
+					}
 				});
 		} else {
 			setCameraAddress(camAddress);
@@ -108,6 +112,9 @@ const RealtimeStatisticPage = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 				setEmptyData(true);
+				if (err.response.status === 401) {
+					setLoggedIn(false);
+				}
 			});
 	};
 	return (
@@ -132,6 +139,7 @@ const RealtimeStatisticPage = (props) => {
 									endTime={date}
 									currentTime={currTimeStr}
 									refresh={refresh}
+									setLoggedIn={setLoggedIn}
 								/>
 							</div>
 						</div>

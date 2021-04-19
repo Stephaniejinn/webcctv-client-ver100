@@ -10,7 +10,14 @@ import Video from "../../molecules/video/Video";
 import "./style.less";
 
 const OverSpeedTable = (props) => {
-	const { startDate, endTime, cameraCode, baseURL, camera } = props;
+	const {
+		startDate,
+		endTime,
+		cameraCode,
+		baseURL,
+		camera,
+		overSpeedVideoURL,
+	} = props;
 	const { Text } = Typography;
 
 	const [Data, setData] = useState([]);
@@ -118,7 +125,7 @@ const OverSpeedTable = (props) => {
 										>
 											{isVideoSource ? (
 												<Video
-													source={`http://globalbridge.synology.me:5555/api/streams/${cameraCode}/clip?record_time=${imgInfo[6]}`}
+													source={`${overSpeedVideoURL}/${cameraCode}/clip?record_time=${imgInfo[6]}`}
 													showControls={true}
 													setVideoSource={setVideoSource}
 												/>
@@ -281,6 +288,7 @@ const mapStateToProps = (state) => {
 		cameraCode: state.locationCode.cameraCode,
 		baseURL: state.baseURL.baseURL,
 		camera: state.location.camera,
+		overSpeedVideoURL: state.baseURL.overSpeedVideoURL,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

@@ -47,9 +47,11 @@ const DayStatPage = (props) => {
 									<div className="statistic-general-visualization">
 										<GeneralVisualization
 											period="DAY"
+											page="DAY"
 											startDate={startDate}
 											endTime={endTime}
 											refresh={false}
+											setLoggedIn={setLoggedIn}
 										/>
 									</div>
 									{timeClassification ? (
@@ -57,12 +59,14 @@ const DayStatPage = (props) => {
 											period="DAY"
 											startDate={startDate}
 											endTime={endTime}
+											setLoggedIn={setLoggedIn}
 										/>
 									) : (
 										<LaneStatistic
 											period="DAY"
 											startDate={startDate}
 											endTime={endTime}
+											setLoggedIn={setLoggedIn}
 										/>
 									)}
 								</>
