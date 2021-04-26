@@ -6,7 +6,7 @@ import { isMobile } from "react-device-detect";
 import "./style.less";
 
 const Video = (props) => {
-	const { source, showControls, setVideoSource } = props;
+	const { source, showControls = false, setVideoSource } = props;
 	const videoRef = useRef();
 	const handleClick = (e) => {
 		e.preventDefault();
@@ -35,15 +35,20 @@ const Video = (props) => {
 			hls.on(Hls.Events.MEDIA_ATTACHED, () => {
 				hls.loadSource(source);
 				hls.on(Hls.Events.MANIFEST_PARSED, () => {
+					setVideoSource(true);
 					videoRef.current.play();
 				});
 				hls.on(Hls.Events.ERROR, (_, data) => {
 					if (data.response) {
 						if (data.response.code === 404) {
-							setVideoSource(false);
+							if (setVideoSource) {
+								setVideoSource(false);
+							}
 						} else if (data.response.code === 401) {
 							// jwt가 invalid 할 때
-							setVideoSource(false);
+							if (setVideoSource) {
+								setVideoSource(false);
+							}
 						}
 					}
 				});
@@ -63,9 +68,8 @@ const Video = (props) => {
 			src={source}
 			onClick={handleClick}
 			muted
-			// autoPlay
+			autoPlay
 			controls={isMobile || showControls}
-			// controls={true}
 			preload="auto"
 		/>
 	);

@@ -3,11 +3,11 @@ import { HashLink as Link } from "react-router-hash-link";
 import { Layout, Menu, Divider, Typography } from "antd";
 import {
 	FundProjectionScreenOutlined,
-	PieChartOutlined,
 	FileTextOutlined,
 	VideoCameraOutlined,
 	BarChartOutlined,
 	PicRightOutlined,
+	FileSearchOutlined,
 } from "@ant-design/icons";
 
 // import logo from "../../../assets/logo/logoBlueWN.png";
@@ -38,6 +38,10 @@ const MySider = () => {
 	// 		return [];
 	// 	}
 	// });
+
+	const handleClick = (key) => {
+		console.log(key);
+	};
 
 	const onCollapse = (collapsed) => {
 		setSiderCollapsed(collapsed);
@@ -79,7 +83,7 @@ const MySider = () => {
 			<Menu
 				theme="light"
 				mode="inline"
-				// onClick={handleClick}
+				onClick={handleClick}
 				defaultSelectedKeys={["/realtime/streaming"]}
 				selectedKeys={path}
 				openKeys={openKeys}
@@ -110,6 +114,9 @@ const MySider = () => {
 						<Link to="/statistic/month">월간 별</Link>
 					</Menu.Item>
 				</SubMenu>
+				<Menu.Item key="/overspeed" icon={<FileSearchOutlined />}>
+					<Link to="/overspeed">과속 데이터 조회</Link>
+				</Menu.Item>
 				<Menu.Item key="/search" icon={<FileTextOutlined />}>
 					<Link to="/search">데이터 조회 및 다운로드</Link>
 				</Menu.Item>

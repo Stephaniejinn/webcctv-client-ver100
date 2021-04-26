@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, Typography, Divider, Spin, message } from "antd";
+import { Collapse, Typography, Divider, Spin, message, Select } from "antd";
 import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
-import ExportJsonExcel from "js-export-excel";
+import { CSVLink } from "react-csv";
 import moment from "moment";
 
 import axios from "axios";
 import { connect } from "react-redux";
+import * as actions from "../../../redux/actions";
 
 import FirstTable from "../../molecules/StatisticsTable/searchTable/SearchFirstTable";
 import SecondTable from "../../molecules/StatisticsTable/searchTable/SearchSecondTable";
@@ -22,7 +23,6 @@ const SearchCollapsedTable = (props) => {
 		baseURL,
 		trafficURL,
 		setLoggedIn,
-		camLanes,
 	} = props;
 	const { Panel } = Collapse;
 	const { Title, Text } = Typography;
@@ -36,12 +36,10 @@ const SearchCollapsedTable = (props) => {
 	const [firstDataTotal, setFirstDataTotal] = useState([]);
 	const [secondDataTotal, setSecondDataTotal] = useState([]);
 	const [overSpeedDataTotal, setOverSpeedDataTotal] = useState([]);
-	const [firstDataLaneTotal, setFirstDataLaneTotal] = useState({});
 
 	const [isLoadingFirst, setLoadingFirst] = useState(true);
 	const [isLoadingSecond, setLoadingSecond] = useState(true);
 	const [isLoadingOverSpeed, setLoadingOverSpeed] = useState(true);
-	const [isLoadingLane, setLoadingLane] = useState(true);
 
 	const [isEmptyTrafficData, setEmptyTrafficData] = useState(false);
 	const [isEmptyOverSpeedData, setEmptyOverSpeedData] = useState(false);
@@ -49,60 +47,53 @@ const SearchCollapsedTable = (props) => {
 	var countFirstCol;
 	var countSecondCol;
 	var countOverSpeedCol;
-	var firstDataLaneTotalTemp;
 	const firstDataHeaders = [
-		"시간",
-		"전체 통행량",
-		"전체 평균속도",
-		"전체 PCU",
-		"전체 과속대수",
-		"승용차 통행량",
-		"승용차 평균속도",
-		"승용차 PCU",
-		"승용차 비율",
-		"승용차 과속대수",
-		"버스 통행량",
-		"버스 평균속도",
-		"버스 PCU",
-		"버스 비율",
-		"버스 과속대수",
-		"화물차 통행량",
-		"화물차 평균속도",
-		"화물차 PCU",
-		"화물차 비율",
-		"화물차 과속대수",
-		"이륜차 통행량",
-		"이륜차 평균속도",
-		"이륜차 PCU",
-		"이륜차 비율",
-		"이륜차 과속대수",
+		{ label: "시간", key: "time" },
+		{ label: "전체 통행량", key: "totalCount" },
+		{ label: "전체 평균속도", key: "totalAvgSpeed" },
+		{ label: "전체 PCU", key: "totalpcu" },
+		{ label: "전체 과속대수", key: "totalOverSpeed" },
+		{ label: "승용차 통행량", key: "carCount" },
+		{ label: "승용차 평균속도", key: "totalAvgSpeed" },
+		{ label: "승용차 PCU", key: "carpcu" },
+		{ label: "승용차 비율", key: "carRatio" },
+		{ label: "승용차 과속대수", key: "carOverSpeed" },
+		{ label: "버스 통행량", key: "busCount" },
+		{ label: "버스 평균속도", key: "busAvgSpeed" },
+		{ label: "버스 PCU", key: "buspcu" },
+		{ label: "버스 비율", key: "busRatio" },
+		{ label: "버스 과속대수", key: "busOverSpeed" },
+		{ label: "화물차 통행량", key: "truckCount" },
+		{ label: "화물차 평균속도", key: "truckAvgSpeed" },
+		{ label: "화물차 PCU", key: "truckpcu" },
+		{ label: "화물차 비율", key: "truckRatio" },
+		{ label: "화물차 과속대수", key: "truckOverSpeed" },
+		{ label: "이륜차 통행량", key: "motorCount" },
+		{ label: "이륜차 평균속도", key: "motorAvgSpeed" },
+		{ label: "이륜차 PCU", key: "motorpcu" },
+		{ label: "이륜차 비율", key: "motorRatio" },
+		{ label: "이륜차 과속대수", key: "motorOverSpeed" },
 	];
-	const firstDataFilter = [
-		"time",
-		"totalCount",
-		"totalAvgSpeed",
-		"totalpcu",
-		"totalOverSpeed",
-		"carCount",
-		"totalAvgSpeed",
-		"carpcu",
-		"carRatio",
-		"carOverSpeed",
-		"busCount",
-		"busAvgSpeed",
-		"buspcu",
-		"busRatio",
-		"busOverSpeed",
-		"truckCount",
-		"truckAvgSpeed",
-		"truckpcu",
-		"truckRatio",
-		"truckOverSpeed",
-		"motorCount",
-		"motorAvgSpeed",
-		"motorpcu",
-		"motorRatio",
-		"motorOverSpeed",
+
+	const secondDataHeaders = [
+		{ label: "시간", key: "time" },
+		{ label: "전체 주야율", key: "totalDayNightRatio" },
+		{ label: "PHF", key: "totalPHF" },
+		{ label: "점두유율", key: "totalPeekHourCnt" },
+		{ label: "집중율", key: "totalVehiclePeakHourConcentrationRatio" },
+		{ label: "승용차 주야율", key: "carDayNightRatio" },
+		{ label: "승용차 주야율", key: "busDayNightRatio" },
+		{ label: "승용차 주야율", key: "truckDayNightRatio" },
+		{ label: "승용차 주야율", key: "motorDayNightRatio" },
+	];
+
+	const overSpeedDataHeaders = [
+		{ label: "시간", key: "time" },
+		{ label: "차종", key: "vehicleType" },
+		{ label: "차량번호", key: "licenseNumber" },
+		{ label: "위반속도", key: "speed" },
+		{ label: "차선", key: "laneNumber" },
+		{ label: "이미지 링크", key: "imageLink" },
 	];
 
 	useEffect(() => {
@@ -114,114 +105,15 @@ const SearchCollapsedTable = (props) => {
 		setLoadingFirst(true);
 		setLoadingSecond(true);
 		setLoadingOverSpeed(true);
-		setFirstData([]);
-		setSecondData([]);
-		setFirstDataTotal([]);
-		setSecondDataTotal([]);
 		axiosAsyncFS();
 		axiosOverSpeedData();
 	}, [cameraCode, startDate, endTime]);
 
-	const downloadOverSpeedToExcel = () => {
-		let excelFile = {};
-		excelFile.fileName = `과속 데이터_${moment(startDate).format("l")}-${moment(
-			endTime
-		).format("l")}`;
-		excelFile.datas = [
-			{
-				sheetData: overSpeedDataTotal,
-				sheetName: "전체",
-				sheetFilter: [
-					"time",
-					"vehicleType",
-					"licenseNumber",
-					"speed",
-					"laneNumber",
-					"imageLink",
-				],
-				sheetHeader: [
-					"시간",
-					"차종",
-					"차량번호",
-					"위반속도",
-					"차선",
-					"이미지 링크",
-				],
-			},
-		];
-		let toExcel = new ExportJsonExcel(excelFile);
-		toExcel.saveExcel();
-	};
-	const downloadSecondTableToExcel = () => {
-		let excelFile = {};
-		excelFile.fileName = `2차 데이터_${moment(startDate).format("l")}-${moment(
-			endTime
-		).format("l")}`;
-		excelFile.datas = [
-			{
-				sheetData: secondDataTotal,
-				sheetName: "전체",
-				sheetFilter: [
-					"time",
-					"totalPHF",
-					"totalPeekHourCnt",
-					"totalVehiclePeakHourConcentrationRatio",
-					"totalDayNightRatio",
-					"carDayNightRatio",
-					"busDayNightRatio",
-					"truckDayNightRatio",
-					"motorDayNightRatio",
-				],
-				sheetHeader: [
-					"시간",
-					"PHF",
-					"점두유율",
-					"집중율",
-					"전체 주야율",
-					"승용차 주야율",
-					"버스 주야율",
-					"트럭 주야율",
-					"오토바이 주야율",
-				],
-			},
-		];
-		let toExcel = new ExportJsonExcel(excelFile);
-		toExcel.saveExcel();
-	};
-
-	const downloadFirstTableToExcel = () => {
-		firstDataLaneTotalTemp = {};
-		setFirstDataLaneTotal({});
-		let excelFile = {};
-		excelFile.fileName = `1차 데이터_${moment(startDate).format("l")}-${moment(
-			endTime
-		).format("l")}`;
-		let Datas = [
-			{
-				sheetData: firstDataTotal,
-				sheetName: "전체",
-				sheetFilter: firstDataFilter,
-				sheetHeader: firstDataHeaders,
-			},
-		];
-		for (var idx = 1; idx <= camLanes; idx++) {
-			axiosAsyncFirstLane(idx);
-			if (!isLoadingLane) {
-				Datas.push({
-					sheetData: firstDataLaneTotal[idx],
-					sheetName: `${idx} 차선`,
-					sheetFilter: firstDataFilter,
-					sheetHeader: firstDataHeaders,
-				});
-				if (idx === camLanes) {
-					excelFile.datas = Datas;
-					let toExcel = new ExportJsonExcel(excelFile);
-					toExcel.saveExcel();
-				}
-			}
-		}
-	};
 	const axiosAsyncFS = () => {
+		setFirstData([]);
+		setSecondData([]);
+		setFirstDataTotal([]);
+		setSecondDataTotal([]);
 		var firstDataParsedTotal = [];
 		var secondDataParsedTotal = [];
 		var firstDataParsed = [];
@@ -457,107 +349,7 @@ const SearchCollapsedTable = (props) => {
 				}
 			});
 	};
-	const axiosAsyncFirstLane = (laneNum) => {
-		setLoadingLane(true);
-		var firstDataLane = [];
-		axios
-			.get(
-				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=${laneNum.toString()}`,
-				{
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				}
-			)
-			.then((res) => {
-				if (res.data.length !== 0) {
-					res.data.some((eachData, index) => {
-						const {
-							recordTime,
-							totalVehicleVolume,
-							totalVehicleAvgSpeed,
-							totalVehiclePassengerCarUnit,
-							totalVehicleSpdVolume,
-							carVolume,
-							carAvgSpeed,
-							carPassengerCarUnit,
-							carVehicleRatio,
-							carSpdVolume,
-							mBusVolume,
-							mBusAvgSpeed,
-							mBusPassengerCarUnit,
-							mBusVehicleRatio,
-							mBusSpdVolume,
-							mTruckVolume,
-							mTruckAvgSpeed,
-							mTruckPassengerCarUnit,
-							mTruckVehicleRatio,
-							mTruckSpdVolume,
-							motorVolume,
-							motorAvgSpeed,
-							motorPassengerCarUnit,
-							motorVehicleRatio,
-							motorSpdVolume,
-						} = eachData;
-						let laneDataTemp = {};
-						if (recordTime === "ALL") {
-							return false;
-						} else {
-							laneDataTemp["key"] = index + 1;
-							laneDataTemp["time"] = moment(recordTime).format(
-								"YYYY년 MM월 DD일 HH:mm:ss"
-							);
 
-							laneDataTemp["totalCount"] = totalVehicleVolume;
-							laneDataTemp["totalAvgSpeed"] = totalVehicleAvgSpeed;
-							laneDataTemp["totalpcu"] = totalVehiclePassengerCarUnit;
-							laneDataTemp["totalOverSpeed"] = totalVehicleSpdVolume;
-
-							laneDataTemp["carCount"] = carVolume;
-							laneDataTemp["carAvgSpeed"] = carAvgSpeed;
-							laneDataTemp["carpcu"] = carPassengerCarUnit;
-							laneDataTemp["carRatio"] = carVehicleRatio;
-							laneDataTemp["carOverSpeed"] = carSpdVolume;
-
-							laneDataTemp["busCount"] = mBusVolume;
-							laneDataTemp["busAvgSpeed"] = mBusAvgSpeed;
-							laneDataTemp["buspcu"] = mBusPassengerCarUnit;
-							laneDataTemp["busRatio"] = mBusVehicleRatio;
-							laneDataTemp["busOverSpeed"] = mBusSpdVolume;
-
-							laneDataTemp["truckCount"] = mTruckVolume;
-							laneDataTemp["truckAvgSpeed"] = mTruckAvgSpeed;
-							laneDataTemp["truckpcu"] = mTruckPassengerCarUnit;
-							laneDataTemp["truckRatio"] = mTruckVehicleRatio;
-							laneDataTemp["truckOverSpeed"] = mTruckSpdVolume;
-
-							laneDataTemp["motorCount"] = motorVolume;
-							laneDataTemp["motorAvgSpeed"] = motorAvgSpeed;
-							laneDataTemp["motorpcu"] = motorPassengerCarUnit;
-							laneDataTemp["motorRatio"] = motorVehicleRatio;
-							laneDataTemp["motorOverSpeed"] = motorSpdVolume;
-							firstDataLane.push(laneDataTemp);
-						}
-					});
-					firstDataLaneTotalTemp[laneNum] = firstDataLane;
-					setFirstDataLaneTotal(firstDataLaneTotalTemp);
-					setLoadingLane(false);
-				} else {
-					setEmptyTrafficData(true);
-					message.warning("해당 기간 데이터가 없습니다");
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-				if (err.response.status === 401) {
-					message.warning(
-						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
-					);
-					setLoggedIn(false);
-				}
-			});
-	};
 	const collapseHeaderFirst = (
 		<div className="table-collapse-header">
 			1차 데이터
@@ -566,6 +358,8 @@ const SearchCollapsedTable = (props) => {
 			<Divider type="vertical" />
 			전체 및 특정 차선 데이터 <Divider type="vertical" />
 			15분 단위 <Divider type="vertical" />
+			{/* 차선
+			<Select size="small" /> */}
 		</div>
 	);
 
@@ -593,17 +387,42 @@ const SearchCollapsedTable = (props) => {
 			onClick={(event) => {
 				// If you don't want click extra trigger collapse, you can prevent this:
 				event.stopPropagation();
-				if (tableIdx === "FIRST") {
-					downloadFirstTableToExcel();
-				} else if (tableIdx === "SECOND") {
-					downloadSecondTableToExcel();
-				} else {
-					downloadOverSpeedToExcel();
-				}
 			}}
 		>
-			<DownloadOutlined />
-			다운로드
+			{tableIdx === "FIRST" ? (
+				<CSVLink
+					data={firstDataTotal}
+					filename={`1차 데이터_${moment(startDate).format("l")}-${moment(
+						endTime
+					).format("l")}.csv`}
+					headers={firstDataHeaders}
+				>
+					<DownloadOutlined />
+					다운로드
+				</CSVLink>
+			) : tableIdx === "SECOND" ? (
+				<CSVLink
+					data={secondDataTotal}
+					filename={`2차 데이터_${moment(startDate).format("l")}-${moment(
+						endTime
+					).format("l")}.csv`}
+					headers={secondDataHeaders}
+				>
+					<DownloadOutlined />
+					다운로드
+				</CSVLink>
+			) : (
+				<CSVLink
+					data={overSpeedDataTotal}
+					filename={`과속 데이터_${moment(startDate).format("l")}-${moment(
+						endTime
+					).format("l")}.csv`}
+					headers={overSpeedDataHeaders}
+				>
+					<DownloadOutlined />
+					다운로드
+				</CSVLink>
+			)}
 		</div>
 	);
 
@@ -612,7 +431,7 @@ const SearchCollapsedTable = (props) => {
 			{errorMsg ? null : isEmptyTrafficData ? null : (
 				<div className="table-collapse">
 					<Title level={5} style={{ marginTop: 10 }}>
-						{camera} 데이터 조회 결과
+						{camera} 데이터 조회 결과 <Select size="small" />
 					</Title>
 					<Divider />
 					{isLoadingSecond ? (
@@ -731,8 +550,19 @@ const mapStateToProps = (state) => {
 		camera: state.location.camera,
 		baseURL: state.baseURL.baseURL,
 		trafficURL: state.baseURL.trafficURL,
-		camLanes: state.locationCode.camLanes,
 	};
 };
-
-export default connect(mapStateToProps)(SearchCollapsedTable);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		getLocationCodeInfo: () => {
+			dispatch(actions.getLocationCode());
+		},
+		getBaseURL: () => {
+			dispatch(actions.getURL());
+		},
+	};
+};
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(SearchCollapsedTable);

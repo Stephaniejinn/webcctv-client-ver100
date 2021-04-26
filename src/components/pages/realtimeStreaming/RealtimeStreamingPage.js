@@ -53,29 +53,35 @@ const RealtimeStreamingPage = (props) => {
 							<SearchInput />
 						</div>
 						<div className="video-container-4">
-							<VideoContainer
-								camName="수인사거리-1 [하행]"
-								// httpAddress="https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8"
-								httpAddress={address[0]}
-								date={date}
-								currentTime={currentTime}
-								realtimeCamCode="0001"
-								setLoggedIn={setLoggedIn}
-							/>
-							<VideoContainer
-								camName="수인사거리-2 [하행]"
-								httpAddress={address[1]}
-								date={date}
-								currentTime={currentTime}
-								realtimeCamCode="0001"
-							/>
-							<VideoContainer
-								camName="수인사거리-3 [하행]"
-								httpAddress={address[2]}
-								date={date}
-								currentTime={currentTime}
-								realtimeCamCode="0001"
-							/>
+							{address[0] && (
+								<VideoContainer
+									camName="수인사거리-1 [하행]"
+									// httpAddress="https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8"
+									httpAddress={address[0]}
+									date={date}
+									currentTime={currentTime}
+									realtimeCamCode="0001"
+									setLoggedIn={setLoggedIn}
+								/>
+							)}
+							{address[1] && (
+								<VideoContainer
+									camName="수인사거리-2 [하행]"
+									httpAddress={address[1]}
+									date={date}
+									currentTime={currentTime}
+									realtimeCamCode="0001"
+								/>
+							)}
+							{address[2] && (
+								<VideoContainer
+									camName="수인사거리-3 [하행]"
+									httpAddress={address[2]}
+									date={date}
+									currentTime={currentTime}
+									realtimeCamCode="0001"
+								/>
+							)}
 						</div>
 					</Content>
 				</Layout>

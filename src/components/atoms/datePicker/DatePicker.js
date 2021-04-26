@@ -21,6 +21,8 @@ const MyDatePicker = (props) => {
 		monthEndTime,
 		searchStartDate,
 		searchEndTime,
+		overSpeedStartDate,
+		overSpeedEndTime,
 	} = props;
 	const { RangePicker } = DatePicker;
 	const { Text } = Typography;
@@ -39,6 +41,9 @@ const MyDatePicker = (props) => {
 		} else if (period === "DAY" && dayStartDate) {
 			setTempStartDate(dayStartDate);
 			setTempEndTime(dayEndTime);
+		} else if (period === "OVERSPEED" && overSpeedStartDate) {
+			setTempStartDate(overSpeedStartDate);
+			setTempEndTime(overSpeedEndTime);
 		} else {
 			return () => {
 				setTempStartDate("");
@@ -50,6 +55,10 @@ const MyDatePicker = (props) => {
 	var defaultDay = dayStartDate && moment(dayStartDate);
 	var defaultWeek = weekStartDate && moment(weekStartDate);
 	var defaultMonth = monthStartDate && moment(monthStartDate, "YYYY-MM");
+	var defaultOverSpeed =
+		overSpeedStartDate || overSpeedEndTime
+			? [moment(overSpeedStartDate), moment(overSpeedEndTime)]
+			: null;
 	var defaultSearch =
 		searchStartDate || searchEndTime
 			? [moment(searchStartDate), moment(searchEndTime)]
@@ -71,7 +80,7 @@ const MyDatePicker = (props) => {
 		} else if (period === "MONTH") {
 			startDate = moment(date).startOf("month").format("YYYY-MM-DD");
 			endDate = moment(date).endOf("month").format("YYYY-MM-DD");
-		} else if (period === "SEARCH") {
+		} else if (period === "SEARCH" || period === "OVERSPEED") {
 			startDate = dateString[0];
 			endDate = dateString[1];
 		} else {
@@ -104,8 +113,11 @@ const MyDatePicker = (props) => {
 					placeholder="월 선택"
 					defaultValue={defaultMonth}
 				/>
-			) : period === "SEARCH" ? (
-				<RangePicker onChange={onChange} defaultValue={defaultSearch} />
+			) : period === "SEARCH" || period === "OVERSPEED" ? (
+				<RangePicker
+					onChange={onChange}
+					defaultValue={period === "SEARCH" ? defaultSearch : defaultOverSpeed}
+				/>
 			) : (
 				<DatePicker
 					onChange={onChange}
@@ -126,6 +138,8 @@ const mapStateToProps = (state) => {
 		monthEndTime: state.date.monthEndTime,
 		searchStartDate: state.date.searchStartDate,
 		searchEndTime: state.date.searchEndTime,
+		overSpeedStartDate: state.date.overSpeedStartDate,
+		overSpeedEndTime: state.date.overSpeedEndTime,
 	};
 };
 

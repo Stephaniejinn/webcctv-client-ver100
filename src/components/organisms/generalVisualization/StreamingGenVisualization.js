@@ -72,7 +72,9 @@ const StreamingGeneralVisualization = (props) => {
 				if (err.response.status === 500) {
 					message.error("서버에 문제가 있습니다");
 				} else if (err.response.status === 401) {
-					message.warning("로그아웃 되었습니다");
+					message.warning(
+						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
+					);
 					setLoggedIn(false);
 				}
 				setLoadingTraffic(true);

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Table, Spin, Button, Modal, Descriptions, Typography } from "antd";
+import {
+	Table,
+	Spin,
+	Button,
+	Modal,
+	Descriptions,
+	Typography,
+	message,
+} from "antd";
 import moment from "moment";
 
 import axios from "axios";
@@ -17,6 +25,7 @@ const OverSpeedTable = (props) => {
 		baseURL,
 		camera,
 		overSpeedVideoURL,
+		setLoggedIn,
 	} = props;
 	const { Text } = Typography;
 
@@ -240,6 +249,11 @@ const OverSpeedTable = (props) => {
 			})
 			.catch((err) => {
 				console.log(err.response);
+				if (err.response.status === 400) {
+					message.warning("해당 기간 시간 별 데이터가 없습니다");
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
+				}
 				setEmptyData(true);
 			});
 	};

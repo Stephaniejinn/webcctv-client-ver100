@@ -42,7 +42,7 @@ const GeneralVisualization = (props) => {
 		setLoadingTraffic(true);
 		setTrafficData([]);
 		getTrafficData();
-	}, [camCode, startDate, endTime]);
+	}, [camCode, startDate, endTime, currentTime]);
 
 	useEffect(() => {
 		if (refresh) {
@@ -91,7 +91,9 @@ const GeneralVisualization = (props) => {
 					)
 						message.warning("해당 기간 시간 별 데이터가 없습니다");
 				} else if (err.response.status === 401) {
-					message.warning("로그아웃 되었습니다");
+					message.warning(
+						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
+					);
 					setLoggedIn(false);
 				}
 			});

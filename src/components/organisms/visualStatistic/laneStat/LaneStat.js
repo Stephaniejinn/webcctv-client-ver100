@@ -3,7 +3,6 @@ import { Spin, Typography, message } from "antd";
 
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../../redux/actions";
 
 import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
@@ -119,14 +118,5 @@ const mapStateToProps = (state) => {
 		trafficURL: state.baseURL.trafficURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationCodeInfo: () => {
-			dispatch(actions.getLocationCode());
-		},
-		getBaseURL: () => {
-			dispatch(actions.getURL());
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(LaneVisualization);
+
+export default connect(mapStateToProps)(LaneVisualization);

@@ -30,6 +30,10 @@ export const setSearchDate = (payload) => ({
 	type: "SEARCH",
 	payload,
 });
+export const setOverSpeedDate = (payload) => ({
+	type: "OVERSPEED",
+	payload,
+});
 
 export const getLocation = () => ({
 	type: "LOCATION_INFO",

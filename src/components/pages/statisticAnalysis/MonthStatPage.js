@@ -9,7 +9,7 @@ import GeneralVisualization from "../../organisms/generalVisualization/GeneralVi
 import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
 import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 
-import "./style.less";
+import "../style.less";
 
 const MonthStatPage = (props) => {
 	const { setLoggedIn, isMaster } = props;
@@ -43,16 +43,14 @@ const MonthStatPage = (props) => {
 						{firstFilter ? (
 							count ? (
 								<>
-									<div className="statistic-general-visualization">
-										<GeneralVisualization
-											period="MONTH"
-											page="MONTH"
-											startDate={startDate}
-											endTime={endTime}
-											refresh={false}
-											setLoggedIn={setLoggedIn}
-										/>
-									</div>
+									<GeneralVisualization
+										period="MONTH"
+										page="MONTH"
+										startDate={startDate}
+										endTime={endTime}
+										refresh={false}
+										setLoggedIn={setLoggedIn}
+									/>
 									{timeClassification ? (
 										<TimeStatistic
 											period="MONTH"

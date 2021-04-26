@@ -7,6 +7,8 @@ const initialState = {
 	monthEndTime: "",
 	searchStartDate: "",
 	searchEndTime: "",
+	overSpeedStartDate: "",
+	overSpeedEndTime: "",
 };
 export default function date(state = initialState, action) {
 	switch (action.type) {
@@ -33,11 +35,17 @@ export default function date(state = initialState, action) {
 			};
 		case "SEARCH":
 			const { searchStartDate, searchEndTime } = action.payload;
-
 			return {
 				...state,
 				searchStartDate,
 				searchEndTime,
+			};
+		case "OVERSPEED":
+			const { overSpeedStartDate, overSpeedEndTime } = action.payload;
+			return {
+				...state,
+				overSpeedStartDate,
+				overSpeedEndTime,
 			};
 		default:
 			return state;

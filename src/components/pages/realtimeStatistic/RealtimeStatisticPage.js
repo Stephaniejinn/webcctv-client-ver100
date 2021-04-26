@@ -32,6 +32,7 @@ const RealtimeStatisticPage = (props) => {
 	);
 	const [refresh, setRefresh] = useState(false);
 	const [cameraAddress, setCameraAddress] = useState("");
+	// const [dataLastTime, setDataLastTime] = useState("");
 
 	const date = moment(new Date()).format("YYYY-MM-DD");
 	var currTimeStr = currTime.format("HH:mm:ss");
@@ -64,7 +65,9 @@ const RealtimeStatisticPage = (props) => {
 				.catch((err) => {
 					console.log(err.response);
 					if (err.response.status === 401) {
-						message.warning("로그아웃 되었습니다");
+						message.warning(
+							"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
+						);
 						setLoggedIn(false);
 					}
 				});
@@ -75,11 +78,10 @@ const RealtimeStatisticPage = (props) => {
 			// console.log("camName", camName);
 			// console.log("cameraAddress", cameraAddress);
 		}
-	}, [cameraCode, currTimeStr]);
+	}, [camCode, currTimeStr]);
 
 	useEffect(() => {
 		if (refresh) {
-			console.log("refresh", refresh);
 			setEmptyData(false);
 			setTrafficTotalData([]);
 			axiosAsync();
@@ -99,13 +101,19 @@ const RealtimeStatisticPage = (props) => {
 			)
 			.then((res) => {
 				if (res.data.length !== 0) {
+					console.log(res.data);
 					setTrafficTotalData(res.data);
+					// setDataLastTime(
+					// 	moment(new Date(res.data[res.data.length - 1].recordTime))
+					// 		.add(15, "m")
+					// 		.format("HH:mm")
+					// );
 					setEmptyData(false);
 				} else {
 					setEmptyData(true);
 				}
 				if (refresh) {
-					message.success("Refresh 성공");
+					message.success("새로고침 성공");
 				}
 				setRefresh(false);
 			})

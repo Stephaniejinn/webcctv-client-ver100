@@ -26,6 +26,7 @@ const SeachData = (props) => {
 		setWeekDate,
 		setMonthDate,
 		setSearchDate,
+		setOverSpeedDate,
 	} = props;
 
 	const { Title } = Typography;
@@ -41,6 +42,7 @@ const SeachData = (props) => {
 	const week = "주간 누적 통계";
 	const month = "월간 누적 통계";
 	const search = "기간 별 데이터 조회";
+	const overspeed = "과속 데이터 조회 ";
 
 	var timer;
 	const spinTimer = () => {
@@ -81,10 +83,14 @@ const SeachData = (props) => {
 				dateInfo["monthStartDate"] = tempStartDate;
 				dateInfo["monthEndTime"] = tempEndTime;
 				setMonthDate(dateInfo);
-			} else {
+			} else if (period === "SEARCH") {
 				dateInfo["searchStartDate"] = tempStartDate;
 				dateInfo["searchEndTime"] = tempEndTime;
 				setSearchDate(dateInfo);
+			} else {
+				dateInfo["overSpeedStartDate"] = tempStartDate;
+				dateInfo["overSpeedEndTime"] = tempEndTime;
+				setOverSpeedDate(dateInfo);
 			}
 			if (setAddFilter) {
 				if (!classification) {
@@ -110,10 +116,14 @@ const SeachData = (props) => {
 				dateInfo["monthStartDate"] = tempStartDate;
 				dateInfo["monthEndTime"] = tempEndTime;
 				setMonthDate(dateInfo);
-			} else {
+			} else if (period === "SEARCH") {
 				dateInfo["searchStartDate"] = tempStartDate;
 				dateInfo["searchEndTime"] = tempEndTime;
 				setSearchDate(dateInfo);
+			} else {
+				dateInfo["overSpeedStartDate"] = tempStartDate;
+				dateInfo["overSpeedEndTime"] = tempEndTime;
+				setOverSpeedDate(dateInfo);
 			}
 			if (setAddFilter) {
 				if (!classification) {
@@ -134,6 +144,8 @@ const SeachData = (props) => {
 					? week
 					: period === "MONTH"
 					? month
+					: period === "OVERSPEED"
+					? overspeed
 					: search}
 			</Title>
 			<div className="search-area-body">
@@ -148,7 +160,7 @@ const SeachData = (props) => {
 							setTempStartDate={setTempStartDate}
 							setTempEndTime={setTempEndTime}
 						/>
-						{period !== "SEARCH" && (
+						{period !== "SEARCH" && period !== "OVERSPEED" ? (
 							<div className="search-area-radio">
 								<Text
 									strong
@@ -166,7 +178,7 @@ const SeachData = (props) => {
 									<Radio.Button value={false}>차선별</Radio.Button>
 								</Radio.Group>
 							</div>
-						)}
+						) : null}
 					</div>
 
 					{classification === false &&
@@ -222,6 +234,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setSearchDate: (searchDate) => {
 			dispatch(actions.setSearchDate(searchDate));
+		},
+		setOverSpeedDate: (searchDate) => {
+			dispatch(actions.setOverSpeedDate(searchDate));
 		},
 	};
 };

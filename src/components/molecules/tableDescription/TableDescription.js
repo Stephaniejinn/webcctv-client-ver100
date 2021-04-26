@@ -32,7 +32,7 @@ const TableDescription = (props) => {
 		let nearest15 = Math.floor(currentTime.minute() / 15) * 15;
 		timeCalc = moment(
 			curTime + `:${nearest15 === 0 ? "00" : nearest15}:00`
-		).format("HH:mm:ss");
+		).format("HH:mm");
 	}
 
 	return (
@@ -55,10 +55,9 @@ const TableDescription = (props) => {
 						<>
 							{camera.length === 0 ? "수인사거리-1 [하행]" : camera}
 							<Divider type="vertical" />
-							{/* 2021년 03월 23일 */}
 							{moment(startDate).format("YYYY년 MM월 DD일")}
 							<Divider type="vertical" />
-							00:00:00 ~ {timeCalc}
+							00:00 ~ {timeCalc}
 						</>
 					) : (
 						<>

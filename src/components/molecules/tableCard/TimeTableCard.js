@@ -29,6 +29,7 @@ const TimeTableCard = (props) => {
 		currentTime,
 		page = "",
 		isEmptyData,
+		setLoggedIn,
 	} = props;
 
 	return (
@@ -63,7 +64,11 @@ const TimeTableCard = (props) => {
 							tableKey={tableKey}
 						/>
 						{tableKey === "overSpeed" ? (
-							<OverSpeedTable startDate={startDate} endTime={endTime} />
+							<OverSpeedTable
+								startDate={startDate}
+								endTime={endTime}
+								setLoggedIn={setLoggedIn}
+							/>
 						) : (
 							<DTSecondTable
 								currentLaneNum={parseInt(currentLaneNum)}
@@ -97,7 +102,11 @@ const TimeTableCard = (props) => {
 							tableKey={tableKey}
 						/>
 						{tableKey === "overSpeed" ? (
-							<OverSpeedTable startDate={startDate} endTime={endTime} />
+							<OverSpeedTable
+								startDate={startDate}
+								endTime={endTime}
+								setLoggedIn={setLoggedIn}
+							/>
 						) : (
 							<WTSecondTable
 								currentLaneNum={parseInt(currentLaneNum)}

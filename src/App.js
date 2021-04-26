@@ -9,7 +9,8 @@ import RealtimeStatisticPage from "./components/pages/realtimeStatistic/Realtime
 import DayStatPage from "./components/pages/statisticAnalysis/DayStatPage";
 import WeekStatPage from "./components/pages/statisticAnalysis/WeekStatPage";
 import MonthStatPage from "./components/pages/statisticAnalysis/MonthStatPage";
-import SearchDownloadPage from "./components/pages/searchDownload/SearchDownloadPage";
+import SearchDownloadPage from "./components/pages/search/SearchPage";
+import SearchOverSpeed from "./components/pages/search/OverspeedPage";
 import PasswordPage from "./components/pages/account/PasswordPage";
 import SignupPage from "./components/pages/account/SignupPage";
 import LoginPage from "./components/pages/login/LoginPage";
@@ -114,6 +115,15 @@ const App = (props) => {
 								path="/search"
 								render={() => (
 									<SearchDownloadPage
+										setLoggedIn={setLoggedIn}
+										isMaster={isMaster}
+									/>
+								)}
+							/>
+							<Route
+								path="/overspeed"
+								render={() => (
+									<SearchOverSpeed
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
 									/>

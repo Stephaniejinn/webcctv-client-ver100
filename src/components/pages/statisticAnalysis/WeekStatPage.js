@@ -9,7 +9,7 @@ import GeneralVisualization from "../../organisms/generalVisualization/GeneralVi
 import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
 import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 
-import "./style.less";
+import "../style.less";
 
 const WeekStatPage = (props) => {
 	const { setLoggedIn, isMaster } = props;
@@ -43,16 +43,14 @@ const WeekStatPage = (props) => {
 						{firstFilter ? (
 							count ? (
 								<>
-									<div className="statistic-general-visualization">
-										<GeneralVisualization
-											period="WEEK"
-											page="WEEK"
-											startDate={startDate}
-											endTime={endTime}
-											refresh={false}
-											setLoggedIn={setLoggedIn}
-										/>
-									</div>
+									<GeneralVisualization
+										period="WEEK"
+										page="WEEK"
+										startDate={startDate}
+										endTime={endTime}
+										refresh={false}
+										setLoggedIn={setLoggedIn}
+									/>
 									{timeClassification ? (
 										<TimeStatistic
 											period="WEEK"
