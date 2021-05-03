@@ -88,7 +88,7 @@ const MyAvatar = (props) => {
 				}}
 				size="large"
 			>
-				{localStorage.getItem("username").slice(0, 1)}
+				{localStorage.getItem("username").slice(0, 1).toUpperCase()}
 			</Avatar>
 		</Dropdown>
 	);

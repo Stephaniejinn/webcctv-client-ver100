@@ -55,10 +55,7 @@ const MyDatePicker = (props) => {
 	var defaultDay = dayStartDate && moment(dayStartDate);
 	var defaultWeek = weekStartDate && moment(weekStartDate);
 	var defaultMonth = monthStartDate && moment(monthStartDate, "YYYY-MM");
-	var defaultOverSpeed =
-		overSpeedStartDate || overSpeedEndTime
-			? [moment(overSpeedStartDate), moment(overSpeedEndTime)]
-			: null;
+	var defaultOverSpeed = overSpeedStartDate && moment(overSpeedStartDate);
 	var defaultSearch =
 		searchStartDate || searchEndTime
 			? [moment(searchStartDate), moment(searchEndTime)]
@@ -80,7 +77,7 @@ const MyDatePicker = (props) => {
 		} else if (period === "MONTH") {
 			startDate = moment(date).startOf("month").format("YYYY-MM-DD");
 			endDate = moment(date).endOf("month").format("YYYY-MM-DD");
-		} else if (period === "SEARCH" || period === "OVERSPEED") {
+		} else if (period === "SEARCH") {
 			startDate = dateString[0];
 			endDate = dateString[1];
 		} else {
@@ -113,16 +110,13 @@ const MyDatePicker = (props) => {
 					placeholder="월 선택"
 					defaultValue={defaultMonth}
 				/>
-			) : period === "SEARCH" || period === "OVERSPEED" ? (
-				<RangePicker
-					onChange={onChange}
-					defaultValue={period === "SEARCH" ? defaultSearch : defaultOverSpeed}
-				/>
+			) : period === "SEARCH" ? (
+				<RangePicker onChange={onChange} defaultValue={defaultSearch} />
 			) : (
 				<DatePicker
 					onChange={onChange}
 					placeholder="날짜 선택"
-					defaultValue={defaultDay}
+					defaultValue={period === "DAY" ? defaultDay : defaultOverSpeed}
 				/>
 			)}
 		</ConfigProvider>

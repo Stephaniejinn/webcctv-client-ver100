@@ -104,7 +104,7 @@ const TimeVisualization = (props) => {
 									startDate={startDate}
 									endTime={endTime}
 								/>
-								<TimeTableCard
+								{/* <TimeTableCard
 									period={period}
 									tableKey="overSpeed"
 									currentLaneNum={currentLaneNum}
@@ -112,7 +112,7 @@ const TimeVisualization = (props) => {
 									startDate={startDate}
 									endTime={endTime}
 									setLoggedIn={setLoggedIn}
-								/>
+								/> */}
 								<TimeTableCard
 									period={period}
 									tableKey="second"

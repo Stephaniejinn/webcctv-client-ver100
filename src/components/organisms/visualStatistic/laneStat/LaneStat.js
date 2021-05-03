@@ -66,7 +66,9 @@ const LaneVisualization = (props) => {
 				if (err.response.status === 401) {
 					setLoggedIn(false);
 				} else if (err.response.status === 500) {
-					message.error("서버에 문제가 있습니다");
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					);
 				} else {
 					message.warning("해당 기간 차선 별 데이터가 없습니다");
 				}

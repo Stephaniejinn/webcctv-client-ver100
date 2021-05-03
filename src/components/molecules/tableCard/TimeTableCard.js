@@ -5,8 +5,8 @@ import React from "react";
 // 	isBrowser,
 // 	isMobile,
 // } from "react-device-detect";
+
 import TableDescription from "../tableDescription/TableDescription";
-import OverSpeedTable from "../StatisticsTable/OverSpeedTable";
 
 import DTFirstTable from "../StatisticsTable/dayTable/DTFirstTable";
 import DTSecondTable from "../StatisticsTable/dayTable/DTSecondTable";
@@ -29,7 +29,6 @@ const TimeTableCard = (props) => {
 		currentTime,
 		page = "",
 		isEmptyData,
-		setLoggedIn,
 	} = props;
 
 	return (
@@ -45,7 +44,6 @@ const TimeTableCard = (props) => {
 							tableKey={tableKey}
 							page={page}
 							currentTime={currentTime}
-							// currentLaneNum={parseInt(currentLaneNum)}
 						/>
 						<DTFirstTable
 							currentLaneNum={parseInt(currentLaneNum)}
@@ -63,18 +61,18 @@ const TimeTableCard = (props) => {
 							timeClassification={true}
 							tableKey={tableKey}
 						/>
-						{tableKey === "overSpeed" ? (
+						{/* {tableKey === "overSpeed" ? (
 							<OverSpeedTable
 								startDate={startDate}
 								endTime={endTime}
 								setLoggedIn={setLoggedIn}
 							/>
-						) : (
-							<DTSecondTable
-								currentLaneNum={parseInt(currentLaneNum)}
-								trafficTotalData={trafficTotalData}
-							/>
-						)}
+						) : ( */}
+						<DTSecondTable
+							currentLaneNum={parseInt(currentLaneNum)}
+							trafficTotalData={trafficTotalData}
+						/>
+						{/* )} */}
 					</>
 				) : null
 			) : period === "WEEK" ? (
@@ -101,18 +99,11 @@ const TimeTableCard = (props) => {
 							timeClassification={true}
 							tableKey={tableKey}
 						/>
-						{tableKey === "overSpeed" ? (
-							<OverSpeedTable
-								startDate={startDate}
-								endTime={endTime}
-								setLoggedIn={setLoggedIn}
-							/>
-						) : (
-							<WTSecondTable
-								currentLaneNum={parseInt(currentLaneNum)}
-								trafficTotalData={trafficTotalData}
-							/>
-						)}
+
+						<WTSecondTable
+							currentLaneNum={parseInt(currentLaneNum)}
+							trafficTotalData={trafficTotalData}
+						/>
 					</>
 				) : null
 			) : tableKey === "first" ? (
@@ -138,14 +129,10 @@ const TimeTableCard = (props) => {
 						timeClassification={true}
 						tableKey={tableKey}
 					/>
-					{tableKey === "overSpeed" ? (
-						<OverSpeedTable startDate={startDate} endTime={endTime} />
-					) : (
-						<MTSecondTable
-							currentLaneNum={parseInt(currentLaneNum)}
-							trafficTotalData={trafficTotalData}
-						/>
-					)}
+					<MTSecondTable
+						currentLaneNum={parseInt(currentLaneNum)}
+						trafficTotalData={trafficTotalData}
+					/>
 				</>
 			) : null}
 		</div>

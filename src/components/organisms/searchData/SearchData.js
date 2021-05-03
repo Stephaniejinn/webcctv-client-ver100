@@ -132,6 +132,7 @@ const SeachData = (props) => {
 			}
 		} else {
 			console.log("need to select start time, end time, location");
+			console.log(tempStartDate);
 		}
 	};
 
@@ -196,7 +197,7 @@ const SeachData = (props) => {
 				<div className="search-area-input-button">
 					<Button
 						type="primary"
-						style={{ marginBottom: 10, width: 119, height: 35 }}
+						style={{ marginBottom: 7, width: 119, height: 38 }}
 						onClick={handleSearch}
 					>
 						조회
@@ -214,9 +215,6 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		getLocationInfo: () => {
-			dispatch(actions.getLocation());
-		},
 		setLocationInfo: (selectedOption) => {
 			dispatch(actions.setLocation(selectedOption));
 		},
