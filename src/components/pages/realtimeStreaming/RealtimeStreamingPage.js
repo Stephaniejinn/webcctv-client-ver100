@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 import moment from "moment";
-import axios from "axios";
 import { connect } from "react-redux";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
@@ -13,33 +12,35 @@ import SearchInput from "../../atoms/cascaderBtn/CascaderBtn";
 import "./style.less";
 
 const RealtimeStreamingPage = (props) => {
+	const { setLoggedIn, isMaster } = props;
+
 	const { Content } = Layout;
-	const { setLoggedIn, isMaster, baseURL } = props;
-	const [address, setAddress] = useState([]);
+	const [camNameAdd, setCamNameAdd] = useState({});
+	const [isLoadingNameAdd, setLoadingNameAdd] = useState(true);
+	const [currNameAdd, setCurrNameAdd] = useState({});
+	const [isCurrLoading, setCurrLoading] = useState(true);
+
 	const date = moment(new Date()).format("YYYY-MM-DD");
 	const currentTime = moment(new Date()).format("HH:mm:ss");
-	var addArr = [];
+
+	var timer;
+	const spinTimer = () => {
+		setCurrLoading(true);
+		if (timer) {
+			clearTimeout(timer);
+		}
+		timer = setTimeout(() => {
+			setCurrNameAdd(camNameAdd);
+			setCurrLoading(false);
+		}, 200);
+		return () => clearTimeout(timer);
+	};
 
 	useEffect(() => {
-		axios
-			.get(`${baseURL}/locations/ICN/28110/2008001/001/cameras`, {
-				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
-					Cache: "No-cache",
-				},
-			})
-			.then((res) => {
-				if (res.data.length !== 0) {
-					res.data.forEach((address) => {
-						addArr.push(address.httpStreamAddr);
-					});
-				}
-				setAddress(addArr);
-			})
-			.catch((err) => {
-				console.log(err.response);
-			});
-	}, []);
+		if (!isLoadingNameAdd) {
+			spinTimer();
+		}
+	}, [isLoadingNameAdd]);
 
 	return (
 		<div className="realtime-streaming-page">
@@ -50,13 +51,30 @@ const RealtimeStreamingPage = (props) => {
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "실시간 영상"]} />
 						<div className="search-input">
-							<SearchInput />
+							<SearchInput
+								setCamNameAdd={setCamNameAdd}
+								setLoadingNameAdd={setLoadingNameAdd}
+							/>
 						</div>
+
 						<div className="video-container-4">
-							{address[0] && (
+							{!isCurrLoading &&
+								Object.getOwnPropertyNames(currNameAdd).map(function (key) {
+									return (
+										<VideoContainer
+											camName={currNameAdd[key][0]}
+											httpAddress={currNameAdd[key][1]}
+											date={date}
+											currentTime={currentTime}
+											realtimeCamCode={key}
+											setLoggedIn={setLoggedIn}
+										/>
+									);
+								})}
+
+							{/* {address[0] && (
 								<VideoContainer
 									camName="수인사거리-1 [하행]"
-									// httpAddress="https://globalbridge.synology.me:4000/m3u8VideoStream.m3u8"
 									httpAddress={address[0]}
 									date={date}
 									currentTime={currentTime}
@@ -81,7 +99,7 @@ const RealtimeStreamingPage = (props) => {
 									currentTime={currentTime}
 									realtimeCamCode="0001"
 								/>
-							)}
+							)} */}
 						</div>
 					</Content>
 				</Layout>
@@ -90,10 +108,4 @@ const RealtimeStreamingPage = (props) => {
 	);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		baseURL: state.baseURL.baseURL,
-	};
-};
-
-export default connect(mapStateToProps)(RealtimeStreamingPage);
+export default RealtimeStreamingPage;

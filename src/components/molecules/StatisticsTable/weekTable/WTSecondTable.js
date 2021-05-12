@@ -92,7 +92,6 @@ const WTSecondTable = (props) => {
 		},
 	];
 	const parseData = () => {
-		console.log("count table axios");
 		trafficTotalData.forEach((eachData, index) => {
 			const {
 				weekOption,

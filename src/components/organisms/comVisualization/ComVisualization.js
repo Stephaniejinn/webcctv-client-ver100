@@ -16,7 +16,7 @@ const ComVisualization = ({ period }) => {
 	const BarChart = <Bar />;
 
 	const callback = (key) => {
-		console.log(key);
+		// console.log(key);
 	};
 	return (
 		<Tabs defaultActiveKey="1" onChange={callback} tabPosition="left">

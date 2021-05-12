@@ -61,10 +61,10 @@ const RealtimeStatUpper = (props) => {
 			/>
 			<div className="page-title-and-search-input">
 				<div className="page-title-and-search-input-refresh-button">
-					<Title level={3} style={{ minWidth: 360 }}>
-						실시간 통계 | {camName}
+					<Title level={3} style={{ minWidth: 450, marginBottom: 0 }}>
+						{camName} 카메라 | 실시간 통계
 					</Title>
-					<Button onClick={handleRefresh} style={{ marginTop: 2 }}>
+					<Button onClick={handleRefresh} style={{ marginTop: 0 }}>
 						새로고침
 					</Button>
 				</div>

@@ -82,7 +82,6 @@ const MTSecondTable = (props) => {
 		},
 	];
 	const parseData = () => {
-		console.log("count table axios");
 		trafficTotalData.forEach((eachData, index) => {
 			const {
 				recordDate,

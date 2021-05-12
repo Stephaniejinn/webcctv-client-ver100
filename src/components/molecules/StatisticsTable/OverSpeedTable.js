@@ -45,6 +45,11 @@ const OverSpeedTable = (props) => {
 		axiosData();
 	}, [startDate, endTime, cameraCode]);
 
+	const handleClick = () => {
+		setImgModalVisible(true);
+		setVideoSource(true);
+	};
+
 	const columns = [
 		{
 			title: "시간",
@@ -77,11 +82,7 @@ const OverSpeedTable = (props) => {
 			key: "imageLink",
 			render: (imgInfo) => (
 				<>
-					<Button
-						type="link"
-						size="small"
-						onClick={() => setImgModalVisible(true)}
-					>
+					<Button type="link" size="small" onClick={handleClick}>
 						이미지 보기
 					</Button>
 					{shownKey === imgInfo[0] % 10 && (
@@ -205,7 +206,6 @@ const OverSpeedTable = (props) => {
 				}
 			)
 			.then((res) => {
-				console.log("count table axios");
 				if (res.data.length !== 0) {
 					res.data.forEach((eachData, index) => {
 						const {
@@ -248,7 +248,6 @@ const OverSpeedTable = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
 				if (err.response.status === 400) {
 					message.warning("해당 기간 시간 별 데이터가 없습니다");
 				} else if (err.response.status === 401) {

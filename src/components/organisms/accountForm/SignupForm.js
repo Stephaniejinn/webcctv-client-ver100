@@ -64,7 +64,6 @@ const SignupForm = (props) => {
 		// const { affiliation, permission } = values;
 		const { signupUsername, password, affiliate } = values;
 		const permission = "[]";
-		console.log(signupUsername);
 		axios
 			.post(
 				`${baseURL}/users`,
@@ -163,7 +162,6 @@ const SignupForm = (props) => {
 								(item) => oTher.indexOf(item) === -1
 							);
 							if (oTherItem !== undefined) {
-								console.log(oTherItem);
 								return Promise.reject(
 									"영문 대문자, 소문자, 숫자, 특수문자(-#@!$%^&* ()_+|~=`{}[]:;'<>?,./\") 최소 한개 이상"
 								);

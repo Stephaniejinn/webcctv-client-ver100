@@ -31,54 +31,15 @@ const RealtimeStatisticPage = (props) => {
 		moment(new Date()).subtract(1, "second")
 	);
 	const [refresh, setRefresh] = useState(false);
-	const [cameraAddress, setCameraAddress] = useState("");
-	// const [dataLastTime, setDataLastTime] = useState("");
 
 	const date = moment(new Date()).format("YYYY-MM-DD");
 	var currTimeStr = currTime.format("HH:mm:ss");
 
-	var camName;
-	if (camAddress.length === 0 || camera.length === 0) {
-		camName = "수인사거리-1 [하행]";
-	} else {
-		camName = camera;
-	}
-	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
-
 	useEffect(() => {
 		setEmptyData(false);
 		setTrafficTotalData([]);
-		if (camAddress.length === 0 || camera.length === 0) {
-			axios
-				.get(`${baseURL}/locations/ICN/28110/2008001/001/cameras`, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
-						Cache: "No-cache",
-					},
-				})
-				.then((res) => {
-					if (res.data.length !== 0) {
-						setCameraAddress(res.data[0].httpStreamAddr);
-						axiosAsync();
-					}
-				})
-				.catch((err) => {
-					console.log(err.response);
-					if (err.response.status === 401) {
-						message.warning(
-							"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
-						);
-						setLoggedIn(false);
-					}
-				});
-		} else {
-			setCameraAddress(camAddress);
-			axiosAsync();
-			// console.log("camCode ", camCode);
-			// console.log("camName", camName);
-			// console.log("cameraAddress", cameraAddress);
-		}
-	}, [camCode, currTimeStr]);
+		axiosAsync();
+	}, [cameraCode, currTimeStr]);
 
 	useEffect(() => {
 		if (refresh) {
@@ -91,7 +52,7 @@ const RealtimeStatisticPage = (props) => {
 	const axiosAsync = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}/daily?camCode=${camCode}&startDate=${date}&endTime=${date} ${currTimeStr}&axis=time&laneNumber=0`,
+				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${date}&endTime=${date} ${currTimeStr}&axis=time&laneNumber=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -138,7 +99,7 @@ const RealtimeStatisticPage = (props) => {
 							setRefresh={setRefresh}
 						/>
 						<div className="realtime-statistic-video-and-graph">
-							<StatContainer camName={camName} httpAddress={cameraAddress} />
+							<StatContainer camName={camera} httpAddress={camAddress} />
 							<div className="realtime-statistic-graph">
 								<GeneralVisualization
 									page="REALSTATISTIC"

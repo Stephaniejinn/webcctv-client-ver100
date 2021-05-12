@@ -24,12 +24,12 @@ const MyAvatar = (props) => {
 				},
 			})
 			.then((res) => {
-				console.log(res);
-				console.log("check delete");
 				window.localStorage.clear();
 				setLoggedIn(false);
 			})
 			.catch((err) => {
+				setLoggedIn(false);
+				window.localStorage.clear();
 				console.log(err);
 			});
 	};

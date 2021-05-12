@@ -14,6 +14,8 @@ const MyCascader = (props) => {
 		baseURL,
 		isDisabled,
 		placeholdertxt,
+		setCamNameAdd,
+		setLoadingNameAdd,
 	} = props;
 
 	const [parsedOptions, setParsedOptions] = useState([]);
@@ -24,6 +26,8 @@ const MyCascader = (props) => {
 	var locationOptionsParse = [];
 	var cameraAddress = {};
 	var cameraLanes = {};
+	var cameraNameAddress = {};
+	// var cameraNameAddress = new Map();
 
 	if (props.city === "" || displayLocation === false) {
 		var defaultOption = [];
@@ -58,9 +62,13 @@ const MyCascader = (props) => {
 					locationOptionsParse.push(cityTemp);
 					getDisricts(cityCode);
 					setParsedOptions(locationOptionsParse);
-					setCamAddress(cameraAddress);
-					setCamLanes(cameraLanes);
 				});
+				setCamAddress(cameraAddress);
+				setCamLanes(cameraLanes);
+				if (setCamNameAdd) {
+					setCamNameAdd(cameraNameAddress);
+					setLoadingNameAdd(false);
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -200,8 +208,6 @@ const MyCascader = (props) => {
 	) => {
 		axios
 			.get(
-				// `${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
-
 				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
 				{
 					headers: {
@@ -228,6 +234,9 @@ const MyCascader = (props) => {
 					currentCameras.push(cameraTemp);
 					cameraAddress[camCode] = httpStreamAddr;
 					cameraLanes[camCode] = lanesTotal;
+					if (setCamNameAdd) {
+						cameraNameAddress[camCode] = [cameraTemp["label"], httpStreamAddr];
+					}
 				});
 			})
 			.catch((err) => {
@@ -256,7 +265,6 @@ const MyCascader = (props) => {
 		}, {});
 		selectedLocationCode["camAddress"] = camAddress[value[4]];
 		selectedLocationCode["camLanes"] = camLanes[value[4]];
-
 		setSelectedLocation(selectedLocation);
 		setSelectedLocationCode(selectedLocationCode);
 		if (setLocationChange) {
@@ -279,7 +287,6 @@ const MyCascader = (props) => {
 				onChange={onChange}
 				placeholder={placeholdertxt ? placeholdertxt : "위치 선택"}
 				showSearch={{ filter }}
-				// onPopupVisibleChange={getOptions}
 				options={parsedOptions}
 				defaultValue={defaultOption}
 				disabled={isDisabled && isDisabled}

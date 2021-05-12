@@ -117,6 +117,7 @@ const MyDatePicker = (props) => {
 					onChange={onChange}
 					placeholder="날짜 선택"
 					defaultValue={period === "DAY" ? defaultDay : defaultOverSpeed}
+					showToday={false}
 				/>
 			)}
 		</ConfigProvider>
