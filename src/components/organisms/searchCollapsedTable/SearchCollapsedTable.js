@@ -289,9 +289,8 @@ const SearchCollapsedTable = (props) => {
 							secondDataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
 							secondDataTemp["totalPHF"] = totalVehiclePeakHourFactor;
 							secondDataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
-							secondDataTemp[
-								"totalVehiclePeakHourConcentrationRatio"
-							] = totalVehiclePeakHourConcentrationRatio;
+							secondDataTemp["totalVehiclePeakHourConcentrationRatio"] =
+								totalVehiclePeakHourConcentrationRatio;
 
 							secondDataTemp["carDayNightRatio"] = carDayNightRatio;
 							secondDataTemp["busDayNightRatio"] = mBusDayNightRatio;
@@ -551,9 +550,9 @@ const SearchCollapsedTable = (props) => {
 			.catch((err) => {
 				console.log(err);
 				if (err.response.status === 401) {
-					message.warning(
-						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
-					);
+					// message.warning(
+					// 	"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
+					// );
 					setLoggedIn(false);
 				}
 			});

@@ -40,11 +40,11 @@ const DayStatPage = (props) => {
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
 							setCount={setCount}
+							setLoggedIn={setLoggedIn}
 						/>
 						{firstFilter ? (
 							count ? (
 								<>
-									{/* <div className="statistic-general-visualization"> */}
 									<GeneralVisualization
 										period="DAY"
 										page="DAY"
@@ -53,7 +53,6 @@ const DayStatPage = (props) => {
 										refresh={false}
 										setLoggedIn={setLoggedIn}
 									/>
-									{/* </div> */}
 									{timeClassification ? (
 										<TimeStatistic
 											period="DAY"

@@ -62,13 +62,7 @@ const RealtimeStatisticPage = (props) => {
 			)
 			.then((res) => {
 				if (res.data.length !== 0) {
-					console.log(res.data);
 					setTrafficTotalData(res.data);
-					// setDataLastTime(
-					// 	moment(new Date(res.data[res.data.length - 1].recordTime))
-					// 		.add(15, "m")
-					// 		.format("HH:mm")
-					// );
 					setEmptyData(false);
 				} else {
 					setEmptyData(true);
@@ -97,6 +91,7 @@ const RealtimeStatisticPage = (props) => {
 							currTime={currTime}
 							setCurrTime={setCurrTime}
 							setRefresh={setRefresh}
+							setLoggedIn={setLoggedIn}
 						/>
 						<div className="realtime-statistic-video-and-graph">
 							<StatContainer camName={camera} httpAddress={camAddress} />

@@ -26,6 +26,8 @@ const OverSpeedTable = (props) => {
 		camera,
 		overSpeedVideoURL,
 		setLoggedIn,
+		isRefresh,
+		setRefresh,
 	} = props;
 	const { Text } = Typography;
 
@@ -39,11 +41,13 @@ const OverSpeedTable = (props) => {
 	var TotalData = [];
 
 	useEffect(() => {
-		setLoadingData(true);
-		setEmptyData(false);
-		setData([]);
-		axiosData();
-	}, [startDate, endTime, cameraCode]);
+		if (isRefresh) {
+			setLoadingData(true);
+			setEmptyData(false);
+			setData([]);
+			axiosData();
+		}
+	}, [startDate, endTime, cameraCode, isRefresh]);
 
 	const handleClick = () => {
 		setImgModalVisible(true);
@@ -243,6 +247,7 @@ const OverSpeedTable = (props) => {
 					setData(TotalData);
 					setLoadingData(false);
 					setEmptyData(false);
+					setRefresh(false);
 				} else {
 					setEmptyData(true);
 				}

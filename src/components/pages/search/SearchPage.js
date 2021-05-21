@@ -37,6 +37,7 @@ const SearchDownloadPage = (props) => {
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
 							setCount={setCount}
+							setLoggedIn={setLoggedIn}
 						/>
 						{firstFilter ? (
 							<SearchCollapsedTable

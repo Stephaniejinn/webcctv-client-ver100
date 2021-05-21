@@ -19,6 +19,7 @@ const RealtimeStatUpper = (props) => {
 		currTime,
 		setCurrTime,
 		setRefresh,
+		setLoggedIn,
 	} = props;
 	var locationHierarchy = [];
 	var camName = "";
@@ -43,9 +44,11 @@ const RealtimeStatUpper = (props) => {
 		camName = camera;
 	}
 	const handleRefresh = () => {
+		const currNewDate = new Date();
 		if (
+			currTime.hour() === currNewDate.getHours() &&
 			Math.floor(currTime.minute() / 15) * 15 ===
-			Math.floor(moment(new Date()).minute() / 15) * 15
+				Math.floor(moment(currNewDate).minute() / 15) * 15
 		) {
 			message.success("새로운 데이터가 없습니다");
 		} else {
@@ -69,7 +72,7 @@ const RealtimeStatUpper = (props) => {
 					</Button>
 				</div>
 				<div className="search-input-drawer">
-					<SearchDrawer />
+					<SearchDrawer setLoggedIn={setLoggedIn} />
 				</div>
 			</div>
 		</>

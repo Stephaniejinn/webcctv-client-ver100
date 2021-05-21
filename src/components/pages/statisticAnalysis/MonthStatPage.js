@@ -39,6 +39,7 @@ const MonthStatPage = (props) => {
 							setFirstFilter={setFirstFilter}
 							setAddFilter={setAddFilter}
 							setCount={setCount}
+							setLoggedIn={setLoggedIn}
 						/>
 						{firstFilter ? (
 							count ? (

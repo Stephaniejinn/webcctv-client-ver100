@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Cascader } from "antd";
+import { Cascader, message } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
@@ -16,6 +16,7 @@ const MyCascader = (props) => {
 		placeholdertxt,
 		setCamNameAdd,
 		setLoadingNameAdd,
+		setLoggedIn,
 	} = props;
 
 	const [parsedOptions, setParsedOptions] = useState([]);
@@ -71,9 +72,17 @@ const MyCascader = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					);
+				} else if (err.response.status === 401) {
+					message.warning(
+						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
+					);
+					setLoggedIn(false);
+				}
 			});
-		// }
 	};
 	const getDisricts = (cityCode) => {
 		axios
@@ -107,7 +116,13 @@ const MyCascader = (props) => {
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					);
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
+				}
 			});
 	};
 	const getRoads = (cityCode, districtCode, lastCityIdx, lastDistrictIdx) => {
@@ -146,7 +161,13 @@ const MyCascader = (props) => {
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					);
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
+				}
 			});
 	};
 	const getSpots = (
@@ -196,7 +217,13 @@ const MyCascader = (props) => {
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					);
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
+				}
 			});
 	};
 	const getCameras = (
@@ -218,13 +245,8 @@ const MyCascader = (props) => {
 			)
 			.then((res) => {
 				res.data.forEach((cameraInfo) => {
-					const {
-						camCode,
-						camName,
-						upboundFlag,
-						httpStreamAddr,
-						lanesTotal,
-					} = cameraInfo;
+					const { camCode, camName, upboundFlag, httpStreamAddr, lanesTotal } =
+						cameraInfo;
 					const cameraTemp = {};
 					cameraTemp["value"] = camCode;
 					upboundFlag
@@ -240,7 +262,13 @@ const MyCascader = (props) => {
 				});
 			})
 			.catch((err) => {
-				console.log(err);
+				if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					);
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
+				}
 			});
 	};
 

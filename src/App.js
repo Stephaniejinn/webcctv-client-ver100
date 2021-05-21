@@ -45,9 +45,14 @@ const App = (props) => {
 				setLoading(false);
 			})
 			.catch((err) => {
-				console.log(err);
-				if (localStorage.getItem("username")) {
-					message.warning("로그아웃 되었습니다");
+				if (err.response) {
+					if (err.response.status === 401) {
+						if (localStorage.getItem("username")) {
+							message.warning("로그아웃 되었습니다");
+						}
+					}
+				} else {
+					message.error("Network Error");
 				}
 				setLoading(false);
 			});
