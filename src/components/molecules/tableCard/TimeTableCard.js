@@ -46,7 +46,6 @@ const TimeTableCard = (props) => {
 							currentTime={currentTime}
 						/>
 						<DTFirstTable
-							currentLaneNum={parseInt(currentLaneNum)}
 							trafficTotalData={trafficTotalData}
 							page={page}
 							isEmptyData={isEmptyData}
@@ -61,18 +60,11 @@ const TimeTableCard = (props) => {
 							timeClassification={true}
 							tableKey={tableKey}
 						/>
-						{/* {tableKey === "overSpeed" ? (
-							<OverSpeedTable
-								startDate={startDate}
-								endTime={endTime}
-								setLoggedIn={setLoggedIn}
-							/>
-						) : ( */}
+
 						<DTSecondTable
 							currentLaneNum={parseInt(currentLaneNum)}
 							trafficTotalData={trafficTotalData}
 						/>
-						{/* )} */}
 					</>
 				) : null
 			) : period === "WEEK" ? (
@@ -85,10 +77,7 @@ const TimeTableCard = (props) => {
 							timeClassification={true}
 							tableKey={tableKey}
 						/>
-						<WTFirstTable
-							currentLaneNum={parseInt(currentLaneNum)}
-							trafficTotalData={trafficTotalData}
-						/>
+						<WTFirstTable trafficTotalData={trafficTotalData} />
 					</>
 				) : parseInt(currentLaneNum) === 0 ? (
 					<>
@@ -115,10 +104,7 @@ const TimeTableCard = (props) => {
 						timeClassification={true}
 						tableKey={tableKey}
 					/>
-					<MTFirstTable
-						currentLaneNum={parseInt(currentLaneNum)}
-						trafficTotalData={trafficTotalData}
-					/>
+					<MTFirstTable trafficTotalData={trafficTotalData} />
 				</>
 			) : parseInt(currentLaneNum) === 0 ? (
 				<>

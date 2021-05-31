@@ -266,8 +266,6 @@ const SearchCollapsedTable = (props) => {
 							motorPassengerCarUnit,
 							motorVehicleRatio,
 							motorSpdVolume,
-							pedestrianVolume,
-							jaywalkVolume,
 							totalVehicleDayNightRatio,
 							totalVehiclePeakHourFactor,
 							totalVehiclePeakHourConcentrationRatio,
@@ -339,8 +337,6 @@ const SearchCollapsedTable = (props) => {
 							firstDataTemp["motorpcu"] = motorPassengerCarUnit;
 							firstDataTemp["motorRatio"] = motorVehicleRatio;
 							firstDataTemp["motorOverSpeed"] = motorSpdVolume;
-							firstDataTemp["person"] = pedestrianVolume;
-							firstDataTemp["jaywalk"] = jaywalkVolume;
 
 							firstDataParsedTotal.push(firstDataTemp);
 							if (countFirstCol < 5) {

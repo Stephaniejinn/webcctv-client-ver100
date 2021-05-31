@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Table, Spin } from "antd";
-import moment from "moment";
 
 import "../style.less";
 
@@ -167,22 +166,6 @@ const SearchFisrtTable = (props) => {
 					title: "과속(대)",
 					dataIndex: "motorOverSpeed",
 					key: "motorOverSpeed",
-				},
-			],
-		},
-		{
-			title: "보행자",
-			key: "totalPerson",
-			children: [
-				{
-					title: "수(명)",
-					dataIndex: "person",
-					key: "person",
-				},
-				{
-					title: "무단횡단(명)",
-					dataIndex: "jaywalk",
-					key: "jaywalk",
 				},
 			],
 		},
