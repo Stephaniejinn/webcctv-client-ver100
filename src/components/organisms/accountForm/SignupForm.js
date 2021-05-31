@@ -61,7 +61,6 @@ const SignupForm = (props) => {
 		message.success("클립보드에 복사되었습니다");
 	};
 	const signUp = (values) => {
-		// const { affiliation, permission } = values;
 		const { signupUsername, password, affiliate } = values;
 		const permission = "[]";
 		axios
@@ -118,6 +117,10 @@ const SignupForm = (props) => {
 					{
 						required: true,
 						message: "발급 대상의 계정이름을 입력하세요.",
+					},
+					{
+						min: 6,
+						message: "최소 6자리 이상",
 					},
 				]}
 			>
@@ -235,7 +238,7 @@ const SignupForm = (props) => {
 			>
 				<Input prefix={<BankOutlined className="site-form-item-icon" />} />
 			</Form.Item>
-			<Form.Item
+			{/* <Form.Item
 				name="permission"
 				label="권한"
 				rules={[
@@ -248,7 +251,7 @@ const SignupForm = (props) => {
 				]}
 			>
 				<Cascader isDisabled={true} placeholdertxt="권한을 선택하세요" />
-			</Form.Item>
+			</Form.Item> */}
 			<Form.Item wrapperCol={tailFormItemLayout.wrapperCol}>
 				<Button type="primary" htmlType="submit" size="large">
 					발급
@@ -273,7 +276,7 @@ const SignupForm = (props) => {
 						username={signupInfo.username}
 						password={signupInfo.password}
 						affiliation={signupInfo.affiliate}
-						permission={signupInfo.permission}
+						// permission={signupInfo.permission}
 					/>
 				</Modal>
 			</Form.Item>

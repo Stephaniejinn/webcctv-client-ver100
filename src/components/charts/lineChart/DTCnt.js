@@ -13,7 +13,6 @@ const CntLine = (props) => {
 		if (activeVisualKey === "1") {
 			setLoading(true);
 			setData([]);
-
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);

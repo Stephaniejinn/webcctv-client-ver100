@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Tabs } from "antd";
 import DayCntLineChart from "../../charts/lineChart/DTCnt";
 import DayPCULineChart from "../../charts/lineChart/DTPCU";
@@ -22,7 +22,6 @@ import WeekPeakTime from "../../charts/lineChart/WeekPeakTime";
 import WeekMonthFlowRate from "../../charts/barChart/WMFlowRate";
 import WeekMonthPHF from "../../charts/barChart/WTPHF";
 import WeekMonthConcentrationRatio from "../../charts/barChart/WTConcentrationRatio";
-import WeekMonthPedstrians from "../../charts/dashLineChart/WeekPedestrians";
 
 import MonthCnt from "../../charts/lineChart/MTCnt";
 import MonthPCU from "../../charts/lineChart/MTPCU";
@@ -47,7 +46,19 @@ const TimeDataVisualization = (props) => {
 	const callback = (key) => {
 		setActiveVisualKey(key);
 	};
-
+	useEffect(() => {
+		if (parseInt(currentLaneNum) !== 0) {
+			if (
+				activeVisualKey === "6" ||
+				activeVisualKey === "7" ||
+				activeVisualKey === "8" ||
+				activeVisualKey === "9" ||
+				activeVisualKey === "10"
+			) {
+				setActiveVisualKey("1");
+			}
+		}
+	}, [currentLaneNum]);
 	return (
 		<Tabs
 			defaultActiveKey="1"
@@ -210,23 +221,8 @@ const TimeDataVisualization = (props) => {
 							/>
 						)}
 					</TabPane>
-					<TabPane tab="무단횡단" key="11">
-						{period === "DAY" ? (
-							<PedestriansDashLine
-								activeVisualKey={activeVisualKey}
-								trafficTotalData={trafficTotalData}
-							/>
-						) : (
-							<WeekMonthPedstrians
-								activeVisualKey={activeVisualKey}
-								trafficTotalData={trafficTotalData}
-							/>
-						)}
-					</TabPane>
 				</>
-			) : (
-				setActiveVisualKey("1")
-			)}
+			) : null}
 		</Tabs>
 	);
 };

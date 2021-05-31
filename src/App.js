@@ -36,7 +36,7 @@ const App = (props) => {
 			})
 			.then((res) => {
 				let master = res.data.isMaster;
-				if (master === 1) {
+				if (master) {
 					setMaster(true);
 				} else {
 					setMaster(false);

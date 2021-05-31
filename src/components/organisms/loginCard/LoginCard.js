@@ -53,7 +53,7 @@ const LoginCard = (props) => {
 				setLoggedIn(true);
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log("login", err.response);
 			});
 	};
 	return (

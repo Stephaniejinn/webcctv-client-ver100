@@ -32,7 +32,7 @@ const RealtimeStreamingPage = (props) => {
 		timer = setTimeout(() => {
 			setCurrNameAdd(camNameAdd);
 			setCurrLoading(false);
-		}, 200);
+		}, 500);
 		return () => clearTimeout(timer);
 	};
 
@@ -41,6 +41,12 @@ const RealtimeStreamingPage = (props) => {
 			spinTimer();
 		}
 	}, [isLoadingNameAdd]);
+
+	// useEffect(() => {
+	// 	// setCurrLoading(true);
+	// 	setCurrNameAdd(camNameAdd);
+	// 	setCurrLoading(false);
+	// }, []);
 
 	return (
 		<div className="realtime-streaming-page">

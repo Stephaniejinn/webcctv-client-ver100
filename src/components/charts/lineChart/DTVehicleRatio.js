@@ -18,7 +18,6 @@ const VehicleRatio = (props) => {
 		if (activeVisualKey === "3") {
 			setLoading(true);
 			setData([]);
-
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);

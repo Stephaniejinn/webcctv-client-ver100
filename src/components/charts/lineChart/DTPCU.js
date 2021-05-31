@@ -12,7 +12,6 @@ const PCULine = (props) => {
 		if (activeVisualKey === "2") {
 			setLoading(true);
 			setData([]);
-
 			parseTotalData();
 		}
 	}, [trafficTotalData, activeVisualKey]);

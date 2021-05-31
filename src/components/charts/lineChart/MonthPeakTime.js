@@ -23,10 +23,13 @@ const MonthPeakTime = (props) => {
 
 		trafficTotalData.slice(3).forEach((TrafficData) => {
 			const { recordDate, totalVehiclePeak15MinuteTime } = TrafficData;
+			const tempMinute = new Date(totalVehiclePeak15MinuteTime).getMinutes();
+
 			let temp = {};
 			temp["date"] = moment(recordDate).format("MM-DD");
 			temp["value"] = new Date(totalVehiclePeak15MinuteTime).getHours();
-			temp["test"] = new Date(totalVehiclePeak15MinuteTime).getMinutes();
+			temp["minute"] =
+				tempMinute === 0 ? `${tempMinute}${tempMinute}` : tempMinute;
 			TotalData.push(temp);
 		});
 		setData(TotalData);
@@ -41,7 +44,7 @@ const MonthPeakTime = (props) => {
 
 		label: {
 			formatter: function formatter(v) {
-				let timeStr = v["value"] + ":" + v["test"];
+				let timeStr = v["value"] + ":" + v["minute"];
 				return ""
 					.concat(timeStr)
 					.replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
