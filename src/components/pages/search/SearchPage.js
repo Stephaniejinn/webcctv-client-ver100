@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Layout, Spin } from "antd";
+import { Layout } from "antd";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
@@ -36,6 +36,7 @@ const SearchDownloadPage = (props) => {
 							endTime={endTime}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
+							firstFilter={firstFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
 						/>

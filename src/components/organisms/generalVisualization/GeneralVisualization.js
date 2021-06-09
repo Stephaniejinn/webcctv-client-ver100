@@ -30,8 +30,6 @@ const GeneralVisualization = (props) => {
 	const [trafficData, setTrafficData] = useState([]);
 	const [curEndTime, setCurEndTime] = useState("");
 
-	var camCode = cameraCode.length === 0 ? "0001" : cameraCode;
-
 	var curTime = currentTime ? currentTime : "23:59:59";
 	const periodURL =
 		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
@@ -42,7 +40,7 @@ const GeneralVisualization = (props) => {
 		setLoadingTraffic(true);
 		setTrafficData([]);
 		getTrafficData();
-	}, [camCode, startDate, endTime, currentTime]);
+	}, [cameraCode, startDate, endTime, currentTime]);
 
 	useEffect(() => {
 		if (refresh) {
@@ -56,7 +54,7 @@ const GeneralVisualization = (props) => {
 	const getTrafficData = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}${periodURL}?camCode=${camCode}&startDate=${startDate}&endTime=${endTime} ${curTime}&axis=time&laneNumber=0`,
+				`${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} ${curTime}&axis=time&laneNumber=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -84,7 +82,7 @@ const GeneralVisualization = (props) => {
 				setEmptyData(true);
 				if (err.response.status === 500) {
 					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
 				} else if (err.response.status === 400) {
 					if (

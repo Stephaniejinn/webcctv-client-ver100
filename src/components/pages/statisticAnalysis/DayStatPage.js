@@ -39,6 +39,7 @@ const DayStatPage = (props) => {
 							setStartDate={setStartDate}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
+							firstFilter={firstFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
 						/>

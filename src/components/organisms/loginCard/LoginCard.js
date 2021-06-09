@@ -1,13 +1,11 @@
 import React from "react";
-import { Form, Input, Button, message, Card, Typography } from "antd";
+import { Form, Input, Button, message, Card } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 
 const LoginCard = (props) => {
 	const { baseURL, setLoggedIn } = props;
-	const { Title } = Typography;
 
 	const login = (values) => {
 		const { username, password } = values;

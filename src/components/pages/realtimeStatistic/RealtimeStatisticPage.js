@@ -10,6 +10,7 @@ import RealtimeStatUpper from "../../organisms/realtimeStatUpper/RealtimeStatUpp
 import StatContainer from "../../organisms/videoContainer/StatContainer";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
 import TimeTableCard from "../../molecules/tableCard/TimeTableCard";
+import SearchInput from "../../atoms/cascaderBtn/CascaderBtn";
 
 import "./style.less";
 
@@ -33,26 +34,30 @@ const RealtimeStatisticPage = (props) => {
 	const [refresh, setRefresh] = useState(false);
 
 	const date = moment(new Date()).format("YYYY-MM-DD");
-	var currTimeStr = currTime.format("HH:mm:ss");
+	// var currTimeStr = currTime.format("HH:mm:ss");
 
 	useEffect(() => {
+		console.log(currTime.format("HH:mm:ss"));
+		console.log(refresh);
 		setEmptyData(false);
 		setTrafficTotalData([]);
 		axiosAsync();
-	}, [cameraCode, currTimeStr]);
+	}, [cameraCode, currTime, refresh]);
 
-	useEffect(() => {
-		if (refresh) {
-			setEmptyData(false);
-			setTrafficTotalData([]);
-			axiosAsync();
-		}
-	}, [refresh]);
+	// useEffect(() => {
+	// 	if (refresh) {
+	// 		setEmptyData(false);
+	// 		setTrafficTotalData([]);
+	// 		axiosAsync();
+	// 	}
+	// }, [refresh]);
 
 	const axiosAsync = () => {
 		axios
 			.get(
-				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${date}&endTime=${date} ${currTimeStr}&axis=time&laneNumber=0`,
+				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${date}&endTime=${date} ${currTime.format(
+					"HH:mm:ss"
+				)}&axis=time&laneNumber=0`,
 				{
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -62,13 +67,14 @@ const RealtimeStatisticPage = (props) => {
 			)
 			.then((res) => {
 				if (res.data.length !== 0) {
+					console.log("test refresh", refresh);
 					setTrafficTotalData(res.data);
 					setEmptyData(false);
+					if (refresh) {
+						message.success("새로고침 성공");
+					}
 				} else {
 					setEmptyData(true);
-				}
-				if (refresh) {
-					message.success("새로고침 성공");
 				}
 				setRefresh(false);
 			})
@@ -93,6 +99,7 @@ const RealtimeStatisticPage = (props) => {
 							setRefresh={setRefresh}
 							setLoggedIn={setLoggedIn}
 						/>
+						<SearchInput setLoggedIn={setLoggedIn} />
 						<div className="realtime-statistic-video-and-graph">
 							<StatContainer camName={camera} httpAddress={camAddress} />
 							<div className="realtime-statistic-graph">
@@ -101,7 +108,7 @@ const RealtimeStatisticPage = (props) => {
 									period="DAY"
 									startDate={date}
 									endTime={date}
-									currentTime={currTimeStr}
+									currentTime={currTime.format("HH:mm:ss")}
 									refresh={refresh}
 									setLoggedIn={setLoggedIn}
 								/>

@@ -22,11 +22,10 @@ const SeachData = (props) => {
 		camera,
 		setAddFilter,
 		setCount,
-		setDayDate,
-		setWeekDate,
-		setMonthDate,
-		setSearchDate,
-		setOverSpeedDate,
+		setDateInfo,
+		startDate,
+		endDate,
+		firstFilter,
 		setLoggedIn,
 		setRefresh,
 	} = props;
@@ -65,71 +64,38 @@ const SeachData = (props) => {
 			Object.keys(selectedLocation).length !== 0
 		) {
 			//if location change
-			spinTimer();
-			setFirstFilter(true);
-			setStartDate(tempStartDate);
-			setEndTime(tempEndTime);
-			setLocationInfo(selectedLocation);
-			setLocationCodeInfo(selectedLocationCode);
-
-			if (period === "DAY") {
-				dateInfo["dayStartDate"] = tempStartDate;
-				dateInfo["dayEndTime"] = tempEndTime;
-				setDayDate(dateInfo);
-			} else if (period === "WEEK") {
-				dateInfo["weekStartDate"] = tempStartDate;
-				dateInfo["weekEndTime"] = tempEndTime;
-				setWeekDate(dateInfo);
-			} else if (period === "MONTH") {
-				dateInfo["monthStartDate"] = tempStartDate;
-				dateInfo["monthEndTime"] = tempEndTime;
-				setMonthDate(dateInfo);
-			} else if (period === "SEARCH") {
-				dateInfo["searchStartDate"] = tempStartDate;
-				dateInfo["searchEndTime"] = tempEndTime;
-				setSearchDate(dateInfo);
-			} else {
-				dateInfo["overSpeedStartDate"] = tempStartDate;
-				dateInfo["overSpeedEndTime"] = tempEndTime;
-				setOverSpeedDate(dateInfo);
+			if (period === "OVERSPEED") {
+				spinTimer();
+				setFirstFilter(true);
+				setStartDate(tempStartDate);
+				setEndTime(tempEndTime);
+				setLocationInfo(selectedLocation);
+				setLocationCodeInfo(selectedLocationCode);
+				dateInfo["startDate"] = tempStartDate;
+				dateInfo["endDate"] = tempEndTime;
+				setDateInfo(dateInfo);
 				setRefresh(true);
-			}
-			if (setAddFilter) {
-				if (!classification) {
-					setAddFilter(additionFilterValue);
-				}
-			}
-		} else if (tempStartDate !== "" && tempEndTime !== "" && camera !== "") {
-			//if start and end date changed, location doesn't change
-			spinTimer();
-			setFirstFilter(true);
-			setStartDate(tempStartDate);
-			setEndTime(tempEndTime);
-			if (period === "DAY") {
-				dateInfo["dayStartDate"] = tempStartDate;
-				dateInfo["dayEndTime"] = tempEndTime;
-				setDayDate(dateInfo);
-			} else if (period === "WEEK") {
-				dateInfo["weekStartDate"] = tempStartDate;
-				dateInfo["weekEndTime"] = tempEndTime;
-				setWeekDate(dateInfo);
-			} else if (period === "MONTH") {
-				dateInfo["monthStartDate"] = tempStartDate;
-				dateInfo["monthEndTime"] = tempEndTime;
-				setMonthDate(dateInfo);
-			} else if (period === "SEARCH") {
-				dateInfo["searchStartDate"] = tempStartDate;
-				dateInfo["searchEndTime"] = tempEndTime;
-				setSearchDate(dateInfo);
+			} else if (
+				tempStartDate === startDate &&
+				tempEndTime === endDate &&
+				selectedLocation["camera"] === camera &&
+				firstFilter === true
+			) {
+				message.success("이미 조회된 데이터입니다");
 			} else {
-				dateInfo["overSpeedStartDate"] = tempStartDate;
-				dateInfo["overSpeedEndTime"] = tempEndTime;
-				setOverSpeedDate(dateInfo);
-				setRefresh(true);
-			}
-			if (setAddFilter) {
-				if (!classification) {
-					setAddFilter(additionFilterValue);
+				spinTimer();
+				setFirstFilter(true);
+				setStartDate(tempStartDate);
+				setEndTime(tempEndTime);
+				setLocationInfo(selectedLocation);
+				setLocationCodeInfo(selectedLocationCode);
+				dateInfo["startDate"] = tempStartDate;
+				dateInfo["endDate"] = tempEndTime;
+				setDateInfo(dateInfo);
+				if (setAddFilter) {
+					if (!classification) {
+						setAddFilter(additionFilterValue);
+					}
 				}
 			}
 		} else {
@@ -213,6 +179,8 @@ const SeachData = (props) => {
 const mapStateToProps = (state) => {
 	return {
 		camera: state.location.camera,
+		startDate: state.date.startDate,
+		endDate: state.date.endDate,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
@@ -223,20 +191,8 @@ const mapDispatchToProps = (dispatch) => {
 		setLocationCodeInfo: (selectedOptionCode) => {
 			dispatch(actions.setLocationCode(selectedOptionCode));
 		},
-		setDayDate: (dayDate) => {
-			dispatch(actions.setDayDate(dayDate));
-		},
-		setWeekDate: (weekDate) => {
-			dispatch(actions.setWeekDate(weekDate));
-		},
-		setMonthDate: (monthDate) => {
-			dispatch(actions.setMonthDate(monthDate));
-		},
-		setSearchDate: (searchDate) => {
-			dispatch(actions.setSearchDate(searchDate));
-		},
-		setOverSpeedDate: (searchDate) => {
-			dispatch(actions.setOverSpeedDate(searchDate));
+		setDateInfo: (dateInfo) => {
+			dispatch(actions.setDateInfo(dateInfo));
 		},
 	};
 };

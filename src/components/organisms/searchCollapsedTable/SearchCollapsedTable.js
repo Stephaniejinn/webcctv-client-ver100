@@ -71,11 +71,11 @@ const SearchCollapsedTable = (props) => {
 		"화물차 PCU",
 		"화물차 비율",
 		"화물차 과속대수",
-		"이륜차 통행량",
-		"이륜차 평균속도",
-		"이륜차 PCU",
-		"이륜차 비율",
-		"이륜차 과속대수",
+		"오토바이 통행량",
+		"오토바이 평균속도",
+		"오토바이 PCU",
+		"오토바이 비율",
+		"오토바이 과속대수",
 	];
 	const firstDataFilter = [
 		"time",
@@ -191,7 +191,6 @@ const SearchCollapsedTable = (props) => {
 
 	const downloadFirstTableToExcel = () => {
 		firstDataLaneTotalTemp = {};
-		setFirstDataLaneTotal({});
 		let excelFile = {};
 		excelFile.fileName = `1차 데이터_${moment(startDate).format("l")}-${moment(
 			endTime
@@ -361,7 +360,6 @@ const SearchCollapsedTable = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
 				setMsg(true);
 				if (err.response.status === 400) {
 					if (
@@ -439,7 +437,6 @@ const SearchCollapsedTable = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
 				setMsg(true);
 				setEmptyOverSpeedData(true);
 				if (

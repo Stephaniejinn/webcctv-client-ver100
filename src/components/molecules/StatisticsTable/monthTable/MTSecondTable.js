@@ -74,7 +74,7 @@ const MTSecondTable = (props) => {
 					key: "truckNightRatio",
 				},
 				{
-					title: "이륜차",
+					title: "오토바이",
 					dataIndex: "motorDayNightRatio",
 					key: "motorNightRatio",
 				},
@@ -112,9 +112,8 @@ const MTSecondTable = (props) => {
 			dataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
 			dataTemp["totalPHF"] = totalVehiclePeakHourFactor;
 			dataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
-			dataTemp[
-				"totalVehiclePeakHourConcentrationRatio"
-			] = totalVehiclePeakHourConcentrationRatio;
+			dataTemp["totalVehiclePeakHourConcentrationRatio"] =
+				totalVehiclePeakHourConcentrationRatio;
 
 			dataTemp["carDayNightRatio"] = carDayNightRatio;
 			dataTemp["busDayNightRatio"] = mBusDayNightRatio;

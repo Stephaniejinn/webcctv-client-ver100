@@ -38,7 +38,6 @@ const CascaderWButton = (props) => {
 		<div className="cascader-with-button">
 			<MyCascader
 				size="large"
-				displayLocation={false}
 				setSelectedLocation={setSelectedLocation}
 				setSelectedLocationCode={setSelectedLocationCode}
 				setLocationChange={setLocationChange}

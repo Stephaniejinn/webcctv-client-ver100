@@ -66,7 +66,6 @@ const PasswordForm = (props) => {
 			.catch((err) => {
 				console.log(err.response);
 				if (err.response.status === 401) {
-					// message.error(err.response.data.message);
 					message.error("입력된 기존 비밀번호가 틀렸습니다");
 				} else if (err.response.status === 400) {
 					message.error("존재하지 않는 아이디입니다");
@@ -87,7 +86,7 @@ const PasswordForm = (props) => {
 		>
 			<Form.Item
 				name="username"
-				label="계정"
+				label="아이디"
 				initialValue={localStorage.getItem("username")}
 			>
 				<Input

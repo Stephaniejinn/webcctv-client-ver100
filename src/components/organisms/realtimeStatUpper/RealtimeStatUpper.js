@@ -24,25 +24,6 @@ const RealtimeStatUpper = (props) => {
 	var locationHierarchy = [];
 	var camName = "";
 
-	const defaultLocationHierarchy = [
-		"인천광역시",
-		"중구",
-		"서해대로",
-		"수인사거리",
-	];
-	if (
-		(city.length === 0 ||
-			district.length === 0 ||
-			road.length === 0 ||
-			spot.length === 0,
-		camera.length === 0)
-	) {
-		locationHierarchy = defaultLocationHierarchy;
-		camName = "수인사거리-1 [하행]";
-	} else {
-		locationHierarchy = [city, district, road, spot];
-		camName = camera;
-	}
 	const handleRefresh = () => {
 		const currNewDate = new Date();
 		if (

@@ -64,7 +64,7 @@ const SearchSecondTable = (props) => {
 					key: "truckNightRatio",
 				},
 				{
-					title: "이륜차",
+					title: "오토바이",
 					dataIndex: "motorDayNightRatio",
 					key: "motorNightRatio",
 				},

@@ -141,7 +141,7 @@ const WLFisrtTable = (props) => {
 			],
 		},
 		{
-			title: "이륜차",
+			title: "오토바이",
 			children: [
 				{
 					title: "통행량(대)",

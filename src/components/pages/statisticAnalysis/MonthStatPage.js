@@ -37,6 +37,7 @@ const MonthStatPage = (props) => {
 							setStartDate={setStartDate}
 							setEndTime={setEndTime}
 							setFirstFilter={setFirstFilter}
+							firstFilter={firstFilter}
 							setAddFilter={setAddFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}

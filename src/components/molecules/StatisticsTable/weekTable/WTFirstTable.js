@@ -157,7 +157,7 @@ const WTFirstTable = (props) => {
 			],
 		},
 		{
-			title: "이륜차",
+			title: "오토바이",
 			key: "motor",
 			children: [
 				{

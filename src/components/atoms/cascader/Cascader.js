@@ -9,7 +9,6 @@ const MyCascader = (props) => {
 		size,
 		setSelectedLocation,
 		setSelectedLocationCode,
-		displayLocation = true,
 		setLocationChange,
 		baseURL,
 		isDisabled,
@@ -28,19 +27,18 @@ const MyCascader = (props) => {
 	var cameraAddress = {};
 	var cameraLanes = {};
 	var cameraNameAddress = {};
-	// var cameraNameAddress = new Map();
 
-	if (props.city === "" || displayLocation === false) {
-		var defaultOption = [];
-	} else {
-		defaultOption = [
-			props.city,
-			props.district,
-			props.road,
-			props.spot,
-			props.camera,
-		];
-	}
+	// if (props.city === "" || displayLocation === false) {
+	// 	var defaultOption = [];
+	// } else {
+	// 	defaultOption = [
+	// 		props.city,
+	// 		props.district,
+	// 		props.road,
+	// 		props.spot,
+	// 		props.camera,
+	// 	];
+	// }
 	useEffect(() => {
 		getOptions();
 	}, []);
@@ -74,7 +72,7 @@ const MyCascader = (props) => {
 			.catch((err) => {
 				if (err.response.status === 500) {
 					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
 				} else if (err.response.status === 401) {
 					message.warning(
@@ -118,7 +116,7 @@ const MyCascader = (props) => {
 			.catch((err) => {
 				if (err.response.status === 500) {
 					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
@@ -163,7 +161,7 @@ const MyCascader = (props) => {
 			.catch((err) => {
 				if (err.response.status === 500) {
 					// message.error(
-					// 	"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+					// 	"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					// );
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
@@ -219,7 +217,7 @@ const MyCascader = (props) => {
 			.catch((err) => {
 				if (err.response.status === 500) {
 					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
@@ -264,7 +262,7 @@ const MyCascader = (props) => {
 			.catch((err) => {
 				if (err.response.status === 500) {
 					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 페이지를 불러올 수 없습니다"
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
@@ -316,7 +314,7 @@ const MyCascader = (props) => {
 				placeholder={placeholdertxt ? placeholdertxt : "위치 선택"}
 				showSearch={{ filter }}
 				options={parsedOptions}
-				defaultValue={defaultOption}
+				// defaultValue={defaultOption}
 				disabled={isDisabled && isDisabled}
 			/>
 		</>

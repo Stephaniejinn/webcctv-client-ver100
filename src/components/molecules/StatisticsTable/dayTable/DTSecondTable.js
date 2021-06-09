@@ -38,7 +38,7 @@ const DTSecondTable = (props) => {
 			dataIndex: "truck",
 		},
 		{
-			title: "이륜차",
+			title: "오토바이",
 			dataIndex: "motor",
 		},
 	];

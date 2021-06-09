@@ -6,7 +6,7 @@ import storageSession from "redux-persist/lib/storage/session";
 const storageConfig = {
 	key: "root", // must have
 	storage: storageSession, // session or local
-	whitelist: ["location", "locationCode", "date"], // the only data in reducer that need to save, otherwise blacklist
+	whitelist: [""], // the only data in reducer that need to save, otherwise blacklist
 };
 const myPersistReducer = persistReducer(storageConfig, reducers);
 const store = createStore(myPersistReducer);

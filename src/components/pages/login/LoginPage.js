@@ -8,7 +8,7 @@ import "./style.less";
 
 const LoginPage = (props) => {
 	const { setLoggedIn } = props;
-	const { Content } = Layout;
+	const { Content, Footer } = Layout;
 	const { Title, Text } = Typography;
 	return (
 		<div className="login-page">
@@ -17,13 +17,19 @@ const LoginPage = (props) => {
 					<Header page="SIGNIN" />
 					<Content style={{ margin: "0" }}>
 						<div className="site-layout-background" style={{ minHeight: 720 }}>
-							<Title>AI 도로교통현황 대시보드</Title>
-							<Text type="secondary">
-								주식회사 글로벌브릿지 인공지능 대시보드
-							</Text>
+							<Title level={2} style={{ marginTop: 20 }}>
+								글로벌브릿지
+							</Title>
+							<Title level={2} style={{ marginTop: 0 }}>
+								인공지능 교통 데이터 수집 시스템
+							</Title>
+							<Text type="secondary">GBAI-ITS Ver.100-2020</Text>
 							<LoginCard setLoggedIn={setLoggedIn} />
 						</div>
 					</Content>
+					<Footer style={{ textAlign: "center" }}>
+						GBAI-ITS Ver.100-2020 Created by Global Bridge Co., Ltd
+					</Footer>
 				</Layout>
 			</Layout>
 		</div>

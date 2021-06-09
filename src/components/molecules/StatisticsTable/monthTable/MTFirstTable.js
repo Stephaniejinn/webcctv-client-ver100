@@ -149,7 +149,7 @@ const MTFirstTable = (props) => {
 			],
 		},
 		{
-			title: "이륜차",
+			title: "오토바이",
 			key: "motor",
 			children: [
 				{
