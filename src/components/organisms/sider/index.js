@@ -45,14 +45,14 @@ const MySider = (props) => {
 	// 	}
 	// });
 
-	const handleClick = (e) => {
-		if (cameraCode.length === 0) {
-			window.alert("위치설정 해주세요");
-			e.preventDefault();
+	// const handleClick = (e) => {
+	// 	if (cameraCode.length === 0) {
+	// 		window.alert("위치설정 해주세요");
+	// 		e.preventDefault();
 
-			history.push("/realtime/streaming");
-		}
-	};
+	// 		history.push("/realtime/streaming");
+	// 	}
+	// };
 	const onCollapse = (collapsed) => {
 		setSiderCollapsed(collapsed);
 	};
@@ -106,9 +106,7 @@ const MySider = (props) => {
 					key="/realtime/statistic"
 					icon={<FundProjectionScreenOutlined />}
 				>
-					<Link onClick={handleClick} to="/realtime/statistic">
-						실시간 데이터
-					</Link>
+					<Link to="/realtime/statistic">실시간 데이터</Link>
 				</Menu.Item>
 				<SubMenu
 					key="statistic"
@@ -131,9 +129,6 @@ const MySider = (props) => {
 				<Menu.Item key="/search" icon={<FileTextOutlined />}>
 					<Link to="/search">데이터 조회 및 다운로드</Link>
 				</Menu.Item>
-				{/* <Menu.Item key="/comparison" icon={<PieChartOutlined />}>
-					<Link to="/comparison">통계 비교</Link>
-				</Menu.Item> */}
 			</Menu>
 		</Sider>
 	);

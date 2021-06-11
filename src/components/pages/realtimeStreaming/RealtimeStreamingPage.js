@@ -7,7 +7,7 @@ import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
 import VideoContainer from "../../organisms/videoContainer/StreamingContainer";
-import SearchInput from "../../atoms/cascaderBtn/CascaderBtn";
+import CascaderBtn from "../../atoms/cascaderBtn/CascaderBtn";
 
 import "./style.less";
 
@@ -57,9 +57,10 @@ const RealtimeStreamingPage = (props) => {
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "실시간 영상"]} />
 						<div className="search-input">
-							<SearchInput
+							<CascaderBtn
 								setCamNameAdd={setCamNameAdd}
 								setLoadingNameAdd={setLoadingNameAdd}
+								size="large"
 								setLoggedIn={setLoggedIn}
 							/>
 						</div>

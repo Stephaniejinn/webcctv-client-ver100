@@ -46,14 +46,14 @@ const PasswordForm = (props) => {
 		const { oldPassword, newPassword } = values;
 		axios
 			.put(
-				`${baseURL}/users/${localStorage.getItem("username")}/password`,
+				`${baseURL}/users/${sessionStorage.getItem("username")}/password`,
 				JSON.stringify({
 					oldPassword,
 					newPassword,
 				}),
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						"Content-Type": "application/json",
 					},
 				}
@@ -87,7 +87,7 @@ const PasswordForm = (props) => {
 			<Form.Item
 				name="username"
 				label="아이디"
-				initialValue={localStorage.getItem("username")}
+				initialValue={sessionStorage.getItem("username")}
 			>
 				<Input
 					disabled
@@ -97,7 +97,7 @@ const PasswordForm = (props) => {
 			<Form.Item
 				name="affiliation"
 				label="소속"
-				initialValue={localStorage.getItem("affiliate")}
+				initialValue={sessionStorage.getItem("affiliate")}
 			>
 				<Input
 					disabled

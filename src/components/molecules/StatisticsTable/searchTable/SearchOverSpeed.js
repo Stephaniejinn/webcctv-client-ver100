@@ -61,7 +61,13 @@ const SearchOverSpeedTable = (props) => {
 						<Spin size="large" />
 					</div>
 				) : (
-					<Table columns={columns} dataSource={Data} size="small" bordered />
+					<Table
+						columns={columns}
+						dataSource={Data}
+						size="small"
+						pagination={{ hideOnSinglePage: true }}
+						bordered
+					/>
 				)
 			) : null}
 		</>

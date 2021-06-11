@@ -4,6 +4,7 @@ import { Spin, message } from "antd";
 import { connect } from "react-redux";
 import axios from "axios";
 
+import LoginPage from "./components/pages/login/LoginPage";
 import RealtimeStreamingPage from "./components/pages/realtimeStreaming/RealtimeStreamingPage";
 import RealtimeStatisticPage from "./components/pages/realtimeStatistic/RealtimeStatisticPage";
 import DayStatPage from "./components/pages/statisticAnalysis/DayStatPage";
@@ -13,8 +14,7 @@ import SearchDownloadPage from "./components/pages/search/SearchPage";
 import SearchOverSpeed from "./components/pages/search/OverspeedPage";
 import PasswordPage from "./components/pages/account/PasswordPage";
 import SignupPage from "./components/pages/account/SignupPage";
-import LoginPage from "./components/pages/login/LoginPage";
-// import DataComparisonPage from "./components/pages/dataComparison/DataComparisonPage";
+import SearchAccountPage from "./components/pages/account/SearchAccount";
 
 const App = (props) => {
 	const { baseURL } = props;
@@ -24,13 +24,13 @@ const App = (props) => {
 
 	useEffect(() => {
 		loginStatus();
-	}, [localStorage.getItem("username")]);
+	}, [sessionStorage.getItem("username")]);
 
 	const loginStatus = () => {
 		axios
-			.get(`${baseURL}/users/${localStorage.getItem("username")}`, {
+			.get(`${baseURL}/users/${sessionStorage.getItem("username")}`, {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
@@ -47,7 +47,7 @@ const App = (props) => {
 			.catch((err) => {
 				if (err.response) {
 					if (err.response.status === 401) {
-						if (localStorage.getItem("username")) {
+						if (sessionStorage.getItem("username")) {
 							message.warning("로그아웃 되었습니다");
 						}
 					}
@@ -146,11 +146,16 @@ const App = (props) => {
 									<SignupPage setLoggedIn={setLoggedIn} isMaster={isMaster} />
 								)}
 							/>
+							<Route
+								path="/account"
+								render={() => (
+									<SearchAccountPage
+										setLoggedIn={setLoggedIn}
+										isMaster={isMaster}
+									/>
+								)}
+							/>
 							<Redirect path="*" to="/realtime/streaming" />
-							{/* <Route
-						path="/comparison"
-						render={() => <DataComparisonPage setLoggedIn={setLoggedIn} />}
-					/> */}
 						</Switch>
 					) : (
 						<Switch>

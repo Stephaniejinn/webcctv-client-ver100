@@ -16,7 +16,6 @@ import WTFirstTable from "../StatisticsTable/weekTable/WTFirstTable";
 
 import MTFirstTable from "../StatisticsTable/monthTable/MTFirstTable";
 import MTSecondTable from "../StatisticsTable/monthTable/MTSecondTable";
-import "./style.less";
 
 const TimeTableCard = (props) => {
 	const {

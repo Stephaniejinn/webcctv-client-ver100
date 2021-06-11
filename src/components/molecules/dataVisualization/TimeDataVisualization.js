@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Tabs } from "antd";
+import { Tabs, Typography } from "antd";
 import DayCntLineChart from "../../charts/lineChart/DTCnt";
 import DayPCULineChart from "../../charts/lineChart/DTPCU";
 import DayVehicleRatio from "../../charts/lineChart/DTVehicleRatio";
@@ -10,7 +10,6 @@ import PeakHourFlowRate from "../../charts/statisticText/PeakHourFlowRate";
 import DayPHF from "../../charts/statisticText/PHF";
 import DayConcentrationRatio from "../../charts/liquidChart/PeakRatio";
 import BidirectionalBar from "../../charts/bidirectionalBar/DayNight";
-import PedestriansDashLine from "../../charts/dashLineChart/DayPedestrians";
 
 import WeekCnt from "../../charts/lineChart/WTCnt";
 import WeekPCU from "../../charts/lineChart/WTPCU";
@@ -42,6 +41,7 @@ const TimeDataVisualization = (props) => {
 	} = props;
 
 	const { TabPane } = Tabs;
+	const { Title } = Typography;
 
 	const callback = (key) => {
 		setActiveVisualKey(key);
@@ -68,10 +68,16 @@ const TimeDataVisualization = (props) => {
 		>
 			<TabPane tab="교통량" key="1">
 				{period === "DAY" ? (
-					<DayCntLineChart
-						activeVisualKey={activeVisualKey}
-						trafficTotalData={trafficTotalData}
-					/>
+					<div className="chart-vertical">
+						<div className="chart-horizontal">
+							<Title level={5}>text</Title>
+							<DayCntLineChart
+								activeVisualKey={activeVisualKey}
+								trafficTotalData={trafficTotalData}
+							/>
+						</div>
+						<Title level={5}>text</Title>
+					</div>
 				) : period === "WEEK" ? (
 					<WeekCnt
 						activeVisualKey={activeVisualKey}

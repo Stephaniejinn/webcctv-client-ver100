@@ -230,7 +230,7 @@ const SearchCollapsedTable = (props) => {
 				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=0`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -363,15 +363,14 @@ const SearchCollapsedTable = (props) => {
 				setMsg(true);
 				if (err.response.status === 400) {
 					if (
-						new Date(endTime).getTime() >=
-						new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
+						err.response.data.payload[0].msg ===
+						"Must be at most 31 days after startDate"
 					) {
-						message.warning("해당 기간 데이터가 없습니다");
-					} else {
 						message.warning("최대 31일까지 조회 할 수 있습니다");
+					} else {
+						message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
 					}
 				} else if (err.response.status === 404) {
-					setEmptyTrafficData(true);
 					message.warning("해당 기간 데이터가 없습니다");
 				} else if (err.response.status === 401) {
 					message.warning(
@@ -379,6 +378,7 @@ const SearchCollapsedTable = (props) => {
 					);
 					setLoggedIn(false);
 				}
+				setEmptyTrafficData(true);
 			});
 	};
 	const axiosOverSpeedData = () => {
@@ -391,7 +391,7 @@ const SearchCollapsedTable = (props) => {
 				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -439,11 +439,15 @@ const SearchCollapsedTable = (props) => {
 			.catch((err) => {
 				setMsg(true);
 				setEmptyOverSpeedData(true);
-				if (
-					!new Date(endTime).getTime() >=
-					new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
-				) {
-					message.warning("해당 기간 과속 데이터가 없습니다");
+				if (err.response.status === 400) {
+					if (
+						err.response.data.payload[0].msg ===
+						"Must be at most 31 days after startDate"
+					) {
+						message.warning("최대 31일까지 조회 할 수 있습니다");
+					} else {
+						message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+					}
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
 				}
@@ -457,7 +461,7 @@ const SearchCollapsedTable = (props) => {
 				`${baseURL}${trafficURL}/daily?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=time&laneNumber=${laneNum.toString()}`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -541,11 +545,7 @@ const SearchCollapsedTable = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err);
 				if (err.response.status === 401) {
-					// message.warning(
-					// 	"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
-					// );
 					setLoggedIn(false);
 				}
 			});

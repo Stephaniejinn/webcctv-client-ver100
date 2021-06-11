@@ -3,11 +3,11 @@ import { HashLink as Link } from "react-router-hash-link";
 import { Menu, Dropdown, Typography, Divider, Avatar, Button } from "antd";
 import {
 	IdcardOutlined,
-	UserOutlined,
 	ExportOutlined,
+	UsergroupAddOutlined,
+	BarsOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 import axios from "axios";
 
 import "./style.less";
@@ -19,17 +19,17 @@ const MyAvatar = (props) => {
 		axios
 			.delete(`${baseURL}/auth/tokens`, {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
 			.then((res) => {
-				window.localStorage.clear();
+				window.sessionStorage.clear();
 				setLoggedIn(false);
 			})
 			.catch((err) => {
 				setLoggedIn(false);
-				window.localStorage.clear();
+				window.sessionStorage.clear();
 				console.log(err);
 			});
 	};
@@ -37,25 +37,31 @@ const MyAvatar = (props) => {
 		<Menu style={{ width: 190 }}>
 			<Menu.Item>
 				<Text type="secondary" strong style={{ marginBottom: 6 }}>
-					접속 계정:{localStorage.getItem("username")}
+					접속 계정:{sessionStorage.getItem("username")}
 				</Text>
 				<Text type="secondary" strong>
-					소속: {localStorage.getItem("affiliate")}
+					소속: {sessionStorage.getItem("affiliate")}
 				</Text>
 			</Menu.Item>
 			<Divider />
 			{isMaster && (
-				<Menu.Item>
-					<Link to="/signup" style={{ color: "#595c97" }}>
-						<IdcardOutlined />
-						계정 발급
-					</Link>
-				</Menu.Item>
+				<>
+					<Menu.Item>
+						<Link to="/signup" style={{ color: "#595c97" }}>
+							<UsergroupAddOutlined /> 계정 발급
+						</Link>
+					</Menu.Item>
+					<Menu.Item>
+						<Link to="/account" style={{ color: "#595c97" }}>
+							<BarsOutlined /> 계정 조회
+						</Link>
+					</Menu.Item>
+				</>
 			)}
 
 			<Menu.Item>
 				<Link to="/password" style={{ color: "#595c97" }}>
-					<UserOutlined />
+					<IdcardOutlined />
 					비밀번호 변경
 				</Link>
 			</Menu.Item>
@@ -88,7 +94,7 @@ const MyAvatar = (props) => {
 				}}
 				size="large"
 			>
-				{localStorage.getItem("username").slice(0, 1).toUpperCase()}
+				{sessionStorage.getItem("username").slice(0, 1).toUpperCase()}
 			</Avatar>
 		</Dropdown>
 	);

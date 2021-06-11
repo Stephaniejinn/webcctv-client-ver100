@@ -57,7 +57,7 @@ const GeneralVisualization = (props) => {
 				`${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} ${curTime}&axis=time&laneNumber=0`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -78,24 +78,20 @@ const GeneralVisualization = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
 				setEmptyData(true);
-				if (err.response.status === 500) {
-					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
-					);
-				} else if (err.response.status === 400) {
-					if (
-						!new Date(endTime).getTime() >=
-						new Date(moment(new Date()).format("YYYY-MM-DD")).getTime()
-					)
-						message.warning("해당 기간 시간 별 데이터가 없습니다");
-				} else if (err.response.status === 401) {
-					message.warning(
-						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
-					);
+				if (err.response.status === 401) {
 					setLoggedIn(false);
 				}
+				// if (err.response.status === 500) {
+				// 	message.error(
+				// 		"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
+				// 	);
+				// }
+				//  else if (err.response.status === 404) {
+				// 	message.warning("해당 기간 시간 별 데이터가 없습니다");
+				// } else if (err.response.status === 400) {
+				// 	message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+				// } else
 			});
 	};
 

@@ -1,38 +1,84 @@
 import React from "react";
 import { Form, Input, Button, message, Card } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import NodeRSA from "node-rsa";
 import axios from "axios";
 import { connect } from "react-redux";
 
 const LoginCard = (props) => {
 	const { baseURL, setLoggedIn } = props;
 
+	/* ==== < RSA Encryption > ==== */
+	const encrypt = (plainText, keyData) => {
+		const publicKey = new NodeRSA();
+		publicKey.importKey(keyData);
+
+		console.log("publicKey:", publicKey);
+		const password = publicKey.encrypt(plainText, "base64");
+
+		console.log("Decrypt:", plainText);
+		console.log("Encrypt:", password);
+		return password;
+	};
+
+	const rsaEncrypt = (values) => {
+		let { username, password } = values;
+		axios
+			// .get(`${baseURL}/auth/pubkey`)
+			.get(`http://192.168.1.100:3000/api/auth/pubkey`)
+
+			.then((Response) => {
+				console.log(Response.data.publicKey);
+				password = encrypt(password, Response.data.publicKey);
+				const newValues = { username, password };
+				login(newValues);
+			})
+			.catch((Error) => {
+				console.log(Error);
+			});
+	};
+	/* ============================ */
+
 	const login = (values) => {
 		const { username, password } = values;
 		axios
 			.post(
 				`${baseURL}/auth/tokens`,
+				// `http://192.168.1.100:3000/api/auth/tokens`,
 				JSON.stringify({
 					username,
 					password,
 				}),
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						"Content-Type": "application/json",
 					},
 				}
 			)
 			.then((res) => {
 				const { jwt } = res.data;
-				window.localStorage.setItem("token", jwt);
-				window.localStorage.setItem("username", username);
+				window.sessionStorage.setItem("token", jwt);
+				window.sessionStorage.setItem("username", username);
 				getUserInfo();
 			})
 			.catch((err) => {
-				console.log(err);
+				console.log(err.response);
 				if (err.response) {
-					message.error("로그인 실패");
+					if (err.response.status === 500) {
+						message.error(
+							"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
+						);
+					} else if (err.response.status === 400) {
+						message.warning("아이디 혹은 비밀번호가 일치하지 않습니다");
+					} else if (err.response.status === 401) {
+						message.warning(
+							`아이디 혹은 비밀번호가 일치하지 않습니다. 비밀번호를 5번 잘못 입력되면 계정이 자동으로 잠기게 됩니다. (${err.response.data.payload.loginRetries}/5)`
+						);
+					} else if (err.response.status === 403) {
+						message.error("계정이 잠겼습니다. 관리자에 연락하세요.");
+						setLoggedIn(false);
+					}
 				} else {
 					message.error("Network Error");
 				}
@@ -40,14 +86,19 @@ const LoginCard = (props) => {
 	};
 	const getUserInfo = () => {
 		axios
-			.get(`${baseURL}/users/${localStorage.getItem("username")}`, {
+			.get(`${baseURL}/users/${sessionStorage.getItem("username")}`, {
+				// .get(
+				// 	`http://192.168.1.100:3000/api/users/${sessionStorage.getItem(
+				// 		"username"
+				// 	)}`,
+				// 	{
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
 			.then((res) => {
-				window.localStorage.setItem("affiliate", res.data.affiliate);
+				window.sessionStorage.setItem("affiliate", res.data.affiliate);
 				setLoggedIn(true);
 			})
 			.catch((err) => {
@@ -62,6 +113,7 @@ const LoginCard = (props) => {
 				initialValues={{
 					remember: true,
 				}}
+				// onFinish={rsaEncrypt}
 				onFinish={login}
 				size="large"
 			>

@@ -5,8 +5,6 @@ import DayTable from "../StatisticsTable/dayTable/DLFirstTable";
 import WeekTable from "../StatisticsTable/weekTable/WLFirstTable";
 import MontnTable from "../StatisticsTable/monthTable/MLFirstTable";
 
-import "./style.less";
-
 const LaneTableCard = (props) => {
 	const { period, tableKey, startDate, endTime, trafficTotalData } = props;
 

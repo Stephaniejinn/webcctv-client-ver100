@@ -47,7 +47,7 @@ const MyCascader = (props) => {
 		axios
 			.get(`${baseURL}${currentURL}/cities`, {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
@@ -86,7 +86,7 @@ const MyCascader = (props) => {
 		axios
 			.get(`${baseURL}${currentURL}/${cityCode}/districts`, {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
@@ -127,7 +127,7 @@ const MyCascader = (props) => {
 		axios
 			.get(`${baseURL}${currentURL}/${cityCode}/${districtCode}/roads`, {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
@@ -160,9 +160,9 @@ const MyCascader = (props) => {
 			})
 			.catch((err) => {
 				if (err.response.status === 500) {
-					// message.error(
-					// 	"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
-					// );
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
+					);
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
 				}
@@ -181,7 +181,7 @@ const MyCascader = (props) => {
 				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/spots`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -236,7 +236,7 @@ const MyCascader = (props) => {
 				`${baseURL}${currentURL}/${cityCode}/${districtCode}/${roadCode}/${spotCode}/cameras`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}

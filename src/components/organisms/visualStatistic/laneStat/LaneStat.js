@@ -46,7 +46,7 @@ const LaneVisualization = (props) => {
 		axios
 			.get(`${currentURL}`, {
 				headers: {
-					Authorization: `Bearer ${localStorage.getItem("token")}`,
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
 				},
 			})
@@ -61,17 +61,18 @@ const LaneVisualization = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
-				setEmptyData(true);
-				if (err.response.status === 401) {
-					setLoggedIn(false);
-				} else if (err.response.status === 500) {
+				if (err.response.status === 500) {
 					message.error(
 						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
-				} else {
+				} else if (err.response.status === 404) {
 					message.warning("해당 기간 차선 별 데이터가 없습니다");
+				} else if (err.response.status === 400) {
+					message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+				} else if (err.response.status === 401) {
+					setLoggedIn(false);
 				}
+				setEmptyData(true);
 			});
 	};
 

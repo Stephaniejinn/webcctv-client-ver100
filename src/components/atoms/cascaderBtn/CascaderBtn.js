@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
@@ -10,11 +10,15 @@ import "./style.less";
 
 const CascaderWButton = (props) => {
 	const {
+		cameraCode,
 		setLocationInfo,
 		setLocationCodeInfo,
 		setCamNameAdd,
 		setLoadingNameAdd,
 		setLoggedIn,
+		size,
+		setFirstFilter,
+		page,
 	} = props;
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
@@ -24,20 +28,31 @@ const CascaderWButton = (props) => {
 
 	const handleSearch = () => {
 		if (locationChange) {
+			if (
+				page === "REALSTATISTIC" &&
+				selectedLocationCode["cameraCode"] === cameraCode
+			) {
+				message.warning("조회된 데이터입니다"); //location doesn't change
+			}
 			setLocationInfo(selectedLocation);
 			setLocationCodeInfo(selectedLocationCode);
 			if (pathname !== "/realtime/statistic") {
 				history.push("/realtime/statistic");
 			}
+			if (setFirstFilter) {
+				setFirstFilter(true);
+			}
+
+			console.log("test", selectedLocationCode);
 		} else {
-			console.log("location didn't change or empty");
+			message.warning("위치설정 해주세요"); //location is empty
 		}
 	};
 
 	return (
 		<div className="cascader-with-button">
 			<MyCascader
-				size="large"
+				size={size}
 				setSelectedLocation={setSelectedLocation}
 				setSelectedLocationCode={setSelectedLocationCode}
 				setLocationChange={setLocationChange}
@@ -45,7 +60,7 @@ const CascaderWButton = (props) => {
 				setLoadingNameAdd={setLoadingNameAdd}
 				setLoggedIn={setLoggedIn}
 			/>
-			<Button size="large" type="primary" onClick={handleSearch}>
+			<Button size={size} type="primary" onClick={handleSearch}>
 				검색
 			</Button>
 		</div>
@@ -53,11 +68,7 @@ const CascaderWButton = (props) => {
 };
 const mapStateToProps = (state) => {
 	return {
-		city: state.location.city,
-		district: state.location.district,
-		road: state.location.road,
-		spot: state.location.spot,
-		camera: state.location.camera,
+		cameraCode: state.locationCode.cameraCode,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

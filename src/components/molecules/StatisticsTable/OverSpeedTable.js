@@ -42,6 +42,7 @@ const OverSpeedTable = (props) => {
 
 	useEffect(() => {
 		if (isRefresh) {
+			console.log("refresh", isRefresh);
 			setLoadingData(true);
 			setEmptyData(false);
 			setData([]);
@@ -204,7 +205,7 @@ const OverSpeedTable = (props) => {
 				`${baseURL}/violations/speeding/records?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&limit=0&offset=0`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -247,18 +248,21 @@ const OverSpeedTable = (props) => {
 					setData(TotalData);
 					setLoadingData(false);
 					setEmptyData(false);
-					setRefresh(false);
 				} else {
 					setEmptyData(true);
 				}
+				setRefresh(false);
 			})
 			.catch((err) => {
-				if (err.response.status === 400) {
+				if (err.response.status === 404) {
 					message.warning("해당 기간 시간 별 데이터가 없습니다");
+				} else if (err.response.status === 400) {
+					message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
 				}
 				setEmptyData(true);
+				setRefresh(false);
 			});
 	};
 
@@ -286,7 +290,11 @@ const OverSpeedTable = (props) => {
 				<Table
 					columns={columns}
 					dataSource={Data}
-					pagination={{ pageSize: 10, showSizeChanger: false }}
+					pagination={{
+						pageSize: 10,
+						showSizeChanger: false,
+						hideOnSinglePage: true,
+					}}
 					onRow={(record, rowIndex) => {
 						return {
 							onClick: (event) => {

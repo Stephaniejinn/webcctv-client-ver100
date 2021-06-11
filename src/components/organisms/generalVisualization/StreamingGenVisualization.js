@@ -41,7 +41,7 @@ const StreamingGeneralVisualization = (props) => {
 				`${baseURL}${trafficURL}/daily?camCode=${realtimeCamCode}&startDate=${startDate}&endTime=${endTime} ${currentTime}&axis=time&laneNumber=0`,
 				{
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem("token")}`,
+						Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 						Cache: "No-cache",
 					},
 				}
@@ -68,15 +68,7 @@ const StreamingGeneralVisualization = (props) => {
 				}
 			})
 			.catch((err) => {
-				console.log(err.response);
-				if (err.response.status === 500) {
-					message.error(
-						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
-					);
-				} else if (err.response.status === 401) {
-					message.warning(
-						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
-					);
+				if (err.response.status === 401) {
 					setLoggedIn(false);
 				}
 				setLoadingTraffic(true);
