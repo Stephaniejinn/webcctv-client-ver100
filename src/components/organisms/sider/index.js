@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { HashLink as Link } from "react-router-hash-link";
 import { Layout, Menu, Divider, Typography } from "antd";
-import { useHistory } from "react-router-dom";
 import {
 	FundProjectionScreenOutlined,
 	FileTextOutlined,
@@ -10,7 +9,6 @@ import {
 	PicRightOutlined,
 	FileSearchOutlined,
 } from "@ant-design/icons";
-import { connect } from "react-redux";
 
 // import logo from "../../../assets/logo/logoBlackWN.png";
 // import logoCollapsed from "../../../assets/logo/logoBlack.png";
@@ -20,15 +18,12 @@ import logoCollapsed from "../../../assets/logo/originalLogoCollapsed.png";
 
 import "./style.less";
 
-const MySider = (props) => {
-	const { cameraCode } = props;
-
+const MySider = () => {
 	const { Sider } = Layout;
 	const { SubMenu } = Menu;
 	const { Text } = Typography;
 
 	const { pathname: path } = window.location;
-	const history = useHistory();
 
 	const [siderCollapsed, setSiderCollapsed] = useState(false);
 	const [openKeys, setOpenKeys] = useState(["statistic"]);
@@ -134,10 +129,4 @@ const MySider = (props) => {
 	);
 };
 
-const mapStateToProps = (state) => {
-	return {
-		cameraCode: state.locationCode.cameraCode,
-	};
-};
-
-export default connect(mapStateToProps)(MySider);
+export default MySider;

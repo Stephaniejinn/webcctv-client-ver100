@@ -1,12 +1,19 @@
 import React from "react";
-import { Form, Input, Button, message, Card } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { Form, Input, Button, message, Card, Modal } from "antd";
+import {
+	UserOutlined,
+	LockOutlined,
+	ExclamationCircleOutlined,
+} from "@ant-design/icons";
 import NodeRSA from "node-rsa";
 import axios from "axios";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const LoginCard = (props) => {
 	const { baseURL, setLoggedIn } = props;
+	const { confirm } = Modal;
+	const history = useHistory();
 
 	/* ==== < RSA Encryption > ==== */
 	const encrypt = (plainText, keyData) => {
@@ -24,9 +31,7 @@ const LoginCard = (props) => {
 	const rsaEncrypt = (values) => {
 		let { username, password } = values;
 		axios
-			// .get(`${baseURL}/auth/pubkey`)
-			.get(`http://192.168.1.100:3000/api/auth/pubkey`)
-
+			.get(`${baseURL}/auth/pubkey`)
 			.then((Response) => {
 				console.log(Response.data.publicKey);
 				password = encrypt(password, Response.data.publicKey);
@@ -38,13 +43,27 @@ const LoginCard = (props) => {
 			});
 	};
 	/* ============================ */
-
+	const passwordConfirm = () => {
+		confirm({
+			title: "초기 비밀번호 변경하세요",
+			icon: <ExclamationCircleOutlined />,
+			okText: "지금 변경하기",
+			cancelText: "나중에",
+			onOk() {
+				setLoggedIn(true);
+				history.push("/password");
+			},
+			onCancel() {
+				setLoggedIn(true);
+				history.push("/realtime/streaming");
+			},
+		});
+	};
 	const login = (values) => {
 		const { username, password } = values;
 		axios
 			.post(
 				`${baseURL}/auth/tokens`,
-				// `http://192.168.1.100:3000/api/auth/tokens`,
 				JSON.stringify({
 					username,
 					password,
@@ -63,7 +82,6 @@ const LoginCard = (props) => {
 				getUserInfo();
 			})
 			.catch((err) => {
-				console.log(err.response);
 				if (err.response) {
 					if (err.response.status === 500) {
 						message.error(
@@ -87,11 +105,6 @@ const LoginCard = (props) => {
 	const getUserInfo = () => {
 		axios
 			.get(`${baseURL}/users/${sessionStorage.getItem("username")}`, {
-				// .get(
-				// 	`http://192.168.1.100:3000/api/users/${sessionStorage.getItem(
-				// 		"username"
-				// 	)}`,
-				// 	{
 				headers: {
 					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
 					Cache: "No-cache",
@@ -99,7 +112,11 @@ const LoginCard = (props) => {
 			})
 			.then((res) => {
 				window.sessionStorage.setItem("affiliate", res.data.affiliate);
-				setLoggedIn(true);
+				if (!res.data.initPWChangedFlag) {
+					passwordConfirm();
+				} else {
+					setLoggedIn(true);
+				}
 			})
 			.catch((err) => {
 				console.log("login", err.response);
@@ -113,8 +130,8 @@ const LoginCard = (props) => {
 				initialValues={{
 					remember: true,
 				}}
-				// onFinish={rsaEncrypt}
-				onFinish={login}
+				onFinish={rsaEncrypt}
+				// onFinish={login}
 				size="large"
 			>
 				<Form.Item

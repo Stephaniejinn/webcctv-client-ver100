@@ -1,6 +1,7 @@
 import React from "react";
 import { Form, Input, Button, message } from "antd";
 import { BankOutlined } from "@ant-design/icons";
+import NodeRSA from "node-rsa";
 import { connect } from "react-redux";
 import axios from "axios";
 
@@ -38,6 +39,30 @@ const tailFormItemLayout = {
 const SignupForm = (props) => {
 	const { baseURL } = props;
 	const [form] = Form.useForm();
+
+	/* ==== < RSA Encryption > ==== */
+	const encrypt = (plainText, keyData) => {
+		const publicKey = new NodeRSA();
+		publicKey.importKey(keyData);
+		const password = publicKey.encrypt(plainText, "base64");
+		return password;
+	};
+
+	const rsaEncrypt = (values) => {
+		let { signupUsername, password, affiliate } = values;
+		axios
+			.get(`${baseURL}/auth/pubkey`)
+			.then((Response) => {
+				password = encrypt(password, Response.data.publicKey);
+				console.log("password", password);
+				const newValues = { signupUsername, password, affiliate };
+				signUp(newValues);
+			})
+			.catch((Error) => {
+				console.log(Error);
+			});
+	};
+	/* ============================ */
 
 	const signUp = (values) => {
 		const { signupUsername, password, affiliate } = values;
@@ -77,7 +102,7 @@ const SignupForm = (props) => {
 			wrapperCol={formItemLayout.wrapperCol}
 			form={form}
 			name="register"
-			onFinish={signUp}
+			onFinish={rsaEncrypt}
 			scrollToFirstError
 			size="large"
 			autoComplete="off"

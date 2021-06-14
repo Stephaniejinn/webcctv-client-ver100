@@ -1,9 +1,9 @@
 import React from "react";
 import { Form, Input, message, Button } from "antd";
 import { BankOutlined, UserOutlined } from "@ant-design/icons";
+import NodeRSA from "node-rsa";
 import axios from "axios";
 import { connect } from "react-redux";
-// import Cascader from "../../atoms/cascader/Cascader";
 
 import "./style.less";
 
@@ -42,6 +42,30 @@ const PasswordForm = (props) => {
 	const { setLoggedIn, baseURL } = props;
 	const [form] = Form.useForm();
 
+	/* ==== < RSA Encryption > ==== */
+	const encrypt = (plainText, keyData) => {
+		const publicKey = new NodeRSA();
+		publicKey.importKey(keyData);
+		const password = publicKey.encrypt(plainText, "base64");
+		return password;
+	};
+
+	const rsaEncrypt = (values) => {
+		let { oldPassword, newPassword } = values;
+		axios
+			.get(`${baseURL}/auth/pubkey`)
+			.then((Response) => {
+				oldPassword = encrypt(oldPassword, Response.data.publicKey);
+				newPassword = encrypt(newPassword, Response.data.publicKey);
+
+				const newValues = { oldPassword, newPassword };
+				changePassword(newValues);
+			})
+			.catch((Error) => {
+				console.log(Error);
+			});
+	};
+	/* ============================ */
 	const changePassword = (values) => {
 		const { oldPassword, newPassword } = values;
 		axios
@@ -80,7 +104,7 @@ const PasswordForm = (props) => {
 			{...formItemLayout}
 			form={form}
 			name="register"
-			onFinish={changePassword}
+			onFinish={rsaEncrypt}
 			scrollToFirstError
 			size="large"
 		>

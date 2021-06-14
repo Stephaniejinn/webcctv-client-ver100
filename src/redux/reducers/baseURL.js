@@ -1,7 +1,8 @@
 const initialState = {
 	trafficURL: "/statistics/road-traffic",
-	// baseURL: "http://192.168.1.100:3002/api",
-	baseURL: "http://globalbridge.iptime.org:3002/api",
+	baseURL: "http://192.168.1.100:3000/api",
+
+	// baseURL: "http://globalbridge.iptime.org:3002/api",
 	overSpeedVideoURL: "https://globalbridge.synology.me:4000/api/streams",
 
 	// baseURL: "http://210.104.181.221:3000/api",

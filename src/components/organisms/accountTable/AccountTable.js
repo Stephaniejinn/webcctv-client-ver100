@@ -10,20 +10,20 @@ import { connect } from "react-redux";
 import "./style.less";
 
 const AccountTable = (props) => {
+	const { baseURL } = props;
 	const { Text } = Typography;
 	const { setLoggedIn } = props;
 	const [Data, setData] = useState([]);
 	const [isLoadingData, setLoadingData] = useState(false);
 	const [isEmptyData, setEmptyData] = useState(false);
-	const baseURL = "http://192.168.1.100:3000/api";
 	var TotalData = [];
 
-	// useEffect(() => {
-	// 	setLoadingData(true);
-	// 	setEmptyData(false);
-	// 	setData([]);
-	// 	axiosData();
-	// }, []);
+	useEffect(() => {
+		setLoadingData(true);
+		setEmptyData(false);
+		setData([]);
+		axiosData();
+	}, []);
 
 	const columns = [
 		{
@@ -138,7 +138,7 @@ const AccountTable = (props) => {
 				<Table
 					pagination={{ hideOnSinglePage: true }}
 					columns={columns}
-					dataSource={data}
+					dataSource={Data}
 				/>
 			)}
 		</div>

@@ -20,7 +20,7 @@ const LoginPage = (props) => {
 							<Title level={2} style={{ marginTop: 20 }}>
 								글로벌브릿지
 							</Title>
-							<Title level={2} style={{ marginTop: 0 }}>
+							<Title level={2} style={{ marginTop: 0, minWidth: 454 }}>
 								인공지능 교통 데이터 수집 시스템
 							</Title>
 							<Text type="secondary">GBAI-ITS Ver.100-2020</Text>
