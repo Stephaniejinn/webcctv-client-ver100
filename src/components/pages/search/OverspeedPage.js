@@ -7,6 +7,7 @@ import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import SearchData from "../../organisms/searchData/SearchData";
 import OverspeedTable from "../../molecules/StatisticsTable/OverSpeedTable";
+import NotificationButton from "../../atoms/notificationButton/NotificationButton";
 
 import "./style.less";
 
@@ -22,8 +23,37 @@ const OverspeedPage = (props) => {
 	const [isRefresh, setRefresh] = useState(false);
 
 	const { Content } = Layout;
-	const { Title } = Typography;
-
+	const { Title, Paragraph, Text } = Typography;
+	const descriptionText = (
+		<>
+			<Paragraph>
+				해당 구간에서 발생한 과속 차량에 대한 정보가 표시됩니다
+			</Paragraph>
+			<Paragraph>표시정보:</Paragraph>
+			<Paragraph>
+				<ul>
+					<li>
+						<Text>과속 탐지 시간</Text>
+					</li>
+					<li>
+						<Text>차량 번호</Text>
+					</li>
+					<li>
+						<Text>위반 속도</Text>
+					</li>
+					<li>
+						<Text>위반 차선</Text>
+					</li>
+					<li>
+						<Text>차종</Text>
+					</li>
+					<li>
+						<Text>과속 차량 이미지</Text>
+					</li>
+				</ul>
+			</Paragraph>
+		</>
+	);
 	return (
 		<div className="page">
 			<Layout style={{ minHeight: "100vh" }}>
@@ -44,12 +74,23 @@ const OverspeedPage = (props) => {
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
 							setRefresh={setRefresh}
+							cascaderText="확인을 희망하는 구간을 선택하세요"
 						/>
 						{firstFilter ? (
 							<>
-								<Title level={5} style={{ marginBottom: 15 }}>
-									{camera}
-								</Title>
+								<div className="table-title-text">
+									<Title
+										level={5}
+										style={{
+											marginTop: 0,
+											marginBottom: 0,
+											textAlign: "center",
+										}}
+									>
+										{camera}
+									</Title>
+									<NotificationButton description={descriptionText} />
+								</div>
 								<OverspeedTable
 									startDate={startDate}
 									endTime={endTime}

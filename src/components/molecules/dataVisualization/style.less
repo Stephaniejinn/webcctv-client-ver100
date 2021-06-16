@@ -1,22 +1,40 @@
 @import "../../../Style.less";
 
-.ant-tabs-content.ant-tabs-content-right {
-	min-height: 400px;
-}
 .ant-tabs.ant-tabs-right {
 	color: black;
 	min-width: 1000px;
-}
-.ant-tabs-content-holder {
-	padding: 20px 20px 0px 20px;
-	.chart-vertical {
-		// height: 100%;
-		width: 100%;
-		.chart-horizontal {
-			// height: 100%;
-			width: 100%;
-			display: flex;
-			flex-direction: row;
+	.ant-tabs-content-holder {
+		padding: 20px 0px 0px 0px;
+		.ant-tabs-content.ant-tabs-content-right {
+			min-height: 450px;
+			height: 450px;
+			.chart-vertical {
+				height: 100%;
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				.chart-horizontal {
+					min-height: 400px;
+					height: 400px;
+					width: 100%;
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					.chart-y-divider {
+						display: flex;
+						flex-direction: column;
+						width: 66px;
+						// height: 100px;
+						.ant-divider-vertical {
+							height: 40px;
+						}
+					}
+				}
+				.chart-x-divider {
+					width: 200px;
+				}
+			}
 		}
 	}
 }

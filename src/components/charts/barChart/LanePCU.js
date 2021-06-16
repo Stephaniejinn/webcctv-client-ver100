@@ -67,6 +67,15 @@ const PCU = (props) => {
 		xField: "laneNum",
 		yField: "value",
 		seriesField: "type",
+		yAxis: {
+			label: {
+				formatter: function formatter(v) {
+					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+						return "".concat(s, ",");
+					});
+				},
+			},
+		},
 		label: {
 			position: "middle",
 			layout: [
@@ -74,6 +83,10 @@ const PCU = (props) => {
 				{ type: "interval-hide-overlap" },
 				{ type: "adjust-color" },
 			],
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 	};
 	return (

@@ -86,6 +86,10 @@ const OverSpeedCnt = (props) => {
 				{ type: "adjust-color" },
 			],
 		},
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 	};
 	return (
 		<>

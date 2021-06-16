@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Layout } from "antd";
+import { Layout, Tooltip, Typography } from "antd";
 import moment from "moment";
-import { connect } from "react-redux";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
 import Sider from "../../organisms/sider";
@@ -15,6 +14,8 @@ const RealtimeStreamingPage = (props) => {
 	const { setLoggedIn, isMaster } = props;
 
 	const { Content } = Layout;
+	const { Title } = Typography;
+
 	const [camNameAdd, setCamNameAdd] = useState({});
 	const [isLoadingNameAdd, setLoadingNameAdd] = useState(true);
 	const [currNameAdd, setCurrNameAdd] = useState({});
@@ -56,12 +57,25 @@ const RealtimeStreamingPage = (props) => {
 					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "실시간 영상"]} />
+
 						<div className="search-input">
+							<Tooltip
+								placement="rightBottom"
+								title={
+									"지정한 구간의 실시간 영상 및 해당 구간의 간략한 정보를 확인 할 수 있습니다"
+								}
+							>
+								<Title level={1} style={{ minWidth: 200, textAlign: "center" }}>
+									실시간 영상
+								</Title>
+							</Tooltip>
 							<CascaderBtn
 								setCamNameAdd={setCamNameAdd}
 								setLoadingNameAdd={setLoadingNameAdd}
 								size="large"
 								setLoggedIn={setLoggedIn}
+								tooltipText="검색을 누르시면 해당 구간의 실시간 영상 페이지로 이동합니다"
+								cascaderText="검색 희망하는 구간을 선택하세요"
 							/>
 						</div>
 

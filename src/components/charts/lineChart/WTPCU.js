@@ -91,6 +91,10 @@ const WTPCU = (props) => {
 		},
 		legend: true,
 		seriesField: "key",
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 	};
 	return (
 		<>

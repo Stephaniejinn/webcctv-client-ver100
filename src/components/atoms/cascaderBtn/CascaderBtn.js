@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Button, message } from "antd";
+import { Button, message, Tooltip } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
@@ -19,6 +19,8 @@ const CascaderWButton = (props) => {
 		size,
 		setFirstFilter,
 		page,
+		tooltipText,
+		cascaderText,
 	} = props;
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
@@ -59,10 +61,13 @@ const CascaderWButton = (props) => {
 				setCamNameAdd={setCamNameAdd}
 				setLoadingNameAdd={setLoadingNameAdd}
 				setLoggedIn={setLoggedIn}
+				cascaderText={cascaderText}
 			/>
-			<Button size={size} type="primary" onClick={handleSearch}>
-				검색
-			</Button>
+			<Tooltip placement="topLeft" title={tooltipText}>
+				<Button size={size} type="primary" onClick={handleSearch}>
+					검색
+				</Button>
+			</Tooltip>
 		</div>
 	);
 };

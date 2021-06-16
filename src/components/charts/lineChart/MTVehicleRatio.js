@@ -79,6 +79,10 @@ const VehicleRatio = (props) => {
 				},
 			},
 		},
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 	};
 	return (
 		<>

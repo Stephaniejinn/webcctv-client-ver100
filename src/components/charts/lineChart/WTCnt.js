@@ -90,6 +90,10 @@ const WTCnt = (props) => {
 			},
 		},
 		legend: true,
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 	};
 	return (
 		<>

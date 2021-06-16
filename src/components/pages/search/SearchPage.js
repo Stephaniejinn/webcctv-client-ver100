@@ -39,6 +39,7 @@ const SearchDownloadPage = (props) => {
 							firstFilter={firstFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
+							cascaderText="기간 별 조회를 희망하는 구간을 선택하세요"
 						/>
 						{firstFilter ? (
 							<SearchCollapsedTable

@@ -42,6 +42,7 @@ const DayStatPage = (props) => {
 							firstFilter={firstFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
+							cascaderText="확인을 희망하는 구간을 선택하세요"
 						/>
 						{firstFilter ? (
 							count ? (

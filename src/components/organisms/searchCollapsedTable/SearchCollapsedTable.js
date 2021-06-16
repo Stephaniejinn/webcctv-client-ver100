@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Collapse, Typography, Divider, Spin, message } from "antd";
-import { EyeOutlined, DownloadOutlined } from "@ant-design/icons";
+import { Collapse, Typography, Divider, Spin, message, Tooltip } from "antd";
+import {
+	EyeOutlined,
+	DownloadOutlined,
+	InfoCircleOutlined,
+} from "@ant-design/icons";
 import ExportJsonExcel from "js-export-excel";
 import moment from "moment";
 
@@ -25,7 +29,7 @@ const SearchCollapsedTable = (props) => {
 		camLanes,
 	} = props;
 	const { Panel } = Collapse;
-	const { Title, Text } = Typography;
+	const { Title, Text, Paragraph } = Typography;
 
 	const [errorMsg, setMsg] = useState(false);
 
@@ -104,7 +108,17 @@ const SearchCollapsedTable = (props) => {
 		"motorRatio",
 		"motorOverSpeed",
 	];
-
+	const tableTitleTooltip = (
+		<>
+			<p>표시정보:</p>
+			<p>1차 데이터: 통행량, 평균속도, PCU, 과속</p>
+			<p>2차 데이터: 주야율, PHF, 첨두유율, 집중율</p>
+			<p>
+				과속 데이터: 과속 탐지 시간, 차량 번호, 위반 속도, 위반 차선, 차종, 과속
+				차량 이미지
+			</p>
+		</>
+	);
 	useEffect(() => {
 		countFirstCol = 0;
 		countSecondCol = 0;
@@ -594,8 +608,13 @@ const SearchCollapsedTable = (props) => {
 				}
 			}}
 		>
-			<DownloadOutlined />
-			다운로드
+			<Tooltip
+				placement="topLeft"
+				title="다운로드 버튼을 클릭하여 해당하는 데이터를 엑셀 파일로 다운받을 수 있습니다"
+			>
+				<DownloadOutlined />
+				다운로드
+			</Tooltip>
 		</div>
 	);
 
@@ -603,9 +622,14 @@ const SearchCollapsedTable = (props) => {
 		<>
 			{errorMsg ? null : isEmptyTrafficData ? null : (
 				<div className="table-collapse">
-					<Title level={5} style={{ marginTop: 10 }}>
-						{camera} 데이터 조회 결과
-					</Title>
+					<div className="table-title-text">
+						<Title level={5} style={{ marginTop: 10 }}>
+							{camera} 데이터 조회 결과
+						</Title>
+						<Tooltip placement="topLeft" title={tableTitleTooltip}>
+							<InfoCircleOutlined style={{ marginLeft: 5 }} />
+						</Tooltip>
+					</div>
 					<Divider />
 					{isLoadingSecond ? (
 						<div
@@ -625,10 +649,15 @@ const SearchCollapsedTable = (props) => {
 								accordion
 								expandIconPosition="right"
 								expandIcon={({ isActive }) => (
-									<div style={{ fontSize: 14, marginTop: -2 }}>
-										<EyeOutlined />
-										미리보기
-									</div>
+									<Tooltip
+										placement="topLeft"
+										title="미리보기 버튼을 클릭하여 각 차종 별 데이터를 개별적으로 표 형식으로 해당 페이지에서 5줄까지 미리 볼 수 있습니다"
+									>
+										<div style={{ fontSize: 14, marginTop: -2 }}>
+											<EyeOutlined />
+											미리보기
+										</div>
+									</Tooltip>
 								)}
 							>
 								<Panel

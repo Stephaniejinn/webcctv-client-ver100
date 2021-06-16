@@ -25,25 +25,21 @@ const WMFlowRate = (props) => {
 		if (activeVisualKey === "8") {
 			setLoading(true);
 			setData([]);
-
 			parseTotalData();
+			console.log(trafficTotalData);
 		}
 	}, [trafficTotalData, activeVisualKey]);
 
 	const parseTotalData = () => {
 		var TotalData = [];
 		trafficTotalData.slice(3).forEach((TrafficData) => {
-			const {
-				weekOption,
-				recordDate,
-				totalVehiclePeakHourFlowRate,
-			} = TrafficData;
+			const { weekOption, recordDate, totalVehiclePeakHourFlowRate } =
+				TrafficData;
 
 			const temp = {};
-			if (weekOption) {
-				temp["type"] = WeekKey[weekOption];
-			}
-			if (recordDate) {
+			temp["type"] = WeekKey[weekOption];
+
+			if (!temp["type"]) {
 				temp["type"] = moment(recordDate).format("MM-DD");
 			}
 			temp["value"] = totalVehiclePeakHourFlowRate;
@@ -65,9 +61,22 @@ const WMFlowRate = (props) => {
 				opacity: 0.6,
 			},
 		},
+		yAxis: {
+			label: {
+				formatter: function formatter(v) {
+					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+						return "".concat(s, ",");
+					});
+				},
+			},
+		},
 		meta: {
 			type: { alias: "요일" },
 			value: { alias: "첨두유율" },
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 	};
 	return (

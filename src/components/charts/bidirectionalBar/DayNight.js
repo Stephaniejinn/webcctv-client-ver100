@@ -65,6 +65,10 @@ const MyBidirectionalBar = (props) => {
 			shared: true,
 			showMarkers: false,
 		},
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 	};
 	return (
 		<>

@@ -72,7 +72,6 @@ const MTPCULine = (props) => {
 		xField: "time",
 		yField: "value",
 		seriesField: "category",
-		// xAxis: { type: "time" },
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
@@ -81,6 +80,10 @@ const MTPCULine = (props) => {
 					});
 				},
 			},
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 	};
 	return (

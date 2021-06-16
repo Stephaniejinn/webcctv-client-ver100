@@ -84,13 +84,15 @@ const WTOverSpeed = (props) => {
 		yAxis: {
 			label: {
 				formatter: function formatter(v) {
-					return v
-						.concat("km/h")
-						.replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
-							return "".concat(s, ",");
-						});
+					return v.concat("대").replace(/\d{1,3}(?=(\d{3})+$)/g, function (s) {
+						return "".concat(s, ",");
+					});
 				},
 			},
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 		seriesField: "key",
 	};

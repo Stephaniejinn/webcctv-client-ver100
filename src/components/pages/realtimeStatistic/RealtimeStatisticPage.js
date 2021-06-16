@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, message, Typography, Button } from "antd";
+import { Layout, message, Typography, Button, Tooltip } from "antd";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import axios from "axios";
@@ -131,20 +131,37 @@ const RealtimeStatisticPage = (props) => {
 							pageHierarchy={["대시보드", "실시간 데이터"]}
 							locationHierarchy={locationHierarchy}
 						/>
-						<Title level={3} style={{ minWidth: 450, marginBottom: 0 }}>
-							{pageTitle}
-						</Title>
+						<Tooltip
+							placement="topLeft"
+							title={
+								"검색한 구간의 실시간 영상, 교통 정보를 그래프 및 표 형식으로 확인 할 수 있는 페이지 입니다"
+							}
+						>
+							<Title level={3} style={{ width: 450, marginBottom: 0 }}>
+								{pageTitle}
+							</Title>
+						</Tooltip>
+
 						<div className="page-search">
 							<CascaderBtn
 								setLoggedIn={setLoggedIn}
 								size="middle"
 								setFirstFilter={setFirstFilter}
 								page="REALSTATISTIC"
+								tooltipText="검색을 통해 해당 구간의 실시간 데이터를 조회 가능합니다"
+								cascaderText="검색 희망하는 구간을 선택하세요"
 							/>
 							{firstFilter && (
-								<Button onClick={handleRefresh} style={{ marginTop: 0 }}>
-									새로고침
-								</Button>
+								<Tooltip
+									placement="topLeft"
+									title={
+										"해당 구간의 교통 정보가 최근 15분까지의 데이터를 포함하여 업데이트됩니다"
+									}
+								>
+									<Button onClick={handleRefresh} style={{ marginTop: 0 }}>
+										새로고침
+									</Button>
+								</Tooltip>
 							)}
 						</div>
 						{firstFilter ? (

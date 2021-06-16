@@ -4,11 +4,12 @@ import { Radio, Typography } from "antd";
 import "./style.less";
 
 const TimeFilter = (props) => {
-	const { value, setValue } = props;
+	const { value, setValue, setChanged } = props;
 	const { Text } = Typography;
 
 	const onChange = (e) => {
 		setValue(e.target.value);
+		setChanged(true);
 	};
 	return (
 		<div className="multi-radio-body">

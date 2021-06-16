@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, message } from "antd";
+import { Tabs, message, Typography } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
 
 import TimeTableCard from "../../../molecules/tableCard/TimeTableCard";
 import TimeDataVisualization from "../../../molecules/dataVisualization/TimeDataVisualization";
+import NotificationButton from "../../../atoms/notificationButton/NotificationButton";
+
 import "../style.less";
 
 const TimeVisualization = (props) => {
@@ -19,6 +21,7 @@ const TimeVisualization = (props) => {
 		setLoggedIn,
 	} = props;
 	const { TabPane } = Tabs;
+	const { Paragraph, Text } = Typography;
 
 	const [isLoadingTrafficTotal, setLoadingTrafficTotal] = useState(true);
 	const [isEmptyData, setEmptyData] = useState(false);
@@ -28,7 +31,50 @@ const TimeVisualization = (props) => {
 	const [activeVisualKey, setActiveVisualKey] = useState("1");
 
 	const [trafficTotalData, setTrafficTotalData] = useState([]);
-
+	const descriptionText = (
+		<>
+			<Paragraph>
+				{period === "DAY" ? "일" : period === "WEEK" ? "주" : "월"}간 누적 통계
+				해당 구간에 대한 시간 별 정보가 그래프로 표시됩니다
+			</Paragraph>
+			<Paragraph>표시정보:</Paragraph>
+			<Paragraph>
+				<ul>
+					<li>
+						<Text>교통량</Text>
+					</li>
+					<li>
+						<Text>PCU</Text>
+					</li>
+					<li>
+						<Text>차종비율</Text>
+					</li>
+					<li>
+						<Text>평균속도</Text>
+					</li>
+					<li>
+						<Text>과속차량 수</Text>
+					</li>
+					<li>
+						<Text>주야율</Text>
+					</li>
+					<li>
+						<Text>첨두시간</Text>
+					</li>
+					<li>
+						<Text>첨두유욜</Text>
+					</li>
+					<li>
+						<Text>PHF(첨두시간계수)</Text>
+					</li>
+					<li>
+						<Text>집중율</Text>
+					</li>
+				</ul>
+				<Paragraph>*항목별 상세사항은 매뉴얼에 기재 됨</Paragraph>
+			</Paragraph>
+		</>
+	);
 	const periodURL =
 		period === "DAY" ? "/daily" : period === "WEEK" ? "/weekly" : "/monthly";
 
@@ -88,7 +134,12 @@ const TimeVisualization = (props) => {
 		setCurrentLaneNum(key);
 	}
 	return (
-		<Tabs defaultActiveKey="0" activeKey={currentLaneNum} onChange={callback}>
+		<Tabs
+			defaultActiveKey="0"
+			activeKey={currentLaneNum}
+			onChange={callback}
+			tabBarExtraContent={<NotificationButton description={descriptionText} />}
+		>
 			{!isLoadingTrafficTotal
 				? totalLaneArr.map((tabName, index) => {
 						return (

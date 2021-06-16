@@ -12,10 +12,10 @@ const MyCascader = (props) => {
 		setLocationChange,
 		baseURL,
 		isDisabled,
-		placeholdertxt,
 		setCamNameAdd,
 		setLoadingNameAdd,
 		setLoggedIn,
+		cascaderText,
 	} = props;
 
 	const [parsedOptions, setParsedOptions] = useState([]);
@@ -311,7 +311,7 @@ const MyCascader = (props) => {
 				size={size}
 				expandTrigger="hover"
 				onChange={onChange}
-				placeholder={placeholdertxt ? placeholdertxt : "위치 선택"}
+				placeholder={cascaderText}
 				showSearch={{ filter }}
 				options={parsedOptions}
 				// defaultValue={defaultOption}

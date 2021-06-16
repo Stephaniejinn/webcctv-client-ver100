@@ -92,6 +92,10 @@ const WTAvgSpeed = (props) => {
 				},
 			},
 		},
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 		seriesField: "key",
 	};
 	return (

@@ -70,7 +70,10 @@ const WeekPeakTime = (props) => {
 			},
 		},
 		tooltip: false,
-
+		style: {
+			height: "100%",
+			width: "95%",
+		},
 		state: {
 			active: {
 				style: {

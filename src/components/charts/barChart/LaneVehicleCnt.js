@@ -24,13 +24,8 @@ const VehicleCnt = (props) => {
 		var cntMotor = [];
 		var cntTotalData = [];
 		trafficTotalData.slice(1).forEach((TrafficData) => {
-			const {
-				laneNumber,
-				carVolume,
-				mBusVolume,
-				mTruckVolume,
-				motorVolume,
-			} = TrafficData;
+			const { laneNumber, carVolume, mBusVolume, mTruckVolume, motorVolume } =
+				TrafficData;
 
 			const tempCar = {};
 			const tempBus = {};
@@ -85,6 +80,10 @@ const VehicleCnt = (props) => {
 				{ type: "interval-hide-overlap" },
 				{ type: "adjust-color" },
 			],
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 	};
 	return (

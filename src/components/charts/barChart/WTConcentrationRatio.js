@@ -33,18 +33,13 @@ const WTConcentrationRatio = (props) => {
 		var TotalData = [];
 
 		trafficTotalData.slice(3).forEach((TrafficData) => {
-			const {
-				weekOption,
-				recordDate,
-				totalVehiclePeakHourConcentrationRatio,
-			} = TrafficData;
+			const { weekOption, recordDate, totalVehiclePeakHourConcentrationRatio } =
+				TrafficData;
 
 			const temp = {};
 
-			if (weekOption) {
-				temp["type"] = WeekKey[weekOption];
-			}
-			if (recordDate) {
+			temp["type"] = WeekKey[weekOption];
+			if (!temp["type"]) {
 				temp["type"] = moment(recordDate).format("MM-DD");
 			}
 			temp["value"] = totalVehiclePeakHourConcentrationRatio;
@@ -70,6 +65,10 @@ const WTConcentrationRatio = (props) => {
 		meta: {
 			type: { alias: "요일" },
 			value: { alias: "집중률" },
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 	};
 	return (

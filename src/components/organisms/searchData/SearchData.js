@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Typography, Button, Radio, message } from "antd";
+import { Typography, Button, Radio, message, Tooltip } from "antd";
 import { connect } from "react-redux";
 import * as actions from "../../../redux/actions";
 
 import Cascader from "../../atoms/cascader/Cascader";
 import DatePicker from "../../atoms/datePicker/DatePicker";
 import TimeFilter from "../../molecules/timeFilter/TimeFilter";
+import NotificationButton from "../../atoms/notificationButton/NotificationButton";
 
 import "./style.less";
 
@@ -28,6 +29,7 @@ const SeachData = (props) => {
 		firstFilter,
 		setLoggedIn,
 		setRefresh,
+		cascaderText,
 	} = props;
 
 	const { Title } = Typography;
@@ -37,14 +39,35 @@ const SeachData = (props) => {
 	const [tempEndTime, setTempEndTime] = useState("");
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
-	const [additionFilterValue, setValue] = useState("ALL");
+	const [additionalFilterValue, setAddValue] = useState("ALL");
+	const [additionalFilterChanged, setAddChanged] = useState(false);
 
 	const day = "일간 누적 통계";
 	const week = "주간 누적 통계";
 	const month = "월간 누적 통계";
 	const search = "기간 별 데이터 조회";
 	const overspeed = "과속 데이터 조회 ";
+	const tooltipText = `조회 버튼을 클릭하여 선택한 구간과 날짜의 ${
+		period === "OVERSPEED"
+			? "과속 데이터를 페이지에 표시 합니다"
+			: period === "SEARCH"
+			? `교통 정보 및 과속 데이터를 페이지에 표시 합니다`
+			: `${
+					period === "DAY" ? day : period === "WEEK" ? week : month
+			  }정보를 확인할 수 있습니다`
+	}`;
 
+	const descriptionText = (
+		<>
+			<Text>
+				{period === "DAY"
+					? "페이지에 출력되는 일간 누적 통계의 기준을 선택합니다"
+					: `페이지에 출력되는 ${
+							period === "WEEK" ? "주" : "월"
+					  }간 누적 통계의 기준을 선택합니다. 기준 선택이 차선별인 경우 평일 혹은 주말로 구분 가능합니다.`}
+			</Text>
+		</>
+	);
 	var timer;
 	const spinTimer = () => {
 		if (timer) {
@@ -79,7 +102,8 @@ const SeachData = (props) => {
 				tempStartDate === startDate &&
 				tempEndTime === endDate &&
 				selectedLocation["camera"] === camera &&
-				firstFilter === true
+				firstFilter === true &&
+				!additionalFilterChanged
 			) {
 				message.success("이미 조회된 데이터입니다");
 			} else {
@@ -94,7 +118,8 @@ const SeachData = (props) => {
 				setDateInfo(dateInfo);
 				if (setAddFilter) {
 					if (!classification) {
-						setAddFilter(additionFilterValue);
+						setAddFilter(additionalFilterValue);
+						setAddChanged(false);
 					}
 				}
 			}
@@ -123,6 +148,7 @@ const SeachData = (props) => {
 							setSelectedLocation={setSelectedLocation}
 							setSelectedLocationCode={setSelectedLocationCode}
 							setLoggedIn={setLoggedIn}
+							cascaderText={cascaderText}
 						/>
 						<DatePicker
 							period={period}
@@ -142,10 +168,15 @@ const SeachData = (props) => {
 									value={classification}
 									onChange={(e) => setClassification(e.target.value)}
 									optionType="button"
+									style={{ marginRight: 5 }}
 								>
 									<Radio.Button value={true}>시간별</Radio.Button>
 									<Radio.Button value={false}>차선별</Radio.Button>
 								</Radio.Group>
+								<NotificationButton
+									message="조회기준"
+									description={descriptionText}
+								/>
 							</div>
 						) : null}
 					</div>
@@ -155,22 +186,32 @@ const SeachData = (props) => {
 							<div className="search-area-input-radio">
 								<TimeFilter
 									page={period}
-									value={additionFilterValue}
-									setValue={setValue}
+									value={additionalFilterValue}
+									setValue={setAddValue}
+									setChanged={setAddChanged}
 								/>
 							</div>
 						) : null)}
 				</div>
 
 				<div className="search-area-input-button">
-					<Button
-						type="primary"
-						style={{ marginBottom: 7, width: 119, height: 38 }}
-						onClick={handleSearch}
-					>
-						조회
-					</Button>
-					{period === "SEARCH" && <Button disabled>전체 다운로드</Button>}
+					<Tooltip placement="topLeft" title={tooltipText}>
+						<Button
+							type="primary"
+							style={{ marginBottom: 7, width: 119, height: 38 }}
+							onClick={handleSearch}
+						>
+							조회
+						</Button>
+					</Tooltip>
+					{period === "SEARCH" && (
+						<Tooltip
+							placement="topLeft"
+							title="다운로드 버튼을 클릭하여 선택된 구간과 날짜의 교통 정보 및 과속 데이터를 엑셀 파일로 다운로드 받을 수 있습니다"
+						>
+							<Button disabled>전체 다운로드</Button>
+						</Tooltip>
+					)}
 				</div>
 			</div>
 		</div>

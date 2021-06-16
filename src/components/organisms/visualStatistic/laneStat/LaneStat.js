@@ -6,6 +6,8 @@ import { connect } from "react-redux";
 
 import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
+import NotificationButton from "../../../atoms/notificationButton/NotificationButton";
+
 import "../style.less";
 
 const LaneVisualization = (props) => {
@@ -20,7 +22,6 @@ const LaneVisualization = (props) => {
 		setLoggedIn,
 	} = props;
 	const { Text } = Typography;
-
 	const [activeVisualKey, setActiveVisualKey] = useState("1");
 
 	const [isLoadingTrafficTotal, setLoadingTrafficTotal] = useState(true);

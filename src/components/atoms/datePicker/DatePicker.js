@@ -75,7 +75,11 @@ const MyDatePicker = (props) => {
 		<ConfigProvider locale={locale}>
 			{period === "WEEK" ? (
 				<div className="week-description">
-					<DatePicker onChange={onChange} picker="week" placeholder="주 선택" />
+					<DatePicker
+						onChange={onChange}
+						picker="week"
+						placeholder="확인을 희망하는 주간을 선택하세요"
+					/>
 					{week[1] && (
 						<Text type="secondary" style={{ marginLeft: 10, marginTop: 5 }}>
 							{week[0]} ~ {week[1]}
@@ -83,13 +87,17 @@ const MyDatePicker = (props) => {
 					)}
 				</div>
 			) : period === "MONTH" ? (
-				<DatePicker onChange={onChange} picker="month" placeholder="월 선택" />
+				<DatePicker
+					onChange={onChange}
+					picker="month"
+					placeholder="확인을 희망하는 월간을 선택하세요"
+				/>
 			) : period === "SEARCH" ? (
 				<RangePicker onChange={onChange} />
 			) : (
 				<DatePicker
 					onChange={onChange}
-					placeholder="날짜 선택"
+					placeholder="확인을 희망하는 날짜를 선택하세요"
 					showToday={false}
 				/>
 			)}

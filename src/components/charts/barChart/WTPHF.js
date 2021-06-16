@@ -34,17 +34,12 @@ const WTPHF = (props) => {
 		var TotalData = [];
 
 		trafficTotalData.slice(3).forEach((TrafficData) => {
-			const {
-				weekOption,
-				recordDate,
-				totalVehiclePeakHourFactor,
-			} = TrafficData;
+			const { weekOption, recordDate, totalVehiclePeakHourFactor } =
+				TrafficData;
 
 			const temp = {};
-			if (weekOption) {
-				temp["type"] = WeekKey[weekOption];
-			}
-			if (recordDate) {
+			temp["type"] = WeekKey[weekOption];
+			if (!temp["type"]) {
 				temp["type"] = moment(recordDate).format("MM-DD");
 			}
 			temp["value"] = totalVehiclePeakHourFactor;
@@ -69,6 +64,10 @@ const WTPHF = (props) => {
 		meta: {
 			type: { alias: "요일" },
 			value: { alias: "PHF" },
+		},
+		style: {
+			height: "100%",
+			width: "95%",
 		},
 	};
 	return (
