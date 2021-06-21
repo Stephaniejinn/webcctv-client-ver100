@@ -12,7 +12,7 @@ const myPersistReducer = persistReducer(storageConfig, reducers);
 const store = createStore(myPersistReducer);
 export const persistor = persistStore(store, {}, () => {
 	const state = store.getState();
-	console.log(state);
+	// console.log(state);
 });
 // export const persistor = persistStore(store);
 export default store;

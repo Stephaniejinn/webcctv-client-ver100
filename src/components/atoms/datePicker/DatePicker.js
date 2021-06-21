@@ -12,39 +12,6 @@ const MyDatePicker = (props) => {
 	const { Text } = Typography;
 	const [week, setWeek] = useState([]);
 
-	// useEffect(() => {
-	// 	if (period === "WEEK" && weekStartDate) {
-	// 		setTempStartDate(weekStartDate);
-	// 		setTempEndTime(weekEndTime);
-	// 	} else if (period === "MONTH" && monthStartDate) {
-	// 		setTempStartDate(monthStartDate);
-	// 		setTempEndTime(monthEndTime);
-	// 	} else if (period === "SEARCH" && searchStartDate) {
-	// 		setTempStartDate(searchStartDate);
-	// 		setTempEndTime(searchEndTime);
-	// 	} else if (period === "DAY" && dayStartDate) {
-	// 		setTempStartDate(dayStartDate);
-	// 		setTempEndTime(dayEndTime);
-	// 	} else if (period === "OVERSPEED" && overSpeedStartDate) {
-	// 		setTempStartDate(overSpeedStartDate);
-	// 		setTempEndTime(overSpeedEndTime);
-	// 	} else {
-	// 		return () => {
-	// 			setTempStartDate("");
-	// 			setTempEndTime("");
-	// 		};
-	// 	}
-	// }, [period]);
-
-	// var defaultDay = dayStartDate && moment(dayStartDate);
-	// var defaultWeek = weekStartDate && moment(weekStartDate);
-	// var defaultMonth = monthStartDate && moment(monthStartDate, "YYYY-MM");
-	// var defaultOverSpeed = overSpeedStartDate && moment(overSpeedStartDate);
-	// var defaultSearch =
-	// 	searchStartDate || searchEndTime
-	// 		? [moment(searchStartDate), moment(searchEndTime)]
-	// 		: null;
-
 	moment.locale("ko", {
 		week: {
 			dow: 7,
@@ -80,7 +47,7 @@ const MyDatePicker = (props) => {
 						picker="week"
 						placeholder="확인을 희망하는 주간을 선택하세요"
 					/>
-					{week[1] && (
+					{week[1] !== "Invalid date" && week[1] && (
 						<Text type="secondary" style={{ marginLeft: 10, marginTop: 5 }}>
 							{week[0]} ~ {week[1]}
 						</Text>

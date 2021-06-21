@@ -27,9 +27,12 @@ const SearchCollapsedTable = (props) => {
 		trafficURL,
 		setLoggedIn,
 		camLanes,
+		setEmptyErr,
+		setFutureErr,
+		setOver31Err,
 	} = props;
 	const { Panel } = Collapse;
-	const { Title, Text, Paragraph } = Typography;
+	const { Title, Text } = Typography;
 
 	const [errorMsg, setMsg] = useState(false);
 
@@ -123,6 +126,7 @@ const SearchCollapsedTable = (props) => {
 		countFirstCol = 0;
 		countSecondCol = 0;
 		countOverSpeedCol = 0;
+		firstDataLaneTotalTemp = {};
 		setEmptyTrafficData(false);
 		setEmptyOverSpeedData(false);
 		setLoadingFirst(true);
@@ -134,6 +138,9 @@ const SearchCollapsedTable = (props) => {
 		setSecondDataTotal([]);
 		axiosAsyncFS();
 		axiosOverSpeedData();
+		for (var idx = 1; idx <= camLanes; idx++) {
+			axiosAsyncFirstLane(idx);
+		}
 	}, [cameraCode, startDate, endTime]);
 
 	const downloadOverSpeedToExcel = () => {
@@ -194,7 +201,7 @@ const SearchCollapsedTable = (props) => {
 					"전체 주야율",
 					"승용차 주야율",
 					"버스 주야율",
-					"트럭 주야율",
+					"화물차 주야율",
 					"오토바이 주야율",
 				],
 			},
@@ -204,7 +211,6 @@ const SearchCollapsedTable = (props) => {
 	};
 
 	const downloadFirstTableToExcel = () => {
-		firstDataLaneTotalTemp = {};
 		let excelFile = {};
 		excelFile.fileName = `1차 데이터_${moment(startDate).format("l")}-${moment(
 			endTime
@@ -217,9 +223,9 @@ const SearchCollapsedTable = (props) => {
 				sheetHeader: firstDataHeaders,
 			},
 		];
-		for (var idx = 1; idx <= camLanes; idx++) {
-			axiosAsyncFirstLane(idx);
-			if (!isLoadingLane) {
+		if (!isLoadingLane) {
+			for (var idx = 1; idx <= camLanes; idx++) {
+				// axiosAsyncFirstLane(idx);
 				Datas.push({
 					sheetData: firstDataLaneTotal[idx],
 					sheetName: `${idx} 차선`,
@@ -368,24 +374,31 @@ const SearchCollapsedTable = (props) => {
 					setSecondDataTotal(secondDataParsedTotal);
 					setLoadingFirst(false);
 					setLoadingSecond(false);
+					setEmptyErr(false);
+					setFutureErr(false);
+					setOver31Err(false);
 				} else {
 					setEmptyTrafficData(true);
+					setEmptyErr(true);
+					setFutureErr(false);
 					message.warning("해당 기간 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
 				setMsg(true);
 				if (err.response.status === 400) {
+					setEmptyErr(false);
+					setFutureErr(true);
 					if (
 						err.response.data.payload[0].msg ===
 						"Must be at most 31 days after startDate"
 					) {
+						setOver31Err(true);
 						message.warning("최대 31일까지 조회 할 수 있습니다");
 					} else {
+						setOver31Err(false);
 						message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
 					}
-				} else if (err.response.status === 404) {
-					message.warning("해당 기간 데이터가 없습니다");
 				} else if (err.response.status === 401) {
 					message.warning(
 						"로그인 정보가 유효하지 않습니다. 다시 로그인해주세요"
@@ -458,9 +471,13 @@ const SearchCollapsedTable = (props) => {
 						err.response.data.payload[0].msg ===
 						"Must be at most 31 days after startDate"
 					) {
-						message.warning("최대 31일까지 조회 할 수 있습니다");
+						message.warning(
+							"최대 31일까지의 과속 데이터를 조회 할 수 있습니다"
+						);
 					} else {
-						message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+						message.warning(
+							"분석이 완료되지 않은 기간에 대한 과속 데이터 검색입니다"
+						);
 					}
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
@@ -552,10 +569,11 @@ const SearchCollapsedTable = (props) => {
 					});
 					firstDataLaneTotalTemp[laneNum] = firstDataLane;
 					setFirstDataLaneTotal(firstDataLaneTotalTemp);
-					setLoadingLane(false);
+					if (laneNum === camLanes) {
+						setLoadingLane(false);
+					}
 				} else {
 					setEmptyTrafficData(true);
-					message.warning("해당 기간 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
@@ -597,7 +615,6 @@ const SearchCollapsedTable = (props) => {
 	const genExtra = (tableIdx) => (
 		<div
 			onClick={(event) => {
-				// If you don't want click extra trigger collapse, you can prevent this:
 				event.stopPropagation();
 				if (tableIdx === "FIRST") {
 					downloadFirstTableToExcel();
@@ -631,7 +648,7 @@ const SearchCollapsedTable = (props) => {
 						</Tooltip>
 					</div>
 					<Divider />
-					{isLoadingSecond ? (
+					{isLoadingSecond || isLoadingLane ? (
 						<div
 							style={{
 								marginTop: 20,

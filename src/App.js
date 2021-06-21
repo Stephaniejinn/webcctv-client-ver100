@@ -21,6 +21,7 @@ const App = (props) => {
 	const [loggedIn, setLoggedIn] = useState(false);
 	const [isLoading, setLoading] = useState(true);
 	const [isMaster, setMaster] = useState(false);
+	const [realFirstFilter, setRealFirstFilter] = useState(false);
 
 	useEffect(() => {
 		loginStatus();
@@ -38,11 +39,12 @@ const App = (props) => {
 				let master = res.data.isMaster;
 				if (master) {
 					setMaster(true);
+					setLoading(false);
 				} else {
 					setMaster(false);
+					setLoading(false);
 				}
 				setLoggedIn(true);
-				setLoading(false);
 			})
 			.catch((err) => {
 				if (err.response) {
@@ -83,6 +85,8 @@ const App = (props) => {
 									<RealtimeStreamingPage
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
+										realFirstFilter={realFirstFilter}
 									/>
 								)}
 							/>
@@ -92,19 +96,29 @@ const App = (props) => {
 									<RealtimeStatisticPage
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
+										realFirstFilter={realFirstFilter}
 									/>
 								)}
 							/>
 							<Route
 								path="/statistic/day"
 								render={() => (
-									<DayStatPage setLoggedIn={setLoggedIn} isMaster={isMaster} />
+									<DayStatPage
+										setLoggedIn={setLoggedIn}
+										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
+									/>
 								)}
 							/>
 							<Route
 								path="/statistic/week"
 								render={() => (
-									<WeekStatPage setLoggedIn={setLoggedIn} isMaster={isMaster} />
+									<WeekStatPage
+										setLoggedIn={setLoggedIn}
+										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
+									/>
 								)}
 							/>
 							<Route
@@ -113,6 +127,7 @@ const App = (props) => {
 									<MonthStatPage
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
 									/>
 								)}
 							/>
@@ -122,6 +137,7 @@ const App = (props) => {
 									<SearchDownloadPage
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
 									/>
 								)}
 							/>
@@ -131,19 +147,28 @@ const App = (props) => {
 									<SearchOverSpeed
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
 									/>
 								)}
 							/>
 							<Route
 								path="/password"
 								render={() => (
-									<PasswordPage setLoggedIn={setLoggedIn} isMaster={isMaster} />
+									<PasswordPage
+										setLoggedIn={setLoggedIn}
+										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
+									/>
 								)}
 							/>
 							<Route
 								path="/signup"
 								render={() => (
-									<SignupPage setLoggedIn={setLoggedIn} isMaster={isMaster} />
+									<SignupPage
+										setLoggedIn={setLoggedIn}
+										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
+									/>
 								)}
 							/>
 							<Route
@@ -152,6 +177,7 @@ const App = (props) => {
 									<SearchAccountPage
 										setLoggedIn={setLoggedIn}
 										isMaster={isMaster}
+										setRealFirstFilter={setRealFirstFilter}
 									/>
 								)}
 							/>
@@ -160,8 +186,13 @@ const App = (props) => {
 					) : (
 						<Switch>
 							<Route
-								path="*"
-								render={() => <LoginPage setLoggedIn={setLoggedIn} />}
+								path="/*"
+								render={() => (
+									<LoginPage
+										setLoggedIn={setLoggedIn}
+										setRealFirstFilter={setRealFirstFilter}
+									/>
+								)}
 							/>
 						</Switch>
 					)}

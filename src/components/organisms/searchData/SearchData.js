@@ -30,6 +30,9 @@ const SeachData = (props) => {
 		setLoggedIn,
 		setRefresh,
 		cascaderText,
+		emptyErr,
+		futureErr,
+		over31Err,
 	} = props;
 
 	const { Title } = Typography;
@@ -84,6 +87,8 @@ const SeachData = (props) => {
 		if (
 			tempStartDate !== "" &&
 			tempEndTime !== "" &&
+			tempStartDate !== "Invalid date" &&
+			tempEndTime !== "Invalid date" &&
 			Object.keys(selectedLocation).length !== 0
 		) {
 			//if location change
@@ -105,7 +110,17 @@ const SeachData = (props) => {
 				firstFilter === true &&
 				!additionalFilterChanged
 			) {
-				message.success("이미 조회된 데이터입니다");
+				if (emptyErr) {
+					message.warning("해당 기간 데이터가 없습니다");
+				} else if (futureErr) {
+					if (over31Err) {
+						message.warning("최대 31일까지 조회 할 수 있습니다");
+					} else {
+						message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+					}
+				} else {
+					message.success("이미 조회된 데이터입니다");
+				}
 			} else {
 				spinTimer();
 				setFirstFilter(true);

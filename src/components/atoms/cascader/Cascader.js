@@ -28,17 +28,6 @@ const MyCascader = (props) => {
 	var cameraLanes = {};
 	var cameraNameAddress = {};
 
-	// if (props.city === "" || displayLocation === false) {
-	// 	var defaultOption = [];
-	// } else {
-	// 	defaultOption = [
-	// 		props.city,
-	// 		props.district,
-	// 		props.road,
-	// 		props.spot,
-	// 		props.camera,
-	// 	];
-	// }
 	useEffect(() => {
 		getOptions();
 	}, []);
@@ -314,7 +303,6 @@ const MyCascader = (props) => {
 				placeholder={cascaderText}
 				showSearch={{ filter }}
 				options={parsedOptions}
-				// defaultValue={defaultOption}
 				disabled={isDisabled && isDisabled}
 			/>
 		</>

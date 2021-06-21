@@ -19,7 +19,6 @@ const NotificationButton = (props) => {
 				shape="circle"
 				type="text"
 				icon={<InfoCircleOutlined />}
-				// style={{ marginLeft: 5 }}
 				onClick={openNotification}
 			/>
 		</>

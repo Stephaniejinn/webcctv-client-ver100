@@ -7,7 +7,7 @@ const PeakHour = (props) => {
 
 	useEffect(() => {
 		if (activeVisualKey === "8") {
-			setPeakHour(trafficTotalData[0]["totalVehiclePeakHourFlowRate"]);
+			setPeakHour(`${trafficTotalData[0]["totalVehiclePeakHourFlowRate"]}대`);
 		}
 	}, [trafficTotalData, activeVisualKey]);
 

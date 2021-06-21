@@ -26,7 +26,6 @@ const WMFlowRate = (props) => {
 			setLoading(true);
 			setData([]);
 			parseTotalData();
-			console.log(trafficTotalData);
 		}
 	}, [trafficTotalData, activeVisualKey]);
 

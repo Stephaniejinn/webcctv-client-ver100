@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Typography } from "antd";
 
 import Header from "../../organisms/header";
@@ -7,9 +7,14 @@ import LoginCard from "../../organisms/loginCard/LoginCard";
 import "./style.less";
 
 const LoginPage = (props) => {
-	const { setLoggedIn } = props;
+	const { setLoggedIn, setRealFirstFilter } = props;
 	const { Content, Footer } = Layout;
 	const { Title, Text } = Typography;
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
+
 	return (
 		<div className="login-page">
 			<Layout style={{ minHeight: "100vh" }}>

@@ -10,9 +10,6 @@ import {
 	FileSearchOutlined,
 } from "@ant-design/icons";
 
-// import logo from "../../../assets/logo/logoBlackWN.png";
-// import logoCollapsed from "../../../assets/logo/logoBlack.png";
-
 import logo from "../../../assets/logo/originalLogo.png";
 import logoCollapsed from "../../../assets/logo/originalLogoCollapsed.png";
 
@@ -40,14 +37,6 @@ const MySider = () => {
 	// 	}
 	// });
 
-	// const handleClick = (e) => {
-	// 	if (cameraCode.length === 0) {
-	// 		window.alert("위치설정 해주세요");
-	// 		e.preventDefault();
-
-	// 		history.push("/realtime/streaming");
-	// 	}
-	// };
 	const onCollapse = (collapsed) => {
 		setSiderCollapsed(collapsed);
 	};
@@ -101,7 +90,7 @@ const MySider = () => {
 					key="/realtime/statistic"
 					icon={<FundProjectionScreenOutlined />}
 				>
-					<Link to="/realtime/statistic">실시간 데이터</Link>
+					<Link to="/realtime/statistic">실시간 통계</Link>
 				</Menu.Item>
 				<SubMenu
 					key="statistic"

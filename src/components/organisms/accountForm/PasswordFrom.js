@@ -1,9 +1,10 @@
 import React from "react";
-import { Form, Input, message, Button } from "antd";
+import { Form, Input, message, Button, Modal } from "antd";
 import { BankOutlined, UserOutlined } from "@ant-design/icons";
 import NodeRSA from "node-rsa";
 import axios from "axios";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import "./style.less";
 
@@ -41,6 +42,7 @@ const tailFormItemLayout = {
 const PasswordForm = (props) => {
 	const { setLoggedIn, baseURL } = props;
 	const [form] = Form.useForm();
+	const history = useHistory();
 
 	/* ==== < RSA Encryption > ==== */
 	const encrypt = (plainText, keyData) => {
@@ -61,11 +63,10 @@ const PasswordForm = (props) => {
 				const newValues = { oldPassword, newPassword };
 				changePassword(newValues);
 			})
-			.catch((Error) => {
-				console.log(Error);
-			});
+			.catch((Error) => {});
 	};
 	/* ============================ */
+
 	const changePassword = (values) => {
 		const { oldPassword, newPassword } = values;
 		axios
@@ -84,11 +85,12 @@ const PasswordForm = (props) => {
 			)
 			.then((res) => {
 				message.success("비밀번호 변경 성공");
+				// history.push("/*");
 				setLoggedIn(false);
+
 				// redirect
 			})
 			.catch((err) => {
-				console.log(err.response);
 				if (err.response.status === 401) {
 					message.error("입력된 기존 비밀번호가 틀렸습니다");
 				} else if (err.response.status === 400) {
@@ -128,9 +130,6 @@ const PasswordForm = (props) => {
 					prefix={<BankOutlined className="site-form-item-icon" />}
 				/>
 			</Form.Item>
-			{/* <Form.Item name="permission" label="권한" initialValue="permission">
-				<Cascader />
-			</Form.Item> */}
 			<Form.Item
 				name="oldPassword"
 				label="현재 비밀번호"

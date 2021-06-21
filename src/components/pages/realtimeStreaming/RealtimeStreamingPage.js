@@ -11,7 +11,7 @@ import CascaderBtn from "../../atoms/cascaderBtn/CascaderBtn";
 import "./style.less";
 
 const RealtimeStreamingPage = (props) => {
-	const { setLoggedIn, isMaster } = props;
+	const { setLoggedIn, isMaster, setRealFirstFilter, realFirstFilter } = props;
 
 	const { Content } = Layout;
 	const { Title } = Typography;
@@ -43,11 +43,9 @@ const RealtimeStreamingPage = (props) => {
 		}
 	}, [isLoadingNameAdd]);
 
-	// useEffect(() => {
-	// 	// setCurrLoading(true);
-	// 	setCurrNameAdd(camNameAdd);
-	// 	setCurrLoading(false);
-	// }, []);
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
 
 	return (
 		<div className="realtime-streaming-page">
@@ -57,7 +55,6 @@ const RealtimeStreamingPage = (props) => {
 					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb pageHierarchy={["대시보드", "실시간 영상"]} />
-
 						<div className="search-input">
 							<Tooltip
 								placement="rightBottom"
@@ -70,12 +67,15 @@ const RealtimeStreamingPage = (props) => {
 								</Title>
 							</Tooltip>
 							<CascaderBtn
+								page="STREAMING"
 								setCamNameAdd={setCamNameAdd}
 								setLoadingNameAdd={setLoadingNameAdd}
 								size="large"
 								setLoggedIn={setLoggedIn}
 								tooltipText="검색을 누르시면 해당 구간의 실시간 영상 페이지로 이동합니다"
 								cascaderText="검색 희망하는 구간을 선택하세요"
+								setRealFirstFilter={setRealFirstFilter}
+								realFirstFilter={realFirstFilter}
 							/>
 						</div>
 

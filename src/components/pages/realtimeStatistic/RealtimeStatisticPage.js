@@ -28,6 +28,8 @@ const RealtimeStatisticPage = (props) => {
 		cameraCode,
 		setLoggedIn,
 		isMaster,
+		setRealFirstFilter,
+		realFirstFilter,
 	} = props;
 	const { Content } = Layout;
 	const { Title } = Typography;
@@ -39,30 +41,23 @@ const RealtimeStatisticPage = (props) => {
 		moment(new Date()).subtract(1, "second")
 	);
 	const [refresh, setRefresh] = useState(false);
-	const [firstFilter, setFirstFilter] = useState(false);
 	const [locationHierarchy, setLocationHierarchy] = useState([]);
 	const [pageTitle, setPageTitle] = useState("실시간 통계");
 
 	const date = moment(new Date()).format("YYYY-MM-DD");
 
 	useEffect(() => {
-		if (cameraCode !== "") {
+		if (realFirstFilter) {
 			setEmptyData(false);
 			setTrafficTotalData([]);
 			axiosAsync();
-			setFirstFilter(true);
 			setLocationHierarchy([city, district, road, spot]);
 			setPageTitle(`실시간 통계 | ${camera} 카메라`);
+		} else {
+			setLocationHierarchy([]);
+			setPageTitle("실시간 통계");
 		}
-	}, [cameraCode, currTime, refresh]);
-
-	// useEffect(() => {
-	// 	if (refresh) {
-	// 		setEmptyData(false);
-	// 		setTrafficTotalData([]);
-	// 		axiosAsync();
-	// 	}
-	// }, [refresh]);
+	}, [cameraCode, currTime, refresh, realFirstFilter]);
 
 	const axiosAsync = () => {
 		axios
@@ -79,7 +74,6 @@ const RealtimeStatisticPage = (props) => {
 			)
 			.then((res) => {
 				if (res.data.length !== 0) {
-					console.log("test refresh", refresh);
 					setTrafficTotalData(res.data);
 					setEmptyData(false);
 					if (refresh) {
@@ -87,19 +81,17 @@ const RealtimeStatisticPage = (props) => {
 					}
 				} else {
 					setEmptyData(true);
+					message.warning("해당 기간 데이터가 없습니다");
 				}
 				setRefresh(false);
 			})
 			.catch((err) => {
 				setEmptyData(true);
 				setRefresh(false);
-				console.log(err.response);
 				if (err.response.status === 500) {
 					message.error(
 						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
-				} else if (err.response.status === 404) {
-					message.warning("해당 기간 시간 별 데이터가 없습니다");
 				} else if (err.response.status === 400) {
 					message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
 				} else if (err.response.status === 401) {
@@ -146,12 +138,13 @@ const RealtimeStatisticPage = (props) => {
 							<CascaderBtn
 								setLoggedIn={setLoggedIn}
 								size="middle"
-								setFirstFilter={setFirstFilter}
+								setRealFirstFilter={setRealFirstFilter}
+								realFirstFilter={realFirstFilter}
 								page="REALSTATISTIC"
 								tooltipText="검색을 통해 해당 구간의 실시간 데이터를 조회 가능합니다"
 								cascaderText="검색 희망하는 구간을 선택하세요"
 							/>
-							{firstFilter && (
+							{realFirstFilter && (
 								<Tooltip
 									placement="topLeft"
 									title={
@@ -164,7 +157,7 @@ const RealtimeStatisticPage = (props) => {
 								</Tooltip>
 							)}
 						</div>
-						{firstFilter ? (
+						{realFirstFilter ? (
 							<>
 								<div className="realtime-statistic-video-and-graph">
 									<StatContainer camName={camera} httpAddress={camAddress} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button, message, Modal } from "antd";
 import { BankOutlined } from "@ant-design/icons";
 import NodeRSA from "node-rsa";
 import { connect } from "react-redux";
@@ -37,7 +37,7 @@ const tailFormItemLayout = {
 };
 
 const SignupForm = (props) => {
-	const { baseURL } = props;
+	const { baseURL, setLoggedIn } = props;
 	const [form] = Form.useForm();
 
 	/* ==== < RSA Encryption > ==== */
@@ -54,16 +54,24 @@ const SignupForm = (props) => {
 			.get(`${baseURL}/auth/pubkey`)
 			.then((Response) => {
 				password = encrypt(password, Response.data.publicKey);
-				console.log("password", password);
 				const newValues = { signupUsername, password, affiliate };
 				signUp(newValues);
 			})
-			.catch((Error) => {
-				console.log(Error);
-			});
+			.catch((Error) => {});
 	};
 	/* ============================ */
+	const success = () => {
+		Modal.success({
+			content: "계정이 정상적으로 발급되었습니다",
+			okText: "확인",
+			onOk() {
+				window.parent.document.location.reload();
+				// window.location.href = window.location.href;
 
+				// window.location.reload();
+			},
+		});
+	};
 	const signUp = (values) => {
 		const { signupUsername, password, affiliate } = values;
 		const permission = "[]";
@@ -86,12 +94,19 @@ const SignupForm = (props) => {
 			)
 			.then((res) => {
 				if (res.data.success) {
-					message.success("계정발급 성공하였습나다");
+					success();
 				}
 			})
 			.catch((err) => {
-				if (err.response.status === 409) {
+				if (err.response.status === 400) {
 					message.error("이미 존재하는 아이디입니다");
+				} else if (err.response.status === 401) {
+					message.warning("로그아웃 되었습니다");
+					setLoggedIn(false);
+				} else if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
+					);
 				}
 			});
 	};

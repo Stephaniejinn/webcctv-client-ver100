@@ -15,7 +15,7 @@ import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 import "../style.less";
 
 const DayStatPage = (props) => {
-	const { setLoggedIn, isMaster } = props;
+	const { setLoggedIn, isMaster, setRealFirstFilter } = props;
 	const { Content } = Layout;
 
 	const [timeClassification, setTimeClassification] = useState(true);
@@ -23,6 +23,12 @@ const DayStatPage = (props) => {
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 	const [count, setCount] = useState(false);
+	const [emptyErr, setEmptyErr] = useState(false);
+	const [futureErr, setFutureErr] = useState(false);
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
 
 	return (
 		<div className="statistic-page">
@@ -42,6 +48,8 @@ const DayStatPage = (props) => {
 							firstFilter={firstFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
+							emptyErr={emptyErr}
+							futureErr={futureErr}
 							cascaderText="확인을 희망하는 구간을 선택하세요"
 						/>
 						{firstFilter ? (
@@ -61,6 +69,8 @@ const DayStatPage = (props) => {
 											startDate={startDate}
 											endTime={endTime}
 											setLoggedIn={setLoggedIn}
+											setEmptyErr={setEmptyErr}
+											setFutureErr={setFutureErr}
 										/>
 									) : (
 										<LaneStatistic
@@ -68,6 +78,8 @@ const DayStatPage = (props) => {
 											startDate={startDate}
 											endTime={endTime}
 											setLoggedIn={setLoggedIn}
+											setEmptyErr={setEmptyErr}
+											setFutureErr={setFutureErr}
 										/>
 									)}
 								</>

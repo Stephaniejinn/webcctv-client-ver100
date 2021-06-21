@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Spin } from "antd";
 
 import Sider from "../../organisms/sider";
@@ -12,15 +12,21 @@ import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
 import "../style.less";
 
 const MonthStatPage = (props) => {
-	const { setLoggedIn, isMaster } = props;
+	const { setLoggedIn, isMaster, setRealFirstFilter } = props;
 	const [timeClassification, setTimeClassification] = useState(true);
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 	const [additionalFilter, setAddFilter] = useState("ALL");
 	const [count, setCount] = useState(false);
+	const [emptyErr, setEmptyErr] = useState(false);
+	const [futureErr, setFutureErr] = useState(false);
 
 	const { Content } = Layout;
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
 
 	return (
 		<div className="statistic-page">
@@ -41,6 +47,8 @@ const MonthStatPage = (props) => {
 							setAddFilter={setAddFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
+							emptyErr={emptyErr}
+							futureErr={futureErr}
 							cascaderText="확인을 희망하는 구간을 선택하세요"
 						/>
 						{firstFilter ? (
@@ -60,6 +68,8 @@ const MonthStatPage = (props) => {
 											startDate={startDate}
 											endTime={endTime}
 											setLoggedIn={setLoggedIn}
+											setEmptyErr={setEmptyErr}
+											setFutureErr={setFutureErr}
 										/>
 									) : (
 										<LaneStatistic
@@ -68,6 +78,8 @@ const MonthStatPage = (props) => {
 											endTime={endTime}
 											additionalFilter={additionalFilter}
 											setLoggedIn={setLoggedIn}
+											setEmptyErr={setEmptyErr}
+											setFutureErr={setFutureErr}
 										/>
 									)}
 								</>

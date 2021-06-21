@@ -49,7 +49,6 @@ const AvgSpeedTinyColumn = (props) => {
 						"km/h"
 					);
 			},
-			// showTitle: true,
 		},
 	};
 	return (

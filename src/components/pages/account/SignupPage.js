@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Layout, Typography, Divider } from "antd";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
@@ -9,9 +9,14 @@ import SignupForm from "../../organisms/accountForm/SignupForm";
 import "./style.less";
 
 const SignupPage = (props) => {
-	const { setLoggedIn, isMaster } = props;
+	const { setLoggedIn, isMaster, setRealFirstFilter } = props;
 	const { Content } = Layout;
 	const { Title } = Typography;
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
+
 	return (
 		<div className="account-page">
 			{isMaster ? (
@@ -27,13 +32,13 @@ const SignupPage = (props) => {
 								계정 발급
 							</Title>
 							<Divider />
-							<SignupForm />
+							<SignupForm setLoggedIn={setLoggedIn} />
 						</Content>
 					</Layout>
 				</Layout>
 			) : (
 				<>
-					{window.confirm("이 페이지 접근 권한이 없습니다")
+					{window.confirm("페이지 접근 권한이 없습니다")
 						? window.history.back()
 						: window.history.back()}
 				</>

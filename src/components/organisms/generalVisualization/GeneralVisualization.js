@@ -103,7 +103,6 @@ const GeneralVisualization = (props) => {
 					setEmptyData(false);
 				} else {
 					setEmptyData(true);
-					message.warning("해당 기간 시간 별 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
@@ -139,10 +138,13 @@ const GeneralVisualization = (props) => {
 								<VisualizationCard
 									title={`차종별 통행량 ${title}`}
 									chart={<VehicleRatio trafficData={trafficData} page={page} />}
+									axisInfo={false}
 								/>
 								<VisualizationCard
 									title={`차종별 과속차량 ${title}`}
 									chart={<OverSpeedBar trafficData={trafficData} page={page} />}
+									axisInfo={true}
+									yAxis={"대수(대)"}
 								/>
 							</div>
 							<div className="general-graph-card">
@@ -151,10 +153,13 @@ const GeneralVisualization = (props) => {
 									chart={
 										<AvgSpeedGauge trafficData={trafficData} page={page} />
 									}
+									axisInfo={false}
 								/>
 								<VisualizationCard
 									title={`차종별 평균속도 ${title}`}
 									chart={<AvgSpeedBar trafficData={trafficData} page={page} />}
+									axisInfo={true}
+									yAxis={"속도(km/h)"}
 								/>
 							</div>
 						</>

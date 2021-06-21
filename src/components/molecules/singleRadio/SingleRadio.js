@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Radio } from "antd";
 
-// import "./style.less";
-
 const SingleRadio = (props) => {
-	const { page, multiSelected } = props;
+	const { multiSelected } = props;
 	const [value, setValue] = useState(1);
 	const onChange = (e) => {
 		setValue(e.target.value);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Layout, Typography, Divider } from "antd";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
@@ -9,9 +9,14 @@ import AccountTable from "../../organisms/accountTable/AccountTable";
 import "./style.less";
 
 const SearchAccount = (props) => {
-	const { setLoggedIn, isMaster } = props;
+	const { setLoggedIn, isMaster, setRealFirstFilter } = props;
 	const { Content } = Layout;
 	const { Title } = Typography;
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
+
 	return (
 		<div className="account-page">
 			<Layout style={{ minHeight: "100vh" }}>

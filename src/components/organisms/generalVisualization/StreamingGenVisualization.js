@@ -98,12 +98,15 @@ const StreamingGeneralVisualization = (props) => {
 							chart={
 								<VehicleRatio trafficData={trafficData} page="STREAMING" />
 							}
+							axisInfo={false}
 						/>
 						<VisualizationCard
 							title={`차종별 과속차량 | ${curStartTime} ~ ${curEndTime}`}
 							chart={
 								<OverSpeedBar trafficData={trafficData} page="STREAMING" />
 							}
+							axisInfo={true}
+							yAxis={"대수(대)"}
 						/>
 					</div>
 				)

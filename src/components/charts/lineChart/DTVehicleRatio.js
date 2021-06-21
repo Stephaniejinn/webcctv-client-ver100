@@ -4,10 +4,6 @@ import { Spin } from "antd";
 
 import moment from "moment";
 
-// import axios from "axios";
-// import { connect } from "react-redux";
-// import * as actions from "../../../actions";
-
 const VehicleRatio = (props) => {
 	const { activeVisualKey, trafficTotalData } = props;
 

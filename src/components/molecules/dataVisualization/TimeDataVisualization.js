@@ -70,21 +70,6 @@ const TimeDataVisualization = (props) => {
 		>
 			<TabPane tab="교통량" key="1">
 				{period === "DAY" ? (
-					// <div className="chart-vertical">
-					// 	<div className="chart-horizontal">
-					// 		<Text
-					// 			strong
-					// 			style={{ verticalAlign: "middle", marginRight: "5px" }}
-					// 		>
-					// 			대수
-					// 		</Text>
-					// <DayCntLineChart
-					// 	activeVisualKey={activeVisualKey}
-					// 	trafficTotalData={trafficTotalData}
-					// />
-					// 	</div>
-					// 	<Text strong>시간</Text>
-					// </div>
 					<GraphCard
 						xAxis="시간"
 						yAxis="대수"

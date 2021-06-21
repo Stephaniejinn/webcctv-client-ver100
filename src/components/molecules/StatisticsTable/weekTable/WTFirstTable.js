@@ -172,8 +172,8 @@ const WTFirstTable = (props) => {
 				},
 				{
 					title: "PCU",
-					dataIndex: "motorAvgSpeed",
-					key: "motorAvgSpeed",
+					dataIndex: "motorpcu",
+					key: "motorpcu",
 				},
 				{
 					title: "비율(%)",

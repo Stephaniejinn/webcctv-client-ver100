@@ -1,10 +1,6 @@
 import React from "react";
 import { Card, Typography } from "antd";
 
-// import axios from "axios";
-// import { connect } from "react-redux";
-// import * as actions from "../../../actions";
-
 import Video from "../../molecules/video/Video";
 import StreamingGenVisualization from "../generalVisualization/StreamingGenVisualization";
 
@@ -38,24 +34,4 @@ const VideoContainer = ({
 		</div>
 	);
 };
-// const mapStateToProps = (state) => {
-// 	return {
-// 		city: state.location.city,
-// 		district: state.location.district,
-// 		road: state.location.road,
-// 		spot: state.location.spot,
-// 		camera: state.location.camera,
-// 		baseURL: state.baseURL.baseURL,
-// 	};
-// };
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		getLocationInfo: () => {
-// 			dispatch(actions.getLocation());
-// 		},
-// 		getBaseURL: () => {
-// 			dispatch(actions.getURL());
-// 		},
-// 	};
-// };
 export default VideoContainer;

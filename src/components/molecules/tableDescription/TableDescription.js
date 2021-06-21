@@ -30,8 +30,8 @@ const TableDescription = (props) => {
 	const statDescriptionText = (
 		<>
 			<Paragraph>
-				{periodText} 누적 통계 누적 교통 정보의 대한 {dataTypeText} 가공
-				데이터의 정보가 표시됩니다.
+				{periodText} 누적 통계 교통 정보의 대한 {dataTypeText} 가공 데이터의
+				정보가 표시됩니다.
 			</Paragraph>
 			<Paragraph>표시정보:</Paragraph>
 			{tableKey === "first" ? (

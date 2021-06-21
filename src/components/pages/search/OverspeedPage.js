@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout, Typography } from "antd";
 import { connect } from "react-redux";
 
@@ -12,9 +12,8 @@ import NotificationButton from "../../atoms/notificationButton/NotificationButto
 import "./style.less";
 
 const OverspeedPage = (props) => {
-	const { camera } = props;
+	const { camera, setLoggedIn, isMaster, setRealFirstFilter } = props;
 
-	const { setLoggedIn, isMaster } = props;
 	const [timeClassification, setTimeClassification] = useState(true);
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
@@ -54,6 +53,11 @@ const OverspeedPage = (props) => {
 			</Paragraph>
 		</>
 	);
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
+
 	return (
 		<div className="page">
 			<Layout style={{ minHeight: "100vh" }}>

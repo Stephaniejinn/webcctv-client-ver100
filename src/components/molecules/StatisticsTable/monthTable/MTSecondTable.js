@@ -109,16 +109,30 @@ const MTSecondTable = (props) => {
 			} else {
 				dataTemp["time"] = moment(recordDate).format("YYYY년 MM월 DD일");
 			}
-			dataTemp["totalDayNightRatio"] = totalVehicleDayNightRatio;
-			dataTemp["totalPHF"] = totalVehiclePeakHourFactor;
-			dataTemp["totalPeekHourCnt"] = totalVehiclePeakHourFlowRate;
+			dataTemp["totalDayNightRatio"] = !totalVehicleDayNightRatio
+				? "-"
+				: totalVehicleDayNightRatio;
+			dataTemp["totalPHF"] = !totalVehiclePeakHourFactor
+				? "-"
+				: totalVehiclePeakHourFactor;
+			dataTemp["totalPeekHourCnt"] = !totalVehiclePeakHourFlowRate
+				? "-"
+				: totalVehiclePeakHourFlowRate;
 			dataTemp["totalVehiclePeakHourConcentrationRatio"] =
-				totalVehiclePeakHourConcentrationRatio;
+				!totalVehiclePeakHourConcentrationRatio
+					? "-"
+					: totalVehiclePeakHourConcentrationRatio;
 
-			dataTemp["carDayNightRatio"] = carDayNightRatio;
-			dataTemp["busDayNightRatio"] = mBusDayNightRatio;
-			dataTemp["truckDayNightRatio"] = mTruckDayNightRatio;
-			dataTemp["motorDayNightRatio"] = motorDayNightRatio;
+			dataTemp["carDayNightRatio"] = !carDayNightRatio ? "-" : carDayNightRatio;
+			dataTemp["busDayNightRatio"] = !mBusDayNightRatio
+				? "-"
+				: mBusDayNightRatio;
+			dataTemp["truckDayNightRatio"] = !mTruckDayNightRatio
+				? "-"
+				: mTruckDayNightRatio;
+			dataTemp["motorDayNightRatio"] = !motorDayNightRatio
+				? "-"
+				: motorDayNightRatio;
 
 			TotalData.push(dataTemp);
 		});

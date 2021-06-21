@@ -17,10 +17,11 @@ const CascaderWButton = (props) => {
 		setLoadingNameAdd,
 		setLoggedIn,
 		size,
-		setFirstFilter,
+		setRealFirstFilter,
 		page,
 		tooltipText,
 		cascaderText,
+		realFirstFilter,
 	} = props;
 	const [selectedLocation, setSelectedLocation] = useState([]);
 	const [selectedLocationCode, setSelectedLocationCode] = useState([]);
@@ -32,7 +33,8 @@ const CascaderWButton = (props) => {
 		if (locationChange) {
 			if (
 				page === "REALSTATISTIC" &&
-				selectedLocationCode["cameraCode"] === cameraCode
+				selectedLocationCode["cameraCode"] === cameraCode &&
+				realFirstFilter
 			) {
 				message.warning("조회된 데이터입니다"); //location doesn't change
 			}
@@ -41,11 +43,9 @@ const CascaderWButton = (props) => {
 			if (pathname !== "/realtime/statistic") {
 				history.push("/realtime/statistic");
 			}
-			if (setFirstFilter) {
-				setFirstFilter(true);
+			if (setRealFirstFilter) {
+				setRealFirstFilter(true);
 			}
-
-			console.log("test", selectedLocationCode);
 		} else {
 			message.warning("위치설정 해주세요"); //location is empty
 		}

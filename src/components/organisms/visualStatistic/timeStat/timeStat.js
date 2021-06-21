@@ -19,6 +19,8 @@ const TimeVisualization = (props) => {
 		baseURL,
 		trafficURL,
 		setLoggedIn,
+		setEmptyErr,
+		setFutureErr,
 	} = props;
 	const { TabPane } = Tabs;
 	const { Paragraph, Text } = Typography;
@@ -110,8 +112,15 @@ const TimeVisualization = (props) => {
 					setTrafficTotalData(res.data);
 					setLoadingTrafficTotal(false);
 					setEmptyData(false);
+					setEmptyErr(false);
+					setFutureErr(false);
 				} else {
 					setEmptyData(true);
+					if (setEmptyErr) {
+						setEmptyErr(true);
+						setFutureErr(false);
+					}
+					message.warning("해당 기간 데이터가 없습니다");
 				}
 			})
 			.catch((err) => {
@@ -119,10 +128,12 @@ const TimeVisualization = (props) => {
 					message.error(
 						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
-				} else if (err.response.status === 404) {
-					message.warning("해당 기간 시간 별 데이터가 없습니다");
 				} else if (err.response.status === 400) {
 					message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+					if (setFutureErr) {
+						setEmptyErr(false);
+						setFutureErr(true);
+					}
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
 				}
@@ -134,45 +145,51 @@ const TimeVisualization = (props) => {
 		setCurrentLaneNum(key);
 	}
 	return (
-		<Tabs
-			defaultActiveKey="0"
-			activeKey={currentLaneNum}
-			onChange={callback}
-			tabBarExtraContent={<NotificationButton description={descriptionText} />}
-		>
-			{!isLoadingTrafficTotal
-				? totalLaneArr.map((tabName, index) => {
-						return (
-							<TabPane tab={tabName} key={index.toString()}>
-								<TimeDataVisualization
-									period={period}
-									currentLaneNum={currentLaneNum}
-									setCurrentLaneNum={setCurrentLaneNum}
-									activeVisualKey={activeVisualKey}
-									setActiveVisualKey={setActiveVisualKey}
-									trafficTotalData={trafficTotalData}
-								/>
-								<TimeTableCard
-									period={period}
-									tableKey="first"
-									currentLaneNum={currentLaneNum}
-									trafficTotalData={trafficTotalData}
-									startDate={startDate}
-									endTime={endTime}
-								/>
-								<TimeTableCard
-									period={period}
-									tableKey="second"
-									currentLaneNum={currentLaneNum}
-									trafficTotalData={trafficTotalData}
-									startDate={startDate}
-									endTime={endTime}
-								/>
-							</TabPane>
-						);
-				  })
-				: null}
-		</Tabs>
+		<>
+			{!isLoadingTrafficTotal ? (
+				<>
+					<Tabs
+						defaultActiveKey="0"
+						activeKey={currentLaneNum}
+						onChange={callback}
+						tabBarExtraContent={
+							<NotificationButton description={descriptionText} />
+						}
+					>
+						{totalLaneArr.map((tabName, index) => {
+							return (
+								<TabPane tab={tabName} key={index.toString()}>
+									<TimeDataVisualization
+										period={period}
+										currentLaneNum={currentLaneNum}
+										setCurrentLaneNum={setCurrentLaneNum}
+										activeVisualKey={activeVisualKey}
+										setActiveVisualKey={setActiveVisualKey}
+										trafficTotalData={trafficTotalData}
+									/>
+									<TimeTableCard
+										period={period}
+										tableKey="first"
+										currentLaneNum={currentLaneNum}
+										trafficTotalData={trafficTotalData}
+										startDate={startDate}
+										endTime={endTime}
+									/>
+									<TimeTableCard
+										period={period}
+										tableKey="second"
+										currentLaneNum={currentLaneNum}
+										trafficTotalData={trafficTotalData}
+										startDate={startDate}
+										endTime={endTime}
+									/>
+								</TabPane>
+							);
+						})}
+					</Tabs>
+				</>
+			) : null}
+		</>
 	);
 };
 

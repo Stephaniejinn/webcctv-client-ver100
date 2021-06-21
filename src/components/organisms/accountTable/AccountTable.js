@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Table, Tag, message, Spin, Typography } from "antd";
+import {
+	Table,
+	Tag,
+	message,
+	Spin,
+	Typography,
+	Popconfirm,
+	Divider,
+} from "antd";
 import {
 	CheckCircleOutlined,
 	ExclamationCircleOutlined,
@@ -24,7 +32,52 @@ const AccountTable = (props) => {
 		setData([]);
 		axiosData();
 	}, []);
+	const handleUnlock = (key, username) => {
+		axios
+			.delete(`${baseURL}/users/${username}/lock`, {
+				headers: {
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
+			.then((res) => {
+				const dataSource = [...Data];
+				dataSource[key]["locked"] = false;
+				setData(dataSource);
+			})
+			.catch((err) => {
+				if (err.response.status === 401) {
+					setLoggedIn(false);
+				} else if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
+					);
+				}
+			});
+	};
 
+	const handleDelete = (key, username) => {
+		axios
+			.delete(`${baseURL}/users/${username}`, {
+				headers: {
+					Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+					Cache: "No-cache",
+				},
+			})
+			.then((res) => {
+				const dataSource = [...Data];
+				setData(dataSource.filter((item) => item.key !== key));
+			})
+			.catch((err) => {
+				if (err.response.status === 401) {
+					setLoggedIn(false);
+				} else if (err.response.status === 500) {
+					message.error(
+						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
+					);
+				}
+			});
+	};
 	const columns = [
 		{
 			title: "아이디",
@@ -38,45 +91,81 @@ const AccountTable = (props) => {
 			key: "affiliate",
 		},
 		{
-			title: "계정상태",
+			title: "상태",
 			key: "locked",
 			dataIndex: "locked",
-			render: (locked) => (
+			render: (text, record) => (
 				<>
-					{locked ? (
-						<Tag icon={<ExclamationCircleOutlined />} color="red">
-							잠김
-						</Tag>
+					{record.locked ? (
+						<>
+							<Tag icon={<ExclamationCircleOutlined />} color="red">
+								잠김
+							</Tag>
+							<Divider type="vertical" />
+							<Popconfirm
+								title="잠금을 해체하시겠습니까?"
+								onConfirm={() => handleUnlock(record.key, record.username)}
+								okText="예"
+								cancelText="아니요"
+							>
+								<a
+									style={{
+										color: "#688df2",
+										marginLeft: 7,
+										alignSelf: "baseline",
+									}}
+								>
+									잠금 해제
+								</a>
+							</Popconfirm>
+						</>
 					) : (
-						<Tag icon={<CheckCircleOutlined />} color="green">
-							정상
-						</Tag>
+						<>
+							<Tag icon={<CheckCircleOutlined />} color="green">
+								정상
+							</Tag>
+							<Divider type="vertical" />
+							<Text
+								style={{
+									color: "#dcdee0",
+									marginLeft: 7,
+									alignSelf: "baseline",
+								}}
+							>
+								잠금 해제
+							</Text>
+						</>
 					)}
+				</>
+			),
+		},
+		{
+			title: "",
+			dataIndex: "deleteAcc",
+
+			key: "deleteAcc",
+			render: (text, record) => (
+				<>
+					<Popconfirm
+						title="계정을 삭제하시겠습니까?"
+						onConfirm={() => handleDelete(record.key, record.username)}
+						okText="예"
+						cancelText="아니요"
+					>
+						<a
+							style={{
+								color: "#688df2",
+								alignSelf: "baseline",
+							}}
+						>
+							계정 삭제
+						</a>
+					</Popconfirm>
 				</>
 			),
 		},
 	];
 
-	const data = [
-		{
-			key: "1",
-			username: "John Brown",
-			affiliate: "New York No. 1 Lake Park",
-			locked: true,
-		},
-		{
-			key: "2",
-			username: "Jim Green",
-			affiliate: "London No. 1 Lake Park",
-			locked: false,
-		},
-		{
-			key: "3",
-			username: "Joe Black",
-			affiliate: "Sidney No. 1 Lake Park",
-			locked: false,
-		},
-	];
 	const axiosData = () => {
 		axios
 			.get(`${baseURL}/users`, {
@@ -86,13 +175,12 @@ const AccountTable = (props) => {
 				},
 			})
 			.then((res) => {
-				console.log(res);
 				if (res.data.length !== 0) {
 					res.data.forEach((eachData, index) => {
 						const { username, affiliate, locked } = eachData;
 						let dataTemp = {};
 
-						dataTemp["key"] = index.toString();
+						dataTemp["key"] = index;
 						dataTemp["username"] = username;
 						dataTemp["affiliate"] = affiliate;
 						dataTemp["locked"] = locked;

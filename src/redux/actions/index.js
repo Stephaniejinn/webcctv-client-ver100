@@ -26,29 +26,3 @@ export const getURL = () => ({
 	type: "BASE_URL",
 	payload: "",
 });
-
-// export const setDayDate = (payload) => ({
-// 	type: "DAY",
-// 	payload,
-// });
-// export const setWeekDate = (payload) => ({
-// 	type: "WEEK",
-// 	payload,
-// });
-// export const setMonthDate = (payload) => ({
-// 	type: "MONTH",
-// 	payload,
-// });
-
-// export const setSearchDate = (payload) => ({
-// 	type: "SEARCH",
-// 	payload,
-// });
-// export const setOverSpeedDate = (payload) => ({
-// 	type: "OVERSPEED",
-// 	payload,
-// });
-// export const setUserInfo = (payload) => ({
-// 	type: "USER_INFO_SET",
-// 	payload,
-// });

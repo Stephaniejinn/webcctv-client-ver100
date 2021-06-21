@@ -7,6 +7,7 @@ import {
 	UsergroupAddOutlined,
 	BarsOutlined,
 } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import axios from "axios";
 
@@ -15,6 +16,8 @@ import "./style.less";
 const MyAvatar = (props) => {
 	const { baseURL, setLoggedIn, isMaster } = props;
 	const { Text } = Typography;
+	const history = useHistory();
+
 	const HandleLogout = () => {
 		axios
 			.delete(`${baseURL}/auth/tokens`, {
@@ -24,13 +27,13 @@ const MyAvatar = (props) => {
 				},
 			})
 			.then((res) => {
+				// history.push("/*");
 				window.sessionStorage.clear();
 				setLoggedIn(false);
 			})
 			.catch((err) => {
 				setLoggedIn(false);
 				window.sessionStorage.clear();
-				console.log(err);
 			});
 	};
 	const dropdownContent = (

@@ -33,7 +33,7 @@ const AvgSpeedGauge = (props) => {
 		percent: Data,
 		range: {
 			ticks: [0, 1 / 3, 2 / 3, 1],
-			color: ["#F4664A", "#FAAD14", "#30BF78"],
+			color: ["#595c97"],
 		},
 		indicator: {
 			pointer: { style: { stroke: "#D0D0D0", lineWidth: 2 } },
@@ -46,7 +46,6 @@ const AvgSpeedGauge = (props) => {
 				},
 				style: { fontSize: 10 },
 			},
-			// subTickLine: { count: 3 },
 		},
 		statistic: {
 			content: {

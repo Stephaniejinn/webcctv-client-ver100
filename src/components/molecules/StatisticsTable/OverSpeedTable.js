@@ -42,7 +42,6 @@ const OverSpeedTable = (props) => {
 
 	useEffect(() => {
 		if (isRefresh) {
-			console.log("refresh", isRefresh);
 			setLoadingData(true);
 			setEmptyData(false);
 			setData([]);
@@ -255,7 +254,7 @@ const OverSpeedTable = (props) => {
 			})
 			.catch((err) => {
 				if (err.response.status === 404) {
-					message.warning("해당 기간 시간 별 데이터가 없습니다");
+					message.warning("해당 기간 과속 데이터가 없습니다");
 				} else if (err.response.status === 400) {
 					message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
 				} else if (err.response.status === 401) {

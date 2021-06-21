@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Spin } from "antd";
 
-// import "../style.less";
-
 const WLFisrtTable = (props) => {
 	const { trafficTotalData } = props;
 	const [Data, setData] = useState([]);

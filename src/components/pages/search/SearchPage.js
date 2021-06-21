@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 
 import Sider from "../../organisms/sider";
@@ -10,14 +10,21 @@ import SearchCollapsedTable from "../../organisms/searchCollapsedTable/SearchCol
 import "./style.less";
 
 const SearchDownloadPage = (props) => {
-	const { setLoggedIn, isMaster } = props;
+	const { setLoggedIn, isMaster, setRealFirstFilter } = props;
 	const [timeClassification, setTimeClassification] = useState(true);
 	const [firstFilter, setFirstFilter] = useState(false);
 	const [startDate, setStartDate] = useState("");
 	const [endTime, setEndTime] = useState("");
 	const [count, setCount] = useState(false);
+	const [emptyErr, setEmptyErr] = useState(false);
+	const [futureErr, setFutureErr] = useState(false);
+	const [over31Err, setOver31Err] = useState(false);
 
 	const { Content } = Layout;
+
+	useEffect(() => {
+		setRealFirstFilter(false);
+	}, []);
 
 	return (
 		<div className="page">
@@ -39,6 +46,9 @@ const SearchDownloadPage = (props) => {
 							firstFilter={firstFilter}
 							setCount={setCount}
 							setLoggedIn={setLoggedIn}
+							emptyErr={emptyErr}
+							futureErr={futureErr}
+							over31Err={over31Err}
 							cascaderText="기간 별 조회를 희망하는 구간을 선택하세요"
 						/>
 						{firstFilter ? (
@@ -46,6 +56,9 @@ const SearchDownloadPage = (props) => {
 								startDate={startDate}
 								endTime={endTime}
 								setLoggedIn={setLoggedIn}
+								setEmptyErr={setEmptyErr}
+								setFutureErr={setFutureErr}
+								setOver31Err={setOver31Err}
 							/>
 						) : null}
 					</Content>

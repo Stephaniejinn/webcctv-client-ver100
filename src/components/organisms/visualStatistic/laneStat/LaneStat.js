@@ -20,6 +20,8 @@ const LaneVisualization = (props) => {
 		trafficURL,
 		additionalFilter,
 		setLoggedIn,
+		setEmptyErr,
+		setFutureErr,
 	} = props;
 	const { Text } = Typography;
 	const [activeVisualKey, setActiveVisualKey] = useState("1");
@@ -56,9 +58,15 @@ const LaneVisualization = (props) => {
 				if (res.data.length !== 0) {
 					setLoadingTrafficTotal(false);
 					setEmptyData(false);
+					setEmptyErr(false);
+					setFutureErr(false);
 				} else {
 					setEmptyData(true);
-					message.warning("해당 기간 차선 별 데이터가 없습니다");
+					message.warning("해당 기간 데이터가 없습니다");
+					if (setEmptyErr) {
+						setEmptyErr(true);
+						setFutureErr(false);
+					}
 				}
 			})
 			.catch((err) => {
@@ -66,10 +74,12 @@ const LaneVisualization = (props) => {
 					message.error(
 						"네트워크 문제 혹은 일시적인 오류로 데이터를 불러올 수 없습니다"
 					);
-				} else if (err.response.status === 404) {
-					message.warning("해당 기간 차선 별 데이터가 없습니다");
 				} else if (err.response.status === 400) {
 					message.warning("분석이 완료되지 않은 기간에 대한 검색입니다");
+					if (setFutureErr) {
+						setEmptyErr(false);
+						setFutureErr(true);
+					}
 				} else if (err.response.status === 401) {
 					setLoggedIn(false);
 				}

@@ -19,12 +19,7 @@ const LoginCard = (props) => {
 	const encrypt = (plainText, keyData) => {
 		const publicKey = new NodeRSA();
 		publicKey.importKey(keyData);
-
-		console.log("publicKey:", publicKey);
 		const password = publicKey.encrypt(plainText, "base64");
-
-		console.log("Decrypt:", plainText);
-		console.log("Encrypt:", password);
 		return password;
 	};
 
@@ -33,14 +28,11 @@ const LoginCard = (props) => {
 		axios
 			.get(`${baseURL}/auth/pubkey`)
 			.then((Response) => {
-				console.log(Response.data.publicKey);
 				password = encrypt(password, Response.data.publicKey);
 				const newValues = { username, password };
 				login(newValues);
 			})
-			.catch((Error) => {
-				console.log(Error);
-			});
+			.catch((Error) => {});
 	};
 	/* ============================ */
 	const passwordConfirm = () => {
@@ -118,9 +110,7 @@ const LoginCard = (props) => {
 					setLoggedIn(true);
 				}
 			})
-			.catch((err) => {
-				console.log("login", err.response);
-			});
+			.catch((err) => {});
 	};
 	return (
 		<Card>
@@ -131,7 +121,6 @@ const LoginCard = (props) => {
 					remember: true,
 				}}
 				onFinish={rsaEncrypt}
-				// onFinish={login}
 				size="large"
 			>
 				<Form.Item
