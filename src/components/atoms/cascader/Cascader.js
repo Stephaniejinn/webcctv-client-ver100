@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Cascader, message } from "antd";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 
 const MyCascader = (props) => {
 	const {
@@ -319,14 +318,5 @@ const mapStateToProps = (state) => {
 		baseURL: state.baseURL.baseURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationInfo: () => {
-			dispatch(actions.getLocation());
-		},
-		getBaseURL: () => {
-			dispatch(actions.getURL());
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(MyCascader);
+
+export default connect(mapStateToProps)(MyCascader);

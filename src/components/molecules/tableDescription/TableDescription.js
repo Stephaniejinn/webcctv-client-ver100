@@ -1,12 +1,10 @@
 import React from "react";
 import { Typography, Divider } from "antd";
-import NotificationButton from "../../atoms/notificationButton/NotificationButton";
-
 import moment from "moment";
 import "moment-timezone";
-
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
+
+import NotificationButton from "../../atoms/notificationButton/NotificationButton";
 
 import "./style.less";
 
@@ -185,11 +183,5 @@ const mapStateToProps = (state) => {
 		camera: state.location.camera,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationInfo: () => {
-			dispatch(actions.getLocation());
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(TableDescription);
+
+export default connect(mapStateToProps)(TableDescription);

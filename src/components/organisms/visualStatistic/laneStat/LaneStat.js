@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 
 import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
-import NotificationButton from "../../../atoms/notificationButton/NotificationButton";
 
 import "../style.less";
 
@@ -39,10 +38,12 @@ const LaneVisualization = (props) => {
 			: `${baseURL}${trafficURL}${periodURL}?camCode=${cameraCode}&startDate=${startDate}&endTime=${endTime} 23:59:59&axis=lane&weekOption=${additionalFilter}`;
 
 	useEffect(() => {
-		setEmptyData(false);
-		setLoadingTrafficTotal(true);
-		setTrafficTotalData([]);
-		getTrafficTotalData();
+		if (cameraCode !== "" && startDate !== "" && endTime !== "") {
+			setEmptyData(false);
+			setLoadingTrafficTotal(true);
+			setTrafficTotalData([]);
+			getTrafficTotalData();
+		}
 	}, [cameraCode, startDate, endTime, additionalFilter]);
 
 	const getTrafficTotalData = () => {

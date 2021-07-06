@@ -9,12 +9,11 @@ import {
 	message,
 } from "antd";
 import moment from "moment";
-
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 
 import Video from "../../molecules/video/Video";
+
 import "./style.less";
 
 const OverSpeedTable = (props) => {
@@ -316,14 +315,5 @@ const mapStateToProps = (state) => {
 		overSpeedVideoURL: state.baseURL.overSpeedVideoURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationCodeInfo: () => {
-			dispatch(actions.getLocationCode());
-		},
-		getBaseURL: () => {
-			dispatch(actions.getURL());
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(OverSpeedTable);
+
+export default connect(mapStateToProps)(OverSpeedTable);

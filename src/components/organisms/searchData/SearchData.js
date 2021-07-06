@@ -140,6 +140,9 @@ const SeachData = (props) => {
 			}
 		} else {
 			message.warning("카메라 위치, 시작일, 종료일 선택 해주세요");
+			setFirstFilter(false);
+			setStartDate("");
+			setEndTime("");
 		}
 	};
 

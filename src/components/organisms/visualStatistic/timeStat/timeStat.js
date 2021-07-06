@@ -94,9 +94,11 @@ const TimeVisualization = (props) => {
 	}, [camLanes]);
 
 	useEffect(() => {
-		setTrafficTotalData([]);
-		setLoadingTrafficTotal(true);
-		axiosAsync();
+		if (cameraCode !== "" && startDate !== "" && endTime !== "") {
+			setTrafficTotalData([]);
+			setLoadingTrafficTotal(true);
+			axiosAsync();
+		}
 	}, [cameraCode, startDate, endTime, currentLaneNum]);
 
 	const axiosAsync = () => {

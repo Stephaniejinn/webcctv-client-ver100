@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { HashLink as Link } from "react-router-hash-link";
 import moment from "moment";
 import "moment-timezone";
 import { Layout, Typography, Divider } from "antd";

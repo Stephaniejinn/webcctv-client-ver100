@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message } from "antd";
+import { Spin } from "antd";
 import moment from "moment";
 import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
 import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
@@ -126,17 +125,5 @@ const mapStateToProps = (state) => {
 		trafficURL: state.baseURL.trafficURL,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationCodeInfo: () => {
-			dispatch(actions.getLocationCode());
-		},
-		getBaseURL: () => {
-			dispatch(actions.getURL());
-		},
-	};
-};
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(StreamingGeneralVisualization);
+
+export default connect(mapStateToProps)(StreamingGeneralVisualization);

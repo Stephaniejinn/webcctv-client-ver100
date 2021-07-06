@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Spin } from "antd";
-import axios from "axios";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
 
 import Sider from "../../organisms/sider";
 import Header from "../../organisms/header";
@@ -113,11 +111,5 @@ const mapStateToProps = (state) => {
 		camera: state.location.camera,
 	};
 };
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getLocationInfo: () => {
-			dispatch(actions.getLocation());
-		},
-	};
-};
-export default connect(mapStateToProps, mapDispatchToProps)(DayStatPage);
+
+export default connect(mapStateToProps)(DayStatPage);

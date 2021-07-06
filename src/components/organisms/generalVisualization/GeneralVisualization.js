@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message, Typography } from "antd";
+import { Spin, Typography } from "antd";
 import moment from "moment";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -9,8 +9,8 @@ import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
 import AvgSpeedGauge from "../../charts/gaugeChart/AvgSpeed";
 import AvgSpeedBar from "../../charts/barChart/GenAvgSpeed";
 import OverSpeedBar from "../../charts/barChart/GenOverSpeed";
-
 import NotificationButton from "../../atoms/notificationButton/NotificationButton";
+
 import "./style.less";
 
 const GeneralVisualization = (props) => {

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import { Spin, message } from "antd";
 import { connect } from "react-redux";
 import axios from "axios";
+import { Spin, message } from "antd";
 
-import LoginPage from "./components/pages/login/LoginPage";
-import RealtimeStreamingPage from "./components/pages/realtimeStreaming/RealtimeStreamingPage";
-import RealtimeStatisticPage from "./components/pages/realtimeStatistic/RealtimeStatisticPage";
-import DayStatPage from "./components/pages/statisticAnalysis/DayStatPage";
-import WeekStatPage from "./components/pages/statisticAnalysis/WeekStatPage";
-import MonthStatPage from "./components/pages/statisticAnalysis/MonthStatPage";
-import SearchDownloadPage from "./components/pages/search/SearchPage";
-import SearchOverSpeed from "./components/pages/search/OverspeedPage";
-import PasswordPage from "./components/pages/account/PasswordPage";
-import SignupPage from "./components/pages/account/SignupPage";
-import SearchAccountPage from "./components/pages/account/SearchAccount";
+import LoginPage from "./pages/login/LoginPage";
+import RealtimeStreamingPage from "./pages/realtimeStreaming/RealtimeStreamingPage";
+import RealtimeStatisticPage from "./pages/realtimeStatistic/RealtimeStatisticPage";
+import DayStatPage from "./pages/statisticAnalysis/DayStatPage";
+import WeekStatPage from "./pages/statisticAnalysis/WeekStatPage";
+import MonthStatPage from "./pages/statisticAnalysis/MonthStatPage";
+import SearchDownloadPage from "./pages/search/SearchPage";
+import SearchOverSpeed from "./pages/search/OverspeedPage";
+import PasswordPage from "./pages/account/PasswordPage";
+import SignupPage from "./pages/account/SignupPage";
+import SearchAccountPage from "./pages/account/SearchAccount";
 
 const App = (props) => {
 	const { baseURL } = props;

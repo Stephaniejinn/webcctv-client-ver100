@@ -12,17 +12,17 @@ export const setDateInfo = (payload) => ({
 	payload,
 });
 
-export const getLocation = () => ({
-	type: "LOCATION_INFO",
-	payload: "",
-});
+// export const getLocation = () => ({
+// 	type: "LOCATION_INFO",
+// 	payload: "",
+// });
 
-export const getLocationCode = () => ({
-	type: "LOCATION_CODE_INFO",
-	payload: "",
-});
+// export const getLocationCode = () => ({
+// 	type: "LOCATION_CODE_INFO",
+// 	payload: "",
+// });
 
-export const getURL = () => ({
-	type: "BASE_URL",
-	payload: "",
-});
+// export const getURL = () => ({
+// 	type: "BASE_URL",
+// 	payload: "",
+// });

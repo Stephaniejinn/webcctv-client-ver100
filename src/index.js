@@ -6,7 +6,7 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 import configStore from "./redux/store";
 import { persistor } from "./redux/store";
 
-import App from "./App";
+import App from "./components/index.js";
 
 import "./index.less";
 
