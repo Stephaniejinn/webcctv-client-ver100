@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { Layout, Typography, Divider } from "antd";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import Sider from "../../organisms/sider";
-import Header from "../../organisms/header";
 import SignupForm from "../../organisms/accountForm/SignupForm";
-
+import Header from "../../organisms/header";
+import Sider from "../../organisms/sider";
 import "./style.less";
 
 const SignupPage = (props) => {

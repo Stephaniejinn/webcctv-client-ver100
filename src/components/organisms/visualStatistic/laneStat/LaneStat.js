@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
 import { Spin, Typography, message } from "antd";
 
-import axios from "axios";
-import { connect } from "react-redux";
-
-import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import LaneDataVisualization from "../../../molecules/dataVisualization/LaneDataVisualization";
-
+import LaneTableCard from "../../../molecules/tableCard/LaneTableCard";
 import "../style.less";
 
 const LaneVisualization = (props) => {

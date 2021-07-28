@@ -1,15 +1,13 @@
 import React from "react";
 import { Tabs, Typography } from "antd";
 
+import NotificationButton from "../../atoms/notificationButton/NotificationButton";
 import GraphCard from "../graphCard/GraphCard";
-
-import VehicleVolume from "../../charts/barChart/LaneVehicleCnt";
-import PCUBar from "../../charts/barChart/LanePCU";
-import VehicleRatio from "../../charts/barChart/LaneVehicleRatio";
 import AvgSpeed from "../../charts/lineChart/LaneAvgSpeed";
 import OverSpeedVolume from "../../charts/barChart/LaneOverSpeedCnt";
-import NotificationButton from "../../atoms/notificationButton/NotificationButton";
-
+import PCUBar from "../../charts/barChart/LanePCU";
+import VehicleVolume from "../../charts/barChart/LaneVehicleCnt";
+import VehicleRatio from "../../charts/barChart/LaneVehicleRatio";
 import "./style.less";
 
 const LaneDataVisualization = (props) => {

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, message, Typography } from "antd";
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
+import { Tabs, message, Typography } from "antd";
 
-import TimeTableCard from "../../../molecules/tableCard/TimeTableCard";
-import TimeDataVisualization from "../../../molecules/dataVisualization/TimeDataVisualization";
 import NotificationButton from "../../../atoms/notificationButton/NotificationButton";
-
+import TimeDataVisualization from "../../../molecules/dataVisualization/TimeDataVisualization";
+import TimeTableCard from "../../../molecules/tableCard/TimeTableCard";
 import "../style.less";
 
 const TimeVisualization = (props) => {

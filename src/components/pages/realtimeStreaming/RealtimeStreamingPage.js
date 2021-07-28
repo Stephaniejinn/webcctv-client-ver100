@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Tooltip, Typography } from "antd";
 import moment from "moment";
+import { Layout, Tooltip, Typography } from "antd";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import Sider from "../../organisms/sider";
-import Header from "../../organisms/header";
-import VideoContainer from "../../organisms/videoContainer/StreamingContainer";
 import CascaderBtn from "../../atoms/cascaderBtn/CascaderBtn";
-
+import Header from "../../organisms/header";
+import Sider from "../../organisms/sider";
+import VideoContainer from "../../organisms/videoContainer/StreamingContainer";
 import "./style.less";
 
 const RealtimeStreamingPage = (props) => {

@@ -1,11 +1,10 @@
 import React from "react";
-import { Typography, Divider } from "antd";
+import { connect } from "react-redux";
 import moment from "moment";
 import "moment-timezone";
-import { connect } from "react-redux";
+import { Typography, Divider } from "antd";
 
 import NotificationButton from "../../atoms/notificationButton/NotificationButton";
-
 import "./style.less";
 
 const TableDescription = (props) => {

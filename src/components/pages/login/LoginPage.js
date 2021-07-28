@@ -3,7 +3,6 @@ import { Layout, Typography } from "antd";
 
 import Header from "../../organisms/header";
 import LoginCard from "../../organisms/loginCard/LoginCard";
-
 import "./style.less";
 
 const LoginPage = (props) => {

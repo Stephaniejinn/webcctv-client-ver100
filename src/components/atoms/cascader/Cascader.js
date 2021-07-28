@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Cascader, message } from "antd";
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
+import { Cascader, message } from "antd";
 
 const MyCascader = (props) => {
 	const {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { DatePicker, ConfigProvider, Typography } from "antd";
+import moment from "moment";
 import locale from "antd/es/locale/ko_KR";
 import "moment/locale/ko";
-import moment from "moment";
 
 import "./style.less";
 

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { Typography, Button, Radio, message, Tooltip } from "antd";
 import { connect } from "react-redux";
-import * as actions from "../../../redux/actions";
+import { Typography, Button, Radio, message, Tooltip } from "antd";
 
+import * as actions from "../../../redux/actions";
 import Cascader from "../../atoms/cascader/Cascader";
 import DatePicker from "../../atoms/datePicker/DatePicker";
-import TimeFilter from "../../molecules/timeFilter/TimeFilter";
 import NotificationButton from "../../atoms/notificationButton/NotificationButton";
-
+import TimeFilter from "../../molecules/timeFilter/TimeFilter";
 import "./style.less";
 
 const SeachData = (props) => {

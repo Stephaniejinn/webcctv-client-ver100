@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Layout, Spin } from "antd";
 
-import Sider from "../../organisms/sider";
-import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
+import Header from "../../organisms/header";
 import SearchData from "../../organisms/searchData/SearchData";
+import Sider from "../../organisms/sider";
 import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
 import LaneStatistic from "../../organisms/visualStatistic/laneStat/LaneStat";
-
+import TimeStatistic from "../../organisms/visualStatistic/timeStat/TimeStat";
 import "../style.less";
 
 const WeekStatPage = (props) => {

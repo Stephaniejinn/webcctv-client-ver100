@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Spin } from "antd";
-import moment from "moment";
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
+import moment from "moment";
+import { Spin } from "antd";
 
 import VisualizationCard from "../../molecules/genVisualizationCard/GenVisualizationCard";
-import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
 import OverSpeedBar from "../../charts/barChart/GenOverSpeed";
-
+import VehicleRatio from "../../charts/doughnutChart/VehicleRatio";
 import "./style.less";
 
 const StreamingGeneralVisualization = (props) => {

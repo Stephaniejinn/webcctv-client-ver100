@@ -4,17 +4,17 @@ import { connect } from "react-redux";
 import axios from "axios";
 import { Spin, message } from "antd";
 
+import PasswordPage from "./pages/account/PasswordPage";
+import SearchAccountPage from "./pages/account/SearchAccount";
+import SignupPage from "./pages/account/SignupPage";
 import LoginPage from "./pages/login/LoginPage";
-import RealtimeStreamingPage from "./pages/realtimeStreaming/RealtimeStreamingPage";
 import RealtimeStatisticPage from "./pages/realtimeStatistic/RealtimeStatisticPage";
+import RealtimeStreamingPage from "./pages/realtimeStreaming/RealtimeStreamingPage";
+import SearchOverSpeed from "./pages/search/OverspeedPage";
+import SearchDownloadPage from "./pages/search/SearchPage";
 import DayStatPage from "./pages/statisticAnalysis/DayStatPage";
 import WeekStatPage from "./pages/statisticAnalysis/WeekStatPage";
 import MonthStatPage from "./pages/statisticAnalysis/MonthStatPage";
-import SearchDownloadPage from "./pages/search/SearchPage";
-import SearchOverSpeed from "./pages/search/OverspeedPage";
-import PasswordPage from "./pages/account/PasswordPage";
-import SignupPage from "./pages/account/SignupPage";
-import SearchAccountPage from "./pages/account/SearchAccount";
 
 const App = (props) => {
 	const { baseURL } = props;

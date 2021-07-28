@@ -1,6 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 import axios from "axios";
 import { HashLink as Link } from "react-router-hash-link";
 import { Menu, Dropdown, Typography, Divider, Avatar, Button } from "antd";

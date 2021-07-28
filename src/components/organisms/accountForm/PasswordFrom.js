@@ -1,10 +1,10 @@
 import React from "react";
-import { Form, Input, message, Button, Modal } from "antd";
-import { BankOutlined, UserOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 import NodeRSA from "node-rsa";
 import axios from "axios";
-import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Form, Input, message, Button } from "antd";
+import { BankOutlined, UserOutlined } from "@ant-design/icons";
 
 import "./style.less";
 

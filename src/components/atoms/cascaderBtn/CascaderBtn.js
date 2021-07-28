@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Button, message, Tooltip } from "antd";
 import { connect } from "react-redux";
+import { Button, message, Tooltip } from "antd";
+
 import * as actions from "../../../redux/actions";
-
 import MyCascader from "../cascader/Cascader";
-
 import "./style.less";
 
 const CascaderWButton = (props) => {

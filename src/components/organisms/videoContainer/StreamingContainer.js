@@ -3,7 +3,6 @@ import { Card, Typography } from "antd";
 
 import Video from "../../molecules/video/Video";
 import StreamingGenVisualization from "../generalVisualization/StreamingGenVisualization";
-
 import "./style.less";
 
 const { Title } = Typography;

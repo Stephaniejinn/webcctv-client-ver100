@@ -12,7 +12,6 @@ import {
 
 import logo from "../../../assets/logo/originalLogo.png";
 import logoCollapsed from "../../../assets/logo/originalLogoCollapsed.png";
-
 import "./style.less";
 
 const MySider = () => {

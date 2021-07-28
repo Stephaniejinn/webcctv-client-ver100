@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
+import reportWebVitals from "./reportWebVitals";
 import { PersistGate } from "redux-persist/lib/integration/react";
+
 import configStore from "./redux/store";
 import { persistor } from "./redux/store";
-
 import App from "./components/index.js";
-
 import "./index.less";
 
 ReactDOM.render(

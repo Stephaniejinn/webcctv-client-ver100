@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
+import ExportJsonExcel from "js-export-excel";
+import moment from "moment";
 import { Collapse, Typography, Divider, Spin, message, Tooltip } from "antd";
 import {
 	EyeOutlined,
 	DownloadOutlined,
 	InfoCircleOutlined,
 } from "@ant-design/icons";
-import ExportJsonExcel from "js-export-excel";
-import moment from "moment";
-
-import axios from "axios";
-import { connect } from "react-redux";
 
 import FirstTable from "../../molecules/StatisticsTable/searchTable/SearchFirstTable";
 import SecondTable from "../../molecules/StatisticsTable/searchTable/SearchSecondTable";
 import SearchOverSpeedTable from "../../molecules/StatisticsTable/searchTable/SearchOverSpeed";
-
 import "./style.less";
 
 const SearchCollapsedTable = (props) => {

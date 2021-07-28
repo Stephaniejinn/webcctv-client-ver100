@@ -2,10 +2,9 @@ import React, { useEffect } from "react";
 import { Layout, Typography, Divider } from "antd";
 
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import Sider from "../../organisms/sider";
-import Header from "../../organisms/header";
 import AccountTable from "../../organisms/accountTable/AccountTable";
-
+import Header from "../../organisms/header";
+import Sider from "../../organisms/sider";
 import "./style.less";
 
 const SearchAccount = (props) => {
@@ -25,7 +24,7 @@ const SearchAccount = (props) => {
 					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb
-							pageHierarchy={["대시보드", "개인정보", "비밀번호 변경"]}
+							pageHierarchy={["대시보드", "사용자 정보", "계정 조회"]}
 						/>
 						<Title level={3} style={{ minWidth: 160 }}>
 							발급 계정 조회

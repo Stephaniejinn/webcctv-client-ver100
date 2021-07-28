@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Table, Spin } from "antd";
 import moment from "moment";
+import { Table, Spin } from "antd";
 
 import "../style.less";
 

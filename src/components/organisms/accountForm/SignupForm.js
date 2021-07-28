@@ -1,9 +1,9 @@
 import React from "react";
+import { connect } from "react-redux";
+import NodeRSA from "node-rsa";
+import axios from "axios";
 import { Form, Input, Button, message, Modal } from "antd";
 import { BankOutlined } from "@ant-design/icons";
-import NodeRSA from "node-rsa";
-import { connect } from "react-redux";
-import axios from "axios";
 
 const formItemLayout = {
 	labelCol: {

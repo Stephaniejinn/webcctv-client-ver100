@@ -2,7 +2,6 @@ import React from "react";
 import { Card } from "antd";
 
 import Video from "../../molecules/video/Video";
-
 import "./style.less";
 
 const StatContainer = ({ httpAddress }) => {

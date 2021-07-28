@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import axios from "axios";
 import {
 	Table,
 	Tag,
@@ -12,8 +14,6 @@ import {
 	CheckCircleOutlined,
 	ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
-import { connect } from "react-redux";
 
 import "./style.less";
 

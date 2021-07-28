@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Layout, message, Typography, Button, Tooltip } from "antd";
 import { useHistory } from "react-router-dom";
-import moment from "moment";
-import axios from "axios";
 import { connect } from "react-redux";
+import axios from "axios";
+import moment from "moment";
+import { Layout, message, Typography, Button, Tooltip } from "antd";
 
-import Sider from "../../organisms/sider";
-import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import StatContainer from "../../organisms/videoContainer/StatContainer";
-import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
-import TimeTableCard from "../../molecules/tableCard/TimeTableCard";
 import CascaderBtn from "../../atoms/cascaderBtn/CascaderBtn";
-
+import TimeTableCard from "../../molecules/tableCard/TimeTableCard";
+import GeneralVisualization from "../../organisms/generalVisualization/GeneralVisualization";
+import Header from "../../organisms/header";
+import Sider from "../../organisms/sider";
+import StatContainer from "../../organisms/videoContainer/StatContainer";
 import "./style.less";
 
 const RealtimeStatisticPage = (props) => {
@@ -120,7 +119,7 @@ const RealtimeStatisticPage = (props) => {
 					<Header setLoggedIn={setLoggedIn} isMaster={isMaster} />
 					<Content style={{ margin: "0 16px" }}>
 						<Breadcrumb
-							pageHierarchy={["대시보드", "실시간 데이터"]}
+							pageHierarchy={["대시보드", "실시간 통계"]}
 							locationHierarchy={locationHierarchy}
 						/>
 						<Tooltip

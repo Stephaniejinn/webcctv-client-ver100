@@ -1,9 +1,9 @@
 import React from "react";
 
-import TableDescription from "../tableDescription/TableDescription";
 import DayTable from "../StatisticsTable/dayTable/DLFirstTable";
-import WeekTable from "../StatisticsTable/weekTable/WLFirstTable";
 import MontnTable from "../StatisticsTable/monthTable/MLFirstTable";
+import TableDescription from "../tableDescription/TableDescription";
+import WeekTable from "../StatisticsTable/weekTable/WLFirstTable";
 
 const LaneTableCard = (props) => {
 	const { period, tableKey, startDate, endTime, trafficTotalData } = props;

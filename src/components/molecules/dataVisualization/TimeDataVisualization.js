@@ -2,34 +2,34 @@ import React, { useEffect } from "react";
 import { Tabs, Typography } from "antd";
 
 import GraphCard from "../graphCard/GraphCard";
+import BidirectionalBar from "../../charts/bidirectionalBar/DayNight";
+import DayAvgSpeed from "../../charts/lineChart/DTAvgSpeed";
 import DayCntLineChart from "../../charts/lineChart/DTCnt";
+import DayOverSpeed from "../../charts/lineChart/DTOverSpeed";
 import DayPCULineChart from "../../charts/lineChart/DTPCU";
 import DayVehicleRatio from "../../charts/lineChart/DTVehicleRatio";
-import DayAvgSpeed from "../../charts/lineChart/DTAvgSpeed";
-import DayOverSpeed from "../../charts/lineChart/DTOverSpeed";
 import Peak15 from "../../charts/statisticText/Peak15";
 import PeakHourFlowRate from "../../charts/statisticText/PeakHourFlowRate";
 import DayPHF from "../../charts/statisticText/PHF";
 import DayConcentrationRatio from "../../charts/liquidChart/PeakRatio";
-import BidirectionalBar from "../../charts/bidirectionalBar/DayNight";
 
-import WeekCnt from "../../charts/lineChart/WTCnt";
-import WeekPCU from "../../charts/lineChart/WTPCU";
-import WeekAvgSpeed from "../../charts/lineChart/WTAvgSpeed";
-import WeekOverSpeed from "../../charts/lineChart/WTOverSpeed";
-import WeekVehicleRatio from "../../charts/barChart/WTVehicleRatio";
 import WeekPeakTime from "../../charts/lineChart/WeekPeakTime";
+import WeekAvgSpeed from "../../charts/lineChart/WTAvgSpeed";
+import WeekCnt from "../../charts/lineChart/WTCnt";
+import WeekOverSpeed from "../../charts/lineChart/WTOverSpeed";
+import WeekPCU from "../../charts/lineChart/WTPCU";
+import WeekVehicleRatio from "../../charts/barChart/WTVehicleRatio";
 
 import WeekMonthFlowRate from "../../charts/barChart/WMFlowRate";
-import WeekMonthPHF from "../../charts/barChart/WTPHF";
 import WeekMonthConcentrationRatio from "../../charts/barChart/WTConcentrationRatio";
+import WeekMonthPHF from "../../charts/barChart/WTPHF";
 
+import MonthPeakTime from "../../charts/lineChart/MonthPeakTime";
+import MonthAvgSpeed from "../../charts/lineChart/MTAvgSpeed";
 import MonthCnt from "../../charts/lineChart/MTCnt";
+import MonthOverSpeed from "../../charts/lineChart/MTOverSpeed";
 import MonthPCU from "../../charts/lineChart/MTPCU";
 import MonthVehicleRatio from "../../charts/lineChart/MTVehicleRatio";
-import MonthAvgSpeed from "../../charts/lineChart/MTAvgSpeed";
-import MonthOverSpeed from "../../charts/lineChart/MTOverSpeed";
-import MonthPeakTime from "../../charts/lineChart/MonthPeakTime";
 
 import "./style.less";
 

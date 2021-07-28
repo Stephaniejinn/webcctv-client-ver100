@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Layout } from "antd";
 
-import Sider from "../../organisms/sider";
-import Header from "../../organisms/header";
 import Breadcrumb from "../../atoms/breadcrumb/Breadcrumb";
-import SearchData from "../../organisms/searchData/SearchData";
+import Header from "../../organisms/header";
 import SearchCollapsedTable from "../../organisms/searchCollapsedTable/SearchCollapsedTable";
-
+import SearchData from "../../organisms/searchData/SearchData";
+import Sider from "../../organisms/sider";
 import "./style.less";
 
 const SearchDownloadPage = (props) => {
